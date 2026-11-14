@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio — Alex Pratama</title>
+
+  <!-- Google Fonts: Bebas Neue (Display) & Plus Jakarta Sans (Clean Body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Bootstrap 5 CSS & Bootstrap Icons -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    rel="stylesheet"
+  />
+
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <!-- ==================== NAVBAR ==================== -->
+  <header class="site-header sticky-top">
+    <nav class="navbar navbar-expand-lg py-3">
+      <div class="container">
+        <a class="navbar-brand fw-extrabold text-uppercase tracking-wide" href="#home">
+          ALEX PRATAMA
+        </a>
+
+        <button
+          class="navbar-toggler border-0 shadow-none"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#mainNavbar"
+          aria-controls="mainNavbar"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="mainNavbar">
+          <ul class="navbar-nav ms-auto gap-lg-4 mt-3 mt-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="#home">HOME</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#about">ABOUT ME</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#work">WORK</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#contact">CONTACT</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- ==================== HERO SECTION (ref1.png style) ==================== -->
+    <section id="home" class="hero-section">
+      <div class="hero-portrait-wrap">
+        <img
+          src="assets/img/hero-portrait.png"
+          alt="Portrait of Alex Pratama"
+          class="hero-portrait-img"
+        />
+      </div>
+
+      <div class="container hero-inner d-flex flex-column justify-content-between py-4 py-lg-5">
+        <!-- Top Bar -->
+        <div class="d-flex justify-content-between align-items-center hero-meta">
+          <span>Web Developer &amp; Designer</span>
+          <a href="#about" class="hero-arrow-link" aria-label="Scroll to About section">
+            <i class="bi bi-arrow-right"></i>
+          </a>
+        </div>
+
+        <!-- Center Layered Typography -->
+        <div class="hero-stage my-auto">
+          <div class="hero-word hero-word-solid" aria-hidden="true">PORTFOLIO</div>
+          <h1 class="hero-word hero-word-outline">PORTFOLIO</h1>
+        </div>
+
+        <!-- Bottom Bar -->
+        <div class="d-flex justify-content-between align-items-center hero-meta">
+          <span>Alex Pratama</span>
+          <span>www.alexpratama.dev</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== ABOUT ME SECTION (Ramon 3-Panel + Slide & Expand Animation) ==================== -->
+    <section id="about" class="about-section">
+      <div class="container">
+        <div class="ramon-card" id="aboutRamonCard">
+          <div class="ramon-grid">
+            <!-- Panel 1: Left White Intro -->
+            <div class="ramon-left">
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="ramon-brand-mark">
+                  <i class="bi bi-diamond-half me-2" aria-hidden="true"></i>
+                  <span>ALEX<br />PRATAMA</span>
+                </div>
+                <button
+                  type="button"
+                  id="aboutBackBtn"
+                  class="ramon-back-btn"
+                  aria-label="Back to overview"
+                >
+                  <i class="bi bi-arrow-left me-1"></i> Back
+                </button>
+              </div>
+
+              <div class="ramon-headline-box my-auto" id="aboutLeftContent">
+                <h2 class="ramon-title" id="aboutSlideTitle">
+                  Crafting<br />
+                  Clean Code<br />
+                  <strong>Always.</strong>
+                </h2>
+                <p class="ramon-sub mb-0" id="aboutSlideSub">
+                  design a simple web / by alexpratama.dev
+                </p>
+                <p class="ramon-mobile-desc d-lg-none mb-0" id="aboutMobileDesc"></p>
+              </div>
+
+              <div class="ramon-bottom-nav d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center gap-2">
+                  <button
+                    type="button"
+                    id="aboutPrevBtn"
+                    class="ramon-arrow-btn"
+                    aria-label="Previous slide"
+                  >
+                    <i class="bi bi-arrow-left"></i>
+                  </button>
+                  <span class="ramon-counter">
+                    <strong id="aboutSlideNum">01</strong> / 03
+                  </span>
+                  <button
+                    type="button"
+                    id="aboutNextBtn"
+                    class="ramon-arrow-btn"
+                    aria-label="Next slide"
+                  >
+                    <i class="bi bi-arrow-right"></i>
+                  </button>
+                </div>
+
+                <button type="button" id="aboutExpandBtn" class="ramon-readmore-btn">
+                  READ MORE <i class="bi bi-chevron-right ms-1"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Panel 2: Center B&W Editorial Portrait Slider Track -->
+            <div class="ramon-center">
+              <div class="ramon-photo-track" id="aboutPhotoTrack">
+                <img
+                  src="assets/img/about-portrait.png"
+                  alt="Alex Pratama editorial portrait"
+                  class="ramon-photo"
+                />
+                <img
+                  src="assets/img/about-slide-2.png"
+                  alt="Alex Pratama coding at desk"
+                  class="ramon-photo"
+                />
+                <img
+                  src="assets/img/about-slide-3.png"
+                  alt="Alex Pratama UI UX designer"
+                  class="ramon-photo"
+                />
+              </div>
+            </div>
+
+            <!-- Panel 3: Right Dark Abstract & Expandable Detail -->
+            <div class="ramon-right">
+              <div class="d-flex justify-content-end gap-3 ramon-top-icons">
+                <button
+                  type="button"
+                  class="btn btn-link p-0 text-white-50"
+                  data-bs-toggle="modal"
+                  data-bs-target="#contactModal"
+                  aria-label="Open contact form"
+                >
+                  <i class="bi bi-envelope"></i>
+                </button>
+                <a href="#work" class="text-white-50" aria-label="Jump to work">
+                  <i class="bi bi-grid"></i>
+                </a>
+              </div>
+
+              <div class="my-auto ramon-right-body" id="aboutRightContent">
+                <div class="ramon-abstract-label" id="aboutRightLabel">ABSTRACT</div>
+                <p class="ramon-abstract-text" id="aboutRightText">
+                  I&rsquo;m a web developer and UI designer focused on turning complex ideas into
+                  fast, responsive, and clean digital products.
+                </p>
+
+                <ul class="list-unstyled ramon-item-list mb-0" id="aboutItemList">
+                  <li class="active" data-slide-target="0">
+                    <div class="ramon-item-thumb">
+                      <img src="assets/img/about-portrait.png" alt="Frontend Dev" />
+                    </div>
+                    <div>
+                      <div class="ramon-item-title">FRONTEND DEV</div>
+                      <div class="ramon-item-sub">3+ Years Experience</div>
+                    </div>
+                  </li>
+                  <li data-slide-target="1">
+                    <div class="ramon-item-thumb thumb-icon">
+                      <i class="bi bi-bootstrap"></i>
+                    </div>
+                    <div>
+                      <div class="ramon-item-title">UI ENGINEERING</div>
+                      <div class="ramon-item-sub">HTML5, CSS3, Bootstrap 5</div>
+                    </div>
+                  </li>
+                  <li data-slide-target="2">
+                    <div class="ramon-item-thumb thumb-icon">
+                      <i class="bi bi-code-square"></i>
+                    </div>
+                    <div>
+                      <div class="ramon-item-title">FULLSTACK &amp; EDU</div>
+                      <div class="ramon-item-sub">Informatics &amp; Laravel</div>
+                    </div>
+                  </li>
+                </ul>
+
+                <!-- Expanded Detail View (Shown when READ MORE / item clicked) -->
+                <div class="ramon-detail-panel" id="aboutDetailPanel">
+                  <div class="ramon-detail-tabs mb-3" role="tablist">
+                    <button type="button" class="detail-tab active" data-tab="overview">
+                      Overview
+                    </button>
+                    <button type="button" class="detail-tab" data-tab="stack">
+                      Core Stack
+                    </button>
+                    <button type="button" class="detail-tab" data-tab="focus">
+                      Focus
+                    </button>
+                  </div>
+                  <p class="ramon-detail-copy mb-3" id="aboutDetailCopy"></p>
+                  <div class="d-flex flex-wrap gap-2" id="aboutDetailBadges"></div>
+                </div>
+              </div>
+
+              <div class="d-flex justify-content-between align-items-center pt-3">
+                <button
+                  type="button"
+                  class="btn btn-sm btn-outline-light rounded-1 px-3 py-1"
+                  style="font-size: 0.7rem; letter-spacing: 0.08em;"
+                  data-bs-toggle="modal"
+                  data-bs-target="#contactModal"
+                >
+                  HIRE ME
+                </button>
+                <div class="d-flex gap-3 ramon-socials">
+                  <a href="https://github.com" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                    <i class="bi bi-github"></i>
+                  </a>
+                  <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                    <i class="bi bi-linkedin"></i>
+                  </a>
+                  <a href="mailto:hello@alexpratama.dev" aria-label="Email">
+                    <i class="bi bi-envelope-fill"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SKILLS / STACK SECTION (4 Clean Cards) ==================== -->
+    <section id="skills" class="skills-section py-section pt-0">
+      <div class="container">
+        <div class="text-center mb-5">
+          <h2 class="section-title mb-2">SKILLS</h2>
+          <div class="title-underline mx-auto"></div>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-md-6 col-lg-3">
+            <article class="skill-box h-100">
+              <i class="bi bi-window-sidebar skill-icon" aria-hidden="true"></i>
+              <h3>WEB DEVELOPMENT</h3>
+              <p>HTML5 | CSS3 | Bootstrap 5 | JavaScript | Responsive Grid</p>
+            </article>
+          </div>
+
+          <div class="col-md-6 col-lg-3">
+            <article class="skill-box h-100">
+              <i class="bi bi-hdd-stack skill-icon" aria-hidden="true"></i>
+              <h3>BACKEND &amp; DATA</h3>
+              <p>PHP | Laravel | MySQL | REST API | Authentication</p>
+            </article>
+          </div>
+
+          <div class="col-md-6 col-lg-3">
+            <article class="skill-box h-100">
+              <i class="bi bi-code-slash skill-icon" aria-hidden="true"></i>
+              <h3>DESIGN TO CODE</h3>
+              <p>Figma to HTML | Pixel-Perfect Layout | Clean Semantic Markup</p>
+            </article>
+          </div>
+
+          <div class="col-md-6 col-lg-3">
+            <article class="skill-box h-100">
+              <i class="bi bi-layers skill-icon" aria-hidden="true"></i>
+              <h3>UI/UX &amp; TOOLS</h3>
+              <p>Figma | Git &amp; GitHub | VS Code | Prototyping</p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== PORTFOLIO / WORK SECTION (Desktop 16:9 Carousel) ==================== -->
+    <section id="work" class="work-section py-section">
+      <div class="container">
+        <div class="text-center mb-5">
+          <h2 class="section-title mb-2">PORTFOLIO</h2>
+          <div class="title-underline mx-auto"></div>
+        </div>
+
+        <div class="portfolio-carousel-shell mx-auto">
+          <div
+            id="portfolioCarousel"
+            class="carousel slide"
+            data-bs-ride="false"
+            aria-label="Portfolio showcase carousel"
+          >
+            <!-- Indicators -->
+            <div class="carousel-indicators custom-indicators">
+              <button
+                type="button"
+                data-bs-target="#portfolioCarousel"
+                data-bs-slide-to="0"
+                class="active"
+                aria-current="true"
+                aria-label="Project 1"
+              ></button>
+              <button
+                type="button"
+                data-bs-target="#portfolioCarousel"
+                data-bs-slide-to="1"
+                aria-label="Project 2"
+              ></button>
+              <button
+                type="button"
+                data-bs-target="#portfolioCarousel"
+                data-bs-slide-to="2"
+                aria-label="Project 3"
+              ></button>
+              <button
+                type="button"
+                data-bs-target="#portfolioCarousel"
+                data-bs-slide-to="3"
+                aria-label="Project 4"
+              ></button>
+            </div>
+
+            <!-- Slides (16:9 Desktop Screen Ratio) -->
+            <div class="carousel-inner">
+              <!-- Slide 1 -->
+              <div class="carousel-item active">
+                <div class="ratio ratio-16x9 desktop-screen-frame">
+                  <div class="desktop-slide-content">
+                    <div class="desktop-topbar">
+                      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+                      <span class="ms-2 url-bar">alexpratama.dev / company-profile</span>
+                    </div>
+                    <div class="desktop-body">
+                      <div class="row align-items-center h-100 g-4">
+                        <div class="col-md-7">
+                          <span class="slide-index">01 / WEB DEVELOPMENT</span>
+                          <h3 class="slide-title">COMPANY PROFILE WEBSITE</h3>
+                          <p class="slide-desc">
+                            Responsive corporate landing page built with semantic HTML5, CSS3, and
+                            Bootstrap 5 grid system.
+                          </p>
+                          <button
+                            type="button"
+                            class="btn btn-solid-dark project-detail-btn"
+                            data-title="Company Profile Website"
+                            data-category="Web Development"
+                            data-stack="HTML5, CSS3, Bootstrap 5"
+                            data-desc="Responsive corporate website with clean typography, structured service sections, and fast load performance."
+                          >
+                            VIEW DETAILS
+                          </button>
+                        </div>
+                        <div class="col-md-5 d-none d-md-block">
+                          <div class="slide-visual-card visual-burgundy">
+                            <div class="visual-bar"></div>
+                            <div class="visual-lines">
+                              <span></span><span></span><span></span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Slide 2 -->
+              <div class="carousel-item">
+                <div class="ratio ratio-16x9 desktop-screen-frame">
+                  <div class="desktop-slide-content">
+                    <div class="desktop-topbar">
+                      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+                      <span class="ms-2 url-bar">alexpratama.dev / ecommerce-catalog</span>
+                    </div>
+                    <div class="desktop-body">
+                      <div class="row align-items-center h-100 g-4">
+                        <div class="col-md-7">
+                          <span class="slide-index">02 / WEB DEVELOPMENT</span>
+                          <h3 class="slide-title">E-COMMERCE CATALOG UI</h3>
+                          <p class="slide-desc">
+                            Clean product catalog storefront with category filtering, responsive
+                            cards, and quick-view modal preview.
+                          </p>
+                          <button
+                            type="button"
+                            class="btn btn-solid-dark project-detail-btn"
+                            data-title="E-Commerce Catalog UI"
+                            data-category="Web Development"
+                            data-stack="Bootstrap 5, JavaScript, CSS3"
+                            data-desc="Product catalog storefront featuring clean grid cards, category filtering, and quick-view modals."
+                          >
+                            VIEW DETAILS
+                          </button>
+                        </div>
+                        <div class="col-md-5 d-none d-md-block">
+                          <div class="slide-visual-card visual-espresso">
+                            <div class="visual-grid">
+                              <div></div><div></div><div></div><div></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Slide 3 -->
+              <div class="carousel-item">
+                <div class="ratio ratio-16x9 desktop-screen-frame">
+                  <div class="desktop-slide-content">
+                    <div class="desktop-topbar">
+                      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+                      <span class="ms-2 url-bar">alexpratama.dev / admin-dashboard</span>
+                    </div>
+                    <div class="desktop-body">
+                      <div class="row align-items-center h-100 g-4">
+                        <div class="col-md-7">
+                          <span class="slide-index">03 / SYSTEM UI</span>
+                          <h3 class="slide-title">ADMIN DASHBOARD SYSTEM</h3>
+                          <p class="slide-desc">
+                            Internal management dashboard with clean data tables, summary widgets,
+                            and role-based navigation.
+                          </p>
+                          <button
+                            type="button"
+                            class="btn btn-solid-dark project-detail-btn"
+                            data-title="Admin Dashboard System"
+                            data-category="Fullstack / UI"
+                            data-stack="Laravel, Bootstrap 5, Chart.js"
+                            data-desc="Internal management dashboard with clean data tables, summary widgets, and role-based navigation."
+                          >
+                            VIEW DETAILS
+                          </button>
+                        </div>
+                        <div class="col-md-5 d-none d-md-block">
+                          <div class="slide-visual-card visual-gold">
+                            <div class="visual-bars">
+                              <span style="height: 45%"></span>
+                              <span style="height: 80%"></span>
+                              <span style="height: 60%"></span>
+                              <span style="height: 95%"></span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Slide 4 -->
+              <div class="carousel-item">
+                <div class="ratio ratio-16x9 desktop-screen-frame">
+                  <div class="desktop-slide-content">
+                    <div class="desktop-topbar">
+                      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+                      <span class="ms-2 url-bar">alexpratama.dev / ui-mockups</span>
+                    </div>
+                    <div class="desktop-body">
+                      <div class="row align-items-center h-100 g-4">
+                        <div class="col-md-7">
+                          <span class="slide-index">04 / UI/UX DESIGN</span>
+                          <h3 class="slide-title">WEBSITE UI MOCKUPS</h3>
+                          <p class="slide-desc">
+                            Minimalist wireframe and high-fidelity UI kit crafted for startups and
+                            personal portfolio sites.
+                          </p>
+                          <button
+                            type="button"
+                            class="btn btn-solid-dark project-detail-btn"
+                            data-title="Website UI Mockups"
+                            data-category="UI/UX Design"
+                            data-stack="Figma, Design System, Wireframing"
+                            data-desc="Minimalist wireframe and high-fidelity UI kit crafted for startups and personal portfolio sites."
+                          >
+                            VIEW DETAILS
+                          </button>
+                        </div>
+                        <div class="col-md-5 d-none d-md-block">
+                          <div class="slide-visual-card visual-wine">
+                            <div class="visual-circle"></div>
+                            <div class="visual-lines">
+                              <span></span><span></span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Prev / Next Controls -->
+            <button
+              class="carousel-control-prev custom-carousel-btn"
+              type="button"
+              data-bs-target="#portfolioCarousel"
+              data-bs-slide="prev"
+              aria-label="Previous project"
+            >
+              <i class="bi bi-chevron-left" aria-hidden="true"></i>
+            </button>
+            <button
+              class="carousel-control-next custom-carousel-btn"
+              type="button"
+              data-bs-target="#portfolioCarousel"
+              data-bs-slide="next"
+              aria-label="Next project"
+            >
+              <i class="bi bi-chevron-right" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="text-center mt-5">
+          <a href="#contact" class="btn btn-solid-gray">GET IN TOUCH</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== CTA BANNER ==================== -->
+    <section id="contact" class="cta-section py-section">
+      <div class="container">
+        <div class="cta-box text-center">
+          <h2 class="cta-heading mb-4">
+            HAVE A PROJECT IN MIND? LET&rsquo;S BUILD<br class="d-none d-md-inline" />
+            SOMETHING GREAT TOGETHER.
+          </h2>
+          <div class="d-flex justify-content-center flex-wrap gap-3">
+            <button
+              type="button"
+              class="btn btn-gold-solid"
+              data-bs-toggle="modal"
+              data-bs-target="#contactModal"
+            >
+              HIRE ME
+            </button>
+            <a href="#work" class="btn btn-outline-light-custom">VIEW MY WORK</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="site-footer py-5">
+    <div class="container">
+      <div class="row gy-4 align-items-center justify-content-between">
+        <div class="col-md-6">
+          <div class="footer-name mb-2">ALEX PRATAMA</div>
+          <span class="footer-role-badge d-inline-block mb-3">
+            Web Developer &amp; UI Designer
+          </span>
+          <p class="footer-copy mb-0">&copy; 2026 ALEX PRATAMA. ALL RIGHTS RESERVED.</p>
+        </div>
+
+        <div class="col-md-5">
+          <ul class="list-unstyled footer-contact-list mb-0">
+            <li>
+              <span class="footer-icon-box"><i class="bi bi-envelope-fill"></i></span>
+              <a href="mailto:hello@alexpratama.dev">hello@alexpratama.dev</a>
+            </li>
+            <li>
+              <span class="footer-icon-box"><i class="bi bi-github"></i></span>
+              <a href="https://github.com" target="_blank" rel="noopener noreferrer">
+                github.com/alexpratama
+              </a>
+            </li>
+            <li>
+              <span class="footer-icon-box"><i class="bi bi-linkedin"></i></span>
+              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
+                linkedin.com/in/alexpratama
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================== PROJECT DETAIL MODAL ==================== -->
+  <div
+    class="modal fade"
+    id="projectModal"
+    tabindex="-1"
+    aria-labelledby="projectModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content flat-modal">
+        <div class="modal-header border-0 pb-1">
+          <div>
+            <span id="modalCategory" class="badge bg-dark text-white mb-2">Category</span>
+            <h5 class="modal-title fw-bold" id="projectModalLabel">Project Title</h5>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p id="modalDescription" class="text-muted-custom mb-3"></p>
+          <div class="small fw-semibold">
+            Tech Stack: <span id="modalStack" class="fw-normal"></span>
+          </div>
+        </div>
+        <div class="modal-footer border-0 pt-0">
+          <button type="button" class="btn btn-solid-dark btn-sm" data-bs-dismiss="modal">
+            CLOSE
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== CONTACT / HIRE ME MODAL ==================== -->
+  <div
+    class="modal fade"
+    id="contactModal"
+    tabindex="-1"
+    aria-labelledby="contactModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content flat-modal">
+        <div class="modal-header border-0 pb-1">
+          <h5 class="modal-title fw-bold" id="contactModalLabel">SEND A MESSAGE</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="contactForm" novalidate>
+            <div class="mb-3">
+              <label for="senderName" class="form-label small fw-semibold">Name</label>
+              <input type="text" class="form-control flat-input" id="senderName" required />
+            </div>
+            <div class="mb-3">
+              <label for="senderEmail" class="form-label small fw-semibold">Email</label>
+              <input type="email" class="form-control flat-input" id="senderEmail" required />
+            </div>
+            <div class="mb-3">
+              <label for="senderMessage" class="form-label small fw-semibold">Message</label>
+              <textarea class="form-control flat-input" id="senderMessage" rows="3" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-solid-dark w-100">SEND MESSAGE</button>
+            <div id="formFeedback" class="mt-3 small d-none" role="status"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap 5 JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Custom Script -->
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
