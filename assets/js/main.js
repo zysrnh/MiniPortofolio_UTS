@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   initAboutCarousel();
+  initSkillsSection();
   initProjectModal();
   initContactForm();
   initMobileNavClose();
@@ -245,4 +246,54 @@ function initMobileNavClose() {
       }
     });
   });
+}
+
+/**
+ * Interactive stack filter, experience highlight, and mobile tab switch for Skills section.
+ */
+function initSkillsSection() {
+  const filterBtns = document.querySelectorAll(".stack-filter-btn");
+  const stackRows = document.querySelectorAll(".stack-group-row");
+  const expItems = document.querySelectorAll("#expTimelineList .exp-item");
+  const mobileTabBtns = document.querySelectorAll(".skills-tab-btn");
+  const toolkitPanel = document.getElementById("skillsToolkitPanel");
+  const expPanel = document.getElementById("skillsExpPanel");
+
+  if (filterBtns.length && stackRows.length) {
+    filterBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const selected = btn.dataset.stack;
+        filterBtns.forEach((b) => b.classList.remove("is-active"));
+        btn.classList.add("is-active");
+
+        stackRows.forEach((row) => {
+          const match = selected === "all" || row.dataset.stackCat === selected;
+          row.classList.toggle("is-hidden", !match);
+        });
+      });
+    });
+  }
+
+  if (expItems.length) {
+    expItems.forEach((item) => {
+      item.addEventListener("click", () => {
+        expItems.forEach((el) => el.classList.remove("active"));
+        item.classList.add("active");
+      });
+    });
+  }
+
+  if (mobileTabBtns.length && toolkitPanel && expPanel) {
+    mobileTabBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const target = btn.dataset.skillsTab;
+        mobileTabBtns.forEach((b) => b.classList.remove("is-active"));
+        btn.classList.add("is-active");
+
+        const showToolkit = target === "toolkit";
+        toolkitPanel.classList.toggle("is-active", showToolkit);
+        expPanel.classList.toggle("is-active", !showToolkit);
+      });
+    });
+  }
 }
