@@ -1560,18 +1560,7 @@ body {
   }
 
   .ramon-brand-mark {
-    margin-bottom: 0.3rem;
-  }
-
-  .ramon-brand-mark span {
     display: none;
-  }
-
-  .ramon-brand-mark::after {
-    content: "02 / ABOUT ME";
-    font-size: 0.68rem;
-    letter-spacing: 0.14em;
-    color: var(--bright-blue);
   }
 
   .ramon-headline-box {
