@@ -287,7 +287,7 @@
 
     <!-- ==================== SKILLS SECTION (Full-Screen Constellation Orbit) ==================== -->
     <section id="skills" class="skills-section" aria-labelledby="skillsHeading">
-      <div class="container skills-inner d-flex flex-column justify-content-between py-4 py-lg-5">
+      <div class="container skills-inner d-flex flex-column justify-content-between py-3 py-lg-4">
         <!-- Top Bar (Mirrors Hero Top Bar) -->
         <div class="skills-top-bar d-flex flex-wrap justify-content-between align-items-center gap-3">
           <div>
@@ -323,24 +323,24 @@
                   <span class="orbit-core-pulse" aria-hidden="true"></span>
                   <div class="orbit-core" id="orbitCore" aria-live="polite">
                     <div class="orbit-core-default">
-                      <span class="orbit-core-monogram">AP</span>
-                      <span class="orbit-core-sub">STACK</span>
+                      <span class="orbit-core-monogram" id="orbitCoreTitle">AP</span>
+                      <span class="orbit-core-sub" id="orbitCoreSub">ALL STACK</span>
                     </div>
                     <div class="orbit-core-preview" aria-hidden="true">
                       <img src="" alt="" class="orbit-core-preview-img" id="orbitCoreImg" />
+                      <span class="orbit-core-preview-name" id="orbitCoreName"></span>
                       <span class="orbit-core-preview-cat" id="orbitCoreCat"></span>
                     </div>
                   </div>
                 </div>
 
-                <!-- Inner Orbit Ring (7 core short-name skills, CW) -->
-                <div class="orbit-rotator orbit-rotator--inner" style="--orbit-r: 96px;">
+                <!-- Inner Orbit Ring (7 core icons, CW) -->
+                <div class="orbit-rotator orbit-rotator--inner" style="--orbit-r: 138px;">
                   <div class="orbit-anchor" style="--angle: 0deg;">
                     <div class="orbit-upright">
                       <div class="orbit-centerer">
-                        <button type="button" class="orbit-chip" data-stack-cat="fe" data-skill-name="HTML5" data-skill-label="Frontend" style="--float-delay: 0s;">
+                        <button type="button" class="orbit-chip" data-stack-cat="fe" data-skill-name="HTML5" data-skill-label="Frontend" aria-label="HTML5 (Frontend)" style="--float-delay: 0s;">
                           <img src="assets/img/icons/html5.svg" alt="HTML5" class="stack-logo-svg" />
-                          <span class="stack-item-name">HTML5</span>
                         </button>
                       </div>
                     </div>
@@ -348,9 +348,8 @@
                   <div class="orbit-anchor" style="--angle: 51.43deg;">
                     <div class="orbit-upright">
                       <div class="orbit-centerer">
-                        <button type="button" class="orbit-chip" data-stack-cat="fe" data-skill-name="CSS3" data-skill-label="Frontend" style="--float-delay: -0.6s;">
+                        <button type="button" class="orbit-chip" data-stack-cat="fe" data-skill-name="CSS3" data-skill-label="Frontend" aria-label="CSS3 (Frontend)" style="--float-delay: -0.6s;">
                           <img src="assets/img/icons/css3.svg" alt="CSS3" class="stack-logo-svg" />
-                          <span class="stack-item-name">CSS3</span>
                         </button>
                       </div>
                     </div>
@@ -358,9 +357,8 @@
                   <div class="orbit-anchor" style="--angle: 102.86deg;">
                     <div class="orbit-upright">
                       <div class="orbit-centerer">
-                        <button type="button" class="orbit-chip" data-stack-cat="be" data-skill-name="PHP" data-skill-label="Backend" style="--float-delay: -1.2s;">
+                        <button type="button" class="orbit-chip" data-stack-cat="be" data-skill-name="PHP" data-skill-label="Backend" aria-label="PHP (Backend)" style="--float-delay: -1.2s;">
                           <img src="assets/img/icons/php.svg" alt="PHP" class="stack-logo-svg" />
-                          <span class="stack-item-name">PHP</span>
                         </button>
                       </div>
                     </div>
@@ -368,9 +366,8 @@
                   <div class="orbit-anchor" style="--angle: 154.29deg;">
                     <div class="orbit-upright">
                       <div class="orbit-centerer">
-                        <button type="button" class="orbit-chip" data-stack-cat="fe" data-skill-name="React" data-skill-label="Frontend" style="--float-delay: -1.8s;">
+                        <button type="button" class="orbit-chip" data-stack-cat="fe" data-skill-name="React" data-skill-label="Frontend" aria-label="React (Frontend)" style="--float-delay: -1.8s;">
                           <img src="assets/img/icons/react.svg" alt="React" class="stack-logo-svg" />
-                          <span class="stack-item-name">React</span>
                         </button>
                       </div>
                     </div>
@@ -378,9 +375,8 @@
                   <div class="orbit-anchor" style="--angle: 205.71deg;">
                     <div class="orbit-upright">
                       <div class="orbit-centerer">
-                        <button type="button" class="orbit-chip" data-stack-cat="be" data-skill-name="MySQL" data-skill-label="Database" style="--float-delay: -2.4s;">
+                        <button type="button" class="orbit-chip" data-stack-cat="be" data-skill-name="MySQL" data-skill-label="Database" aria-label="MySQL (Database)" style="--float-delay: -2.4s;">
                           <img src="assets/img/icons/mysql.svg" alt="MySQL" class="stack-logo-svg" />
-                          <span class="stack-item-name">MySQL</span>
                         </button>
                       </div>
                     </div>
@@ -388,9 +384,8 @@
                   <div class="orbit-anchor" style="--angle: 257.14deg;">
                     <div class="orbit-upright">
                       <div class="orbit-centerer">
-                        <button type="button" class="orbit-chip" data-stack-cat="fe" data-skill-name="Blade" data-skill-label="Templating" style="--float-delay: -3.0s;">
+                        <button type="button" class="orbit-chip" data-stack-cat="fe" data-skill-name="Blade" data-skill-label="Templating" aria-label="Blade (Templating)" style="--float-delay: -3.0s;">
                           <img src="assets/img/icons/blade.svg" alt="Laravel Blade" class="stack-logo-svg" />
-                          <span class="stack-item-name">Blade</span>
                         </button>
                       </div>
                     </div>
@@ -398,23 +393,21 @@
                   <div class="orbit-anchor" style="--angle: 308.57deg;">
                     <div class="orbit-upright">
                       <div class="orbit-centerer">
-                        <button type="button" class="orbit-chip" data-stack-cat="tools" data-skill-name="Figma" data-skill-label="UI Design" style="--float-delay: -3.4s;">
+                        <button type="button" class="orbit-chip" data-stack-cat="tools" data-skill-name="Figma" data-skill-label="UI Design" aria-label="Figma (UI Design)" style="--float-delay: -3.4s;">
                           <img src="assets/img/icons/figma.svg" alt="Figma" class="stack-logo-svg" />
-                          <span class="stack-item-name">Figma</span>
                         </button>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <!-- Outer Orbit Ring (9 skills, CCW) -->
-                <div class="orbit-rotator orbit-rotator--outer" style="--orbit-r: 198px;">
+                <!-- Outer Orbit Ring (9 icons, CCW) -->
+                <div class="orbit-rotator orbit-rotator--outer" style="--orbit-r: 248px;">
                   <div class="orbit-anchor" style="--angle: 0deg;">
                     <div class="orbit-upright">
                       <div class="orbit-centerer">
-                        <button type="button" class="orbit-chip" data-stack-cat="fe" data-skill-name="JavaScript" data-skill-label="Frontend" style="--float-delay: -0.3s;">
+                        <button type="button" class="orbit-chip" data-stack-cat="fe" data-skill-name="JavaScript" data-skill-label="Frontend" aria-label="JavaScript (Frontend)" style="--float-delay: -0.3s;">
                           <img src="assets/img/icons/javascript.svg" alt="JavaScript" class="stack-logo-svg" />
-                          <span class="stack-item-name">JavaScript</span>
                         </button>
                       </div>
                     </div>
@@ -422,9 +415,8 @@
                   <div class="orbit-anchor" style="--angle: 40deg;">
                     <div class="orbit-upright">
                       <div class="orbit-centerer">
-                        <button type="button" class="orbit-chip" data-stack-cat="be" data-skill-name="Laravel" data-skill-label="Backend" style="--float-delay: -0.8s;">
+                        <button type="button" class="orbit-chip" data-stack-cat="be" data-skill-name="Laravel" data-skill-label="Backend" aria-label="Laravel (Backend)" style="--float-delay: -0.8s;">
                           <img src="assets/img/icons/laravel.svg" alt="Laravel" class="stack-logo-svg" />
-                          <span class="stack-item-name">Laravel</span>
                         </button>
                       </div>
                     </div>
@@ -432,9 +424,8 @@
                   <div class="orbit-anchor" style="--angle: 80deg;">
                     <div class="orbit-upright">
                       <div class="orbit-centerer">
-                        <button type="button" class="orbit-chip" data-stack-cat="fe" data-skill-name="TypeScript" data-skill-label="Frontend" style="--float-delay: -1.4s;">
+                        <button type="button" class="orbit-chip" data-stack-cat="fe" data-skill-name="TypeScript" data-skill-label="Frontend" aria-label="TypeScript (Frontend)" style="--float-delay: -1.4s;">
                           <img src="assets/img/icons/typescript.svg" alt="TypeScript" class="stack-logo-svg" />
-                          <span class="stack-item-name">TypeScript</span>
                         </button>
                       </div>
                     </div>
@@ -442,9 +433,8 @@
                   <div class="orbit-anchor" style="--angle: 120deg;">
                     <div class="orbit-upright">
                       <div class="orbit-centerer">
-                        <button type="button" class="orbit-chip" data-stack-cat="be" data-skill-name="REST API" data-skill-label="Backend" style="--float-delay: -1.9s;">
+                        <button type="button" class="orbit-chip" data-stack-cat="be" data-skill-name="REST API" data-skill-label="Backend" aria-label="REST API (Backend)" style="--float-delay: -1.9s;">
                           <img src="assets/img/icons/restapi.svg" alt="REST API" class="stack-logo-svg" />
-                          <span class="stack-item-name">REST API</span>
                         </button>
                       </div>
                     </div>
@@ -452,9 +442,8 @@
                   <div class="orbit-anchor" style="--angle: 160deg;">
                     <div class="orbit-upright">
                       <div class="orbit-centerer">
-                        <button type="button" class="orbit-chip" data-stack-cat="fe" data-skill-name="Tailwind CSS" data-skill-label="Styling" style="--float-delay: -2.3s;">
+                        <button type="button" class="orbit-chip" data-stack-cat="fe" data-skill-name="Tailwind CSS" data-skill-label="Styling" aria-label="Tailwind CSS (Styling)" style="--float-delay: -2.3s;">
                           <img src="assets/img/icons/tailwind.svg" alt="Tailwind CSS" class="stack-logo-svg" />
-                          <span class="stack-item-name">Tailwind CSS</span>
                         </button>
                       </div>
                     </div>
@@ -462,9 +451,8 @@
                   <div class="orbit-anchor" style="--angle: 200deg;">
                     <div class="orbit-upright">
                       <div class="orbit-centerer">
-                        <button type="button" class="orbit-chip" data-stack-cat="be" data-skill-name="Inertia.js" data-skill-label="Fullstack" style="--float-delay: -2.8s;">
+                        <button type="button" class="orbit-chip" data-stack-cat="be" data-skill-name="Inertia.js" data-skill-label="Fullstack" aria-label="Inertia.js (Fullstack)" style="--float-delay: -2.8s;">
                           <img src="assets/img/icons/inertia.svg" alt="Inertia.js" class="stack-logo-svg" />
-                          <span class="stack-item-name">Inertia.js</span>
                         </button>
                       </div>
                     </div>
@@ -472,9 +460,8 @@
                   <div class="orbit-anchor" style="--angle: 240deg;">
                     <div class="orbit-upright">
                       <div class="orbit-centerer">
-                        <button type="button" class="orbit-chip" data-stack-cat="fe" data-skill-name="Bootstrap 5" data-skill-label="Styling" style="--float-delay: -3.2s;">
+                        <button type="button" class="orbit-chip" data-stack-cat="fe" data-skill-name="Bootstrap 5" data-skill-label="Styling" aria-label="Bootstrap 5 (Styling)" style="--float-delay: -3.2s;">
                           <img src="assets/img/icons/bootstrap.svg" alt="Bootstrap 5" class="stack-logo-svg" />
-                          <span class="stack-item-name">Bootstrap 5</span>
                         </button>
                       </div>
                     </div>
@@ -482,9 +469,8 @@
                   <div class="orbit-anchor" style="--angle: 280deg;">
                     <div class="orbit-upright">
                       <div class="orbit-centerer">
-                        <button type="button" class="orbit-chip" data-stack-cat="tools" data-skill-name="Git &amp; GitHub" data-skill-label="Workflow" style="--float-delay: -0.5s;">
+                        <button type="button" class="orbit-chip" data-stack-cat="tools" data-skill-name="Git &amp; GitHub" data-skill-label="Workflow" aria-label="Git &amp; GitHub (Workflow)" style="--float-delay: -0.5s;">
                           <img src="assets/img/icons/github.svg" alt="Git &amp; GitHub" class="stack-logo-svg" />
-                          <span class="stack-item-name">Git &amp; GitHub</span>
                         </button>
                       </div>
                     </div>
@@ -492,9 +478,8 @@
                   <div class="orbit-anchor" style="--angle: 320deg;">
                     <div class="orbit-upright">
                       <div class="orbit-centerer">
-                        <button type="button" class="orbit-chip" data-stack-cat="tools" data-skill-name="Antigravity" data-skill-label="AI Workflow" style="--float-delay: -1.6s;">
+                        <button type="button" class="orbit-chip" data-stack-cat="tools" data-skill-name="Antigravity" data-skill-label="AI Workflow" aria-label="Antigravity (AI Workflow)" style="--float-delay: -1.6s;">
                           <img src="assets/img/icons/antigravity.svg" alt="Antigravity" class="stack-logo-svg" />
-                          <span class="stack-item-name">Antigravity</span>
                         </button>
                       </div>
                     </div>
@@ -506,9 +491,8 @@
         </div>
 
         <!-- Bottom Bar (Mirrors Hero Bottom Bar) -->
-        <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 skills-bottom-bar hero-meta">
+        <div class="d-flex align-items-center skills-bottom-bar hero-meta">
           <span>Fullstack Web &amp; UI Engineering &bull; 16 Core Technologies</span>
-          <span class="orbit-hud-status" id="orbitActiveReadout">HOVER / TAP TO INSPECT</span>
         </div>
       </div>
     </section>

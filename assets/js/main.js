@@ -347,21 +347,30 @@ function initSkillsSection() {
   const orbitBox = document.getElementById("skillsOrbitBox");
   const orbitChips = document.querySelectorAll(".orbit-chip");
   const orbitCore = document.getElementById("orbitCore");
+  const orbitCoreTitle = document.getElementById("orbitCoreTitle");
+  const orbitCoreSub = document.getElementById("orbitCoreSub");
   const orbitCoreImg = document.getElementById("orbitCoreImg");
+  const orbitCoreName = document.getElementById("orbitCoreName");
   const orbitCoreCat = document.getElementById("orbitCoreCat");
-  const orbitReadout = document.getElementById("orbitActiveReadout");
 
-  const defaultReadouts = {
-    all: "HOVER / TAP TO INSPECT",
-    fe: "FRONTEND STACK (8)",
-    be: "BACKEND & DATA (5)",
-    tools: "TOOLS & WORKFLOW (3)",
+  const coreFilterStates = {
+    all: { title: "AP", sub: "ALL STACK", wide: false },
+    fe: { title: "FE", sub: "FRONTEND", wide: false },
+    be: { title: "BE", sub: "BACKEND", wide: false },
+    tools: { title: "TOOLS", sub: "WORKFLOW", wide: true },
   };
   let activeCategory = "all";
   let pinnedChip = null;
 
+  function applyCoreFilterState() {
+    const state = coreFilterStates[activeCategory] || coreFilterStates.all;
+    if (orbitCoreTitle) orbitCoreTitle.textContent = state.title;
+    if (orbitCoreSub) orbitCoreSub.textContent = state.sub;
+    if (orbitCore) orbitCore.classList.toggle("is-wide-label", state.wide);
+  }
+
   function showCorePreview(chip) {
-    if (!chip || !orbitCore || !orbitCoreImg || !orbitCoreCat) return;
+    if (!chip || !orbitCore || !orbitCoreImg || !orbitCoreName || !orbitCoreCat) return;
     const iconEl = chip.querySelector(".stack-logo-svg");
     const skillName = chip.dataset.skillName || "";
     const skillLabel = chip.dataset.skillLabel || "";
@@ -370,22 +379,17 @@ function initSkillsSection() {
       orbitCoreImg.src = iconEl.getAttribute("src") || "";
       orbitCoreImg.alt = skillName;
     }
+    orbitCoreName.textContent = skillName;
     orbitCoreCat.textContent = skillLabel;
     orbitCore.classList.add("is-previewing");
-
-    if (orbitReadout) {
-      orbitReadout.textContent = `${skillName} • ${skillLabel}`;
-      orbitReadout.classList.add("is-live");
-    }
   }
 
   function resetCorePreview() {
     if (orbitCore) orbitCore.classList.remove("is-previewing");
-    if (orbitReadout) {
-      orbitReadout.textContent = defaultReadouts[activeCategory] || defaultReadouts.all;
-      orbitReadout.classList.toggle("is-live", activeCategory !== "all");
-    }
+    applyCoreFilterState();
   }
+
+  applyCoreFilterState();
 
   if (orbitChips.length) {
     orbitChips.forEach((chip) => {
@@ -449,16 +453,15 @@ function initSkillsSection() {
         btn.classList.add("is-active");
 
         orbitChips.forEach((chip) => {
+          chip.classList.remove("is-selected");
           const match = activeCategory === "all" || chip.dataset.stackCat === activeCategory;
           chip.classList.toggle("is-highlighted", activeCategory !== "all" && match);
           chip.classList.toggle("is-dimmed", activeCategory !== "all" && !match);
         });
 
-        if (pinnedChip) {
-          showCorePreview(pinnedChip);
-        } else {
-          resetCorePreview();
-        }
+        pinnedChip = null;
+        if (orbitBox) orbitBox.classList.remove("is-paused");
+        resetCorePreview();
       });
     });
   }
