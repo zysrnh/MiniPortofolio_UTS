@@ -1154,6 +1154,69 @@ body {
   }
 }
 
+.skills-navy-sheen {
+  position: absolute;
+  top: -28%;
+  left: 0;
+  width: min(32vw, 340px);
+  height: 156%;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate3d(-45vw, 0, 0) skewX(-22deg);
+  will-change: transform, opacity;
+  animation: navyCarSheenSweep 8.5s cubic-bezier(0.32, 0.08, 0.24, 1) 1.6s infinite;
+  animation-play-state: paused;
+}
+
+.skills-navy-sheen::before,
+.skills-navy-sheen::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  height: 100%;
+  pointer-events: none;
+}
+
+.skills-navy-sheen::before {
+  left: 0;
+  width: 100%;
+  background-color: rgba(37, 99, 235, 0.22);
+  box-shadow: 0 0 85px 22px rgba(29, 78, 216, 0.34);
+  filter: blur(18px);
+}
+
+.skills-navy-sheen::after {
+  left: 52%;
+  width: 26px;
+  background-color: rgba(191, 219, 254, 0.16);
+  box-shadow:
+    24px 0 0 0 rgba(239, 246, 255, 0.22),
+    0 0 28px rgba(147, 197, 253, 0.38);
+  filter: blur(3px);
+}
+
+.skills-section.is-galaxy-active .skills-navy-sheen {
+  animation-play-state: running;
+}
+
+@keyframes navyCarSheenSweep {
+  0% {
+    opacity: 0;
+    transform: translate3d(-45vw, 0, 0) skewX(-22deg);
+  }
+  4% {
+    opacity: 1;
+  }
+  25% {
+    opacity: 1;
+  }
+  31%,
+  100% {
+    opacity: 0;
+    transform: translate3d(138vw, 0, 0) skewX(-22deg);
+  }
+}
+
 .skills-inner {
   position: relative;
   z-index: 2;
@@ -1434,6 +1497,8 @@ body {
   width: var(--core-size, 100px);
   height: var(--core-size, 100px);
   border-radius: 50%;
+  overflow: hidden;
+  isolation: isolate;
   background-color: var(--deep-red);
   border: 2px solid var(--stone);
   box-shadow: var(--shadow-btn);
@@ -1445,6 +1510,73 @@ body {
   color: var(--white);
   cursor: default;
   transition: transform 0.22s ease, border-color 0.22s ease;
+}
+
+.orbit-core::after,
+.orbit-chip::after {
+  content: "";
+  position: absolute;
+  top: -35%;
+  left: -65%;
+  width: 32%;
+  height: 170%;
+  background-color: rgba(219, 234, 254, 0.24);
+  box-shadow: 9px 0 0 0 rgba(239, 246, 255, 0.16);
+  transform: translate3d(0, 0, 0) rotate(24deg);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.skills-section.is-galaxy-active .orbit-core::after {
+  animation: orbitSurfaceSheen 8.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 2.55s infinite;
+}
+
+.skills-section.is-galaxy-active .orbit-chip::after {
+  animation: orbitSurfaceSheen 8.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) calc(2.75s - var(--float-delay, 0s) * 0.22) infinite;
+}
+
+.orbit-chip.is-dimmed::after {
+  display: none;
+}
+
+.skills-section.is-galaxy-active .orbit-core:hover::after,
+.skills-section.is-galaxy-active .orbit-chip:hover::after,
+.skills-section.is-galaxy-active .orbit-chip:focus-visible::after,
+.skills-section.is-galaxy-active .orbit-chip.is-selected::after {
+  animation: orbitHoverSheen 0.68s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes orbitSurfaceSheen {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) rotate(24deg);
+  }
+  5% {
+    opacity: 0.92;
+  }
+  22% {
+    opacity: 0.92;
+  }
+  28%,
+  100% {
+    opacity: 0;
+    transform: translate3d(720%, 0, 0) rotate(24deg);
+  }
+}
+
+@keyframes orbitHoverSheen {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) rotate(24deg);
+  }
+  18% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(720%, 0, 0) rotate(24deg);
+  }
 }
 
 .orbit-core.is-morphing {
@@ -1634,6 +1766,9 @@ body {
 }
 
 .orbit-chip {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
   appearance: none;
   font-family: inherit;
   pointer-events: auto;
@@ -3015,6 +3150,9 @@ body {
   .skills-galaxy-aura,
   .galaxy-star,
   .galaxy-meteor,
+  .skills-navy-sheen,
+  .skills-section.is-galaxy-active .orbit-core::after,
+  .skills-section.is-galaxy-active .orbit-chip::after,
   .hero-section.is-hero-play .hero-word-solid,
   .hero-section.is-hero-play .hero-word-outline,
   .hero-section.is-hero-play .hero-portrait-img,
@@ -3029,7 +3167,10 @@ body {
     animation: none !important;
   }
 
-  .galaxy-meteor {
+  .galaxy-meteor,
+  .skills-navy-sheen,
+  .orbit-core::after,
+  .orbit-chip::after {
     display: none;
   }
 }
