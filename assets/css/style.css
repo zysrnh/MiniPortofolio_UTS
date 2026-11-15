@@ -1,30 +1,30 @@
 /* ==========================================================================
    Modern Tech Editorial Portfolio Stylesheet
-   Monochrome Editorial 3-Color Palette (60-30-10):
-   - Black: #2B2B2B (dark anchor sections, primary typography, primary CTA)
-   - Dove Grey: #686B6C (secondary typography, muted metadata, hairlines)
-   - Casper: #ADBED1 (cool accents on dark & soft surface tints on light)
-   - White: #FFFFFF (dominant clean editorial canvas)
+   Editorial Dark Red - Stone - Deep Red Palette:
+   - Dark Red: #270707 (dark anchor sections, primary typography)
+   - Stone: #F1EBEB (warm editorial canvas & light surfaces)
+   - Deep Red: #660810 (bold wine accent, secondary panel, CTAs)
+   - White: #FFFFFF (crisp contrast cards, navbar, dropdown menu)
    ========================================================================== */
 
 :root {
   /* Core palette */
-  --black: #2b2b2b;
-  --grey: #686b6c;
-  --casper: #adbed1;
+  --dark-red: #270707;
+  --stone: #f1ebeb;
+  --deep-red: #660810;
   --white: #ffffff;
 
-  /* Solid tints & derivatives derived from palette (no gradients) */
-  --black-hover: #1a1a1a;
-  --casper-mist: #eef2f6;
-  --casper-soft: #dde5ee;
-  --line: #dde1e4;
-  --line-on-dark: rgba(173, 190, 209, 0.22);
+  /* Solid derivatives (no gradients) */
+  --dark-red-hover: #180404;
+  --deep-red-hover: #4e050b;
+  --muted: #6e5a5b;
+  --line: #dfd5d5;
+  --line-on-dark: rgba(241, 235, 235, 0.16);
 
-  /* Neutral shadows only */
+  /* Neutral dark shadows only */
   --shadow-soft: 0 8px 24px rgba(0, 0, 0, 0.06);
-  --shadow-hover: 0 14px 32px rgba(0, 0, 0, 0.12);
-  --shadow-btn: 0 4px 12px rgba(0, 0, 0, 0.14);
+  --shadow-hover: 0 14px 32px rgba(0, 0, 0, 0.14);
+  --shadow-btn: 0 4px 12px rgba(0, 0, 0, 0.16);
   --font-display: "Bebas Neue", Impact, sans-serif;
   --font-body: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
 }
@@ -37,15 +37,15 @@ html {
 
 body {
   font-family: var(--font-body);
-  color: var(--black);
+  color: var(--dark-red);
   background-color: var(--white);
   line-height: 1.6;
   overflow-x: hidden;
 }
 
 ::selection {
-  background-color: var(--casper);
-  color: var(--black);
+  background-color: var(--deep-red);
+  color: var(--white);
 }
 
 /* ==================== UTILITIES & BUTTONS ==================== */
@@ -62,7 +62,7 @@ body {
 }
 
 .text-muted-custom {
-  color: var(--grey);
+  color: var(--muted);
   font-size: 0.95rem;
 }
 
@@ -70,21 +70,21 @@ body {
   font-weight: 800;
   font-size: clamp(1.5rem, 2.5vw, 1.95rem);
   letter-spacing: 0.04em;
-  color: var(--black);
+  color: var(--dark-red);
 }
 
 .title-underline {
   width: 64px;
   height: 3px;
   border-radius: 0;
-  background-color: var(--black);
+  background-color: var(--deep-red);
 }
 
-/* Primary CTA: Black */
+/* Primary CTA: Deep Red */
 .btn-solid-dark {
-  background-color: var(--black);
+  background-color: var(--deep-red);
   color: var(--white);
-  border: 1.5px solid var(--black);
+  border: 1.5px solid var(--deep-red);
   border-radius: 4px;
   font-size: 0.78rem;
   font-weight: 700;
@@ -96,18 +96,18 @@ body {
 
 .btn-solid-dark:hover,
 .btn-solid-dark:focus-visible {
-  background-color: var(--black-hover);
-  border-color: var(--black-hover);
-  color: var(--white);
+  background-color: var(--dark-red);
+  border-color: var(--dark-red);
+  color: var(--stone);
   transform: translateY(-2px);
   box-shadow: var(--shadow-hover);
 }
 
-/* Secondary: Black outline */
+/* Secondary: Dark Red outline */
 .btn-outline-dark-custom {
   background-color: transparent;
-  color: var(--black);
-  border: 1.5px solid var(--black);
+  color: var(--dark-red);
+  border: 1.5px solid var(--dark-red);
   border-radius: 4px;
   font-size: 0.78rem;
   font-weight: 700;
@@ -118,16 +118,16 @@ body {
 
 .btn-outline-dark-custom:hover,
 .btn-outline-dark-custom:focus-visible {
-  background-color: var(--black);
-  border-color: var(--black);
-  color: var(--white);
+  background-color: var(--dark-red);
+  border-color: var(--dark-red);
+  color: var(--stone);
   transform: translateY(-2px);
 }
 
 .btn-solid-gray {
   background-color: var(--white);
-  color: var(--black);
-  border: 1.5px solid var(--black);
+  color: var(--dark-red);
+  border: 1.5px solid var(--dark-red);
   border-radius: 4px;
   font-size: 0.78rem;
   font-weight: 700;
@@ -138,16 +138,16 @@ body {
 }
 
 .btn-solid-gray:hover {
-  background-color: var(--black);
-  border-color: var(--black);
+  background-color: var(--dark-red);
+  border-color: var(--dark-red);
   color: var(--white);
   transform: translateY(-2px);
 }
 
 .btn-gold-solid {
-  background-color: var(--black);
+  background-color: var(--deep-red);
   color: var(--white);
-  border: 1.5px solid var(--black);
+  border: 1.5px solid var(--deep-red);
   border-radius: 4px;
   font-size: 0.78rem;
   font-weight: 700;
@@ -158,17 +158,17 @@ body {
 }
 
 .btn-gold-solid:hover {
-  background-color: var(--black-hover);
-  border-color: var(--black-hover);
+  background-color: var(--deep-red-hover);
+  border-color: var(--deep-red-hover);
   color: var(--white);
   transform: translateY(-2px);
 }
 
-/* Outline on dark surfaces: White */
+/* Outline on dark surfaces: Stone */
 .btn-outline-light-custom {
   background-color: transparent;
-  color: var(--white);
-  border: 1.5px solid var(--white);
+  color: var(--stone);
+  border: 1.5px solid var(--stone);
   border-radius: 4px;
   font-size: 0.78rem;
   font-weight: 700;
@@ -178,9 +178,9 @@ body {
 }
 
 .btn-outline-light-custom:hover {
-  background-color: var(--white);
-  border-color: var(--white);
-  color: var(--black);
+  background-color: var(--stone);
+  border-color: var(--stone);
+  color: var(--dark-red);
   transform: translateY(-2px);
 }
 
@@ -193,7 +193,7 @@ body {
 
 .site-header .navbar-brand {
   font-size: 1.05rem;
-  color: var(--black);
+  color: var(--dark-red);
 }
 
 .site-header .nav-link {
@@ -201,7 +201,7 @@ body {
   font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.08em;
-  color: var(--black);
+  color: var(--dark-red);
   transition: color 0.2s ease;
 }
 
@@ -212,7 +212,7 @@ body {
   right: 0.5rem;
   bottom: 0.15rem;
   height: 2px;
-  background-color: var(--black);
+  background-color: var(--deep-red);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.25s ease;
@@ -220,7 +220,7 @@ body {
 
 .site-header .nav-link:hover,
 .site-header .nav-link.active {
-  color: var(--black);
+  color: var(--deep-red);
 }
 
 .site-header .nav-link:hover::after,
@@ -228,20 +228,10 @@ body {
   transform: scaleX(1);
 }
 
-.site-header .nav-link:hover,
-.site-header .nav-link.active {
-  color: var(--black);
-}
-
-.site-header .nav-link:hover::after,
-.site-header .nav-link.active::after {
-  transform: scaleX(1);
-}
-
-/* ==================== HERO SECTION (Black + White + Casper) ==================== */
+/* ==================== HERO SECTION (Dark Red + Stone + Deep Red) ==================== */
 .hero-section {
-  background-color: var(--black);
-  color: var(--white);
+  background-color: var(--dark-red);
+  color: var(--stone);
   height: calc(100vh - 64px);
   min-height: 540px;
   max-height: 820px;
@@ -261,21 +251,21 @@ body {
 .hero-meta {
   font-size: 0.85rem;
   font-weight: 500;
-  color: var(--casper);
+  color: rgba(241, 235, 235, 0.82);
   position: relative;
   z-index: 4;
   pointer-events: auto;
 }
 
 .hero-arrow-link {
-  color: var(--casper);
+  color: var(--stone);
   font-size: 1.35rem;
   text-decoration: none;
   transition: transform 0.2s ease, color 0.2s ease;
 }
 
 .hero-arrow-link:hover {
-  color: var(--casper);
+  color: var(--white);
   transform: translateX(4px);
 }
 
@@ -300,7 +290,7 @@ body {
 .hero-word-solid {
   position: relative;
   z-index: 1;
-  color: var(--white);
+  color: var(--stone);
 }
 
 .hero-portrait-wrap {
@@ -329,13 +319,13 @@ body {
   position: absolute;
   z-index: 3;
   color: transparent;
-  -webkit-text-stroke: 1.5px var(--white);
+  -webkit-text-stroke: 1.5px var(--stone);
   pointer-events: none;
 }
 
 /* ==================== ABOUT SECTION (Ramon 3-Panel + Video Slide/Expand) ==================== */
 .about-section {
-  background-color: var(--casper-mist);
+  background-color: var(--stone);
   border-bottom: 1px solid var(--line);
   padding: 3rem 0;
 }
@@ -380,7 +370,7 @@ body {
   font-weight: 800;
   letter-spacing: 0.1em;
   line-height: 1.15;
-  color: var(--black);
+  color: var(--dark-red);
   transition: opacity 0.25s ease;
 }
 
@@ -391,12 +381,12 @@ body {
   padding: 0.25rem 0;
   font-size: 0.78rem;
   font-weight: 700;
-  color: var(--black);
+  color: var(--dark-red);
   cursor: pointer;
 }
 
 .ramon-back-btn:hover {
-  color: var(--grey);
+  color: var(--muted);
 }
 
 .ramon-card.is-expanded .ramon-brand-mark,
@@ -427,25 +417,25 @@ body {
   font-weight: 400;
   line-height: 1.08;
   letter-spacing: -0.02em;
-  color: var(--black);
+  color: var(--dark-red);
   margin-bottom: 0.85rem;
 }
 
 .ramon-title strong {
   font-weight: 800;
-  color: var(--black);
+  color: var(--deep-red);
 }
 
 .ramon-sub {
   font-size: 0.72rem;
-  color: var(--grey);
+  color: var(--muted);
   letter-spacing: 0.02em;
 }
 
 .ramon-bottom-nav {
   font-size: 0.72rem;
   letter-spacing: 0.08em;
-  color: var(--grey);
+  color: var(--muted);
 }
 
 .ramon-arrow-btn {
@@ -453,8 +443,8 @@ body {
   height: 28px;
   border-radius: 50%;
   border: 1px solid var(--line);
-  background-color: var(--white);
-  color: var(--black);
+  background-color: var(--stone);
+  color: var(--dark-red);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -464,14 +454,14 @@ body {
 }
 
 .ramon-arrow-btn:hover {
-  background-color: var(--black);
-  border-color: var(--black);
-  color: #ffffff;
+  background-color: var(--deep-red);
+  border-color: var(--deep-red);
+  color: var(--white);
 }
 
 .ramon-counter {
   font-size: 0.74rem;
-  color: var(--black);
+  color: var(--dark-red);
   min-width: 44px;
   text-align: center;
 }
@@ -480,7 +470,7 @@ body {
   background: transparent;
   border: none;
   padding: 0;
-  color: var(--black);
+  color: var(--deep-red);
   font-size: 0.72rem;
   font-weight: 800;
   letter-spacing: 0.08em;
@@ -489,7 +479,7 @@ body {
 }
 
 .ramon-readmore-btn:hover {
-  color: var(--grey);
+  color: var(--dark-red);
   transform: translateX(2px);
 }
 
@@ -498,7 +488,7 @@ body {
   z-index: 2;
   flex: 0 0 33.3333%;
   width: 33.3333%;
-  background-color: var(--black);
+  background-color: var(--dark-red);
   min-height: 420px;
   overflow: hidden;
   transition: flex-basis 0.7s cubic-bezier(0.16, 1, 0.3, 1),
@@ -535,8 +525,8 @@ body {
 .ramon-right {
   flex: 0 0 33.3333%;
   width: 33.3333%;
-  background-color: var(--black);
-  color: var(--white);
+  background-color: var(--deep-red);
+  color: var(--stone);
   padding: 2.25rem 2rem;
   display: flex;
   flex-direction: column;
@@ -564,14 +554,14 @@ body {
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.16em;
-  color: var(--casper);
+  color: var(--stone);
   margin-bottom: 0.6rem;
 }
 
 .ramon-abstract-text {
   font-size: 0.78rem;
   line-height: 1.6;
-  color: rgba(255, 255, 255, 0.84);
+  color: rgba(241, 235, 235, 0.88);
   margin-bottom: 1.35rem;
 }
 
@@ -588,8 +578,8 @@ body {
 
 .ramon-item-list li.active,
 .ramon-item-list li:hover {
-  background-color: rgba(173, 190, 209, 0.2);
-  box-shadow: inset 2px 0 0 var(--casper);
+  background-color: rgba(39, 7, 7, 0.45);
+  box-shadow: inset 3px 0 0 var(--stone);
   transform: translateX(3px);
 }
 
@@ -599,7 +589,7 @@ body {
   border-radius: 4px;
   overflow: hidden;
   flex-shrink: 0;
-  background-color: var(--black);
+  background-color: var(--dark-red);
 }
 
 .ramon-item-thumb img {
@@ -626,7 +616,7 @@ body {
 
 .ramon-item-sub {
   font-size: 0.7rem;
-  color: var(--casper);
+  color: rgba(241, 235, 235, 0.74);
 }
 
 /* Expanded Detail Panel */
@@ -634,7 +624,7 @@ body {
   display: none;
   margin-top: 1rem;
   padding-top: 1rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.25);
+  border-top: 1px solid rgba(241, 235, 235, 0.22);
 }
 
 .ramon-card.is-expanded .ramon-item-list {
@@ -648,7 +638,7 @@ body {
 .ramon-detail-tabs {
   display: flex;
   gap: 1.25rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 1px solid rgba(241, 235, 235, 0.2);
   padding-bottom: 0.45rem;
 }
 
@@ -660,7 +650,7 @@ body {
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.06em;
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(241, 235, 235, 0.64);
   cursor: pointer;
   transition: color 0.2s ease, border-color 0.2s ease;
 }
@@ -671,19 +661,19 @@ body {
 
 .detail-tab.active {
   color: var(--white);
-  border-bottom-color: var(--casper);
+  border-bottom-color: var(--stone);
 }
 
 .ramon-detail-copy {
   font-size: 0.82rem;
   line-height: 1.65;
-  color: rgba(255, 255, 255, 0.88);
+  color: rgba(241, 235, 235, 0.9);
 }
 
 .detail-badge {
-  background-color: rgba(173, 190, 209, 0.16);
-  border: 1px solid rgba(173, 190, 209, 0.45);
-  color: var(--white);
+  background-color: var(--dark-red);
+  border: 1px solid rgba(241, 235, 235, 0.25);
+  color: var(--stone);
   font-size: 0.7rem;
   font-weight: 600;
   padding: 0.28rem 0.65rem;
@@ -691,7 +681,7 @@ body {
 }
 
 .ramon-socials a {
-  color: var(--casper);
+  color: var(--stone);
   font-size: 0.88rem;
   transition: color 0.2s ease;
 }
@@ -709,7 +699,7 @@ body {
   font-size: clamp(1.75rem, 2.8vw, 2.35rem);
   font-weight: 800;
   letter-spacing: -0.025em;
-  color: var(--black);
+  color: var(--dark-red);
   line-height: 1.1;
 }
 
@@ -731,13 +721,13 @@ body {
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--grey);
+  color: var(--muted);
   cursor: pointer;
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .skills-tab-btn.is-active {
-  background-color: var(--black);
+  background-color: var(--deep-red);
   color: var(--white);
 }
 
@@ -756,26 +746,26 @@ body {
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--grey);
+  color: var(--muted);
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .stack-filter-btn:hover {
-  border-color: var(--black);
-  color: var(--black);
+  border-color: var(--deep-red);
+  color: var(--deep-red);
 }
 
 .stack-filter-btn.is-active {
-  background-color: var(--black);
-  border-color: var(--black);
+  background-color: var(--deep-red);
+  border-color: var(--deep-red);
   color: var(--white);
 }
 
 /* Left Column: Featured Showcase Box + Editorial Text */
 .skills-showcase-box {
-  background-color: var(--black);
-  border-radius: 14px;
+  background-color: var(--dark-red);
+  border-radius: 10px;
   padding: 1rem;
   min-height: 230px;
   display: flex;
@@ -787,48 +777,48 @@ body {
   width: 100%;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.65rem;
+  gap: 0.55rem;
+}
+
+@media (min-width: 1200px) {
+  .showcase-stack-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
 }
 
 .showcase-stack-item {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  padding: 0.62rem 0.72rem;
-  background-color: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 6px;
+  gap: 0.52rem;
+  padding: 0.62rem 0.66rem;
+  background-color: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(241, 235, 235, 0.14);
+  border-radius: 4px;
   transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .showcase-stack-item:hover {
-  background-color: rgba(173, 190, 209, 0.2);
-  border-color: var(--casper);
+  background-color: rgba(102, 8, 16, 0.6);
+  border-color: var(--stone);
 }
 
 .showcase-stack-item.is-hidden {
   display: none;
 }
 
-.showcase-stack-item i {
-  font-size: 1.05rem;
-  color: var(--casper);
+.stack-logo-svg {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
   flex-shrink: 0;
+  display: block;
 }
 
 .stack-item-name {
   display: block;
-  font-size: 0.76rem;
+  font-size: 0.72rem;
   font-weight: 700;
-  color: var(--white);
-  line-height: 1.2;
-}
-
-.stack-item-cat {
-  display: block;
-  font-size: 0.63rem;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.68);
+  color: var(--stone);
   line-height: 1.2;
 }
 
@@ -842,14 +832,14 @@ body {
   font-weight: 800;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--grey);
+  color: var(--deep-red);
   margin-bottom: 0.35rem;
 }
 
 .skills-editorial-title {
   font-size: 1.25rem;
   font-weight: 800;
-  color: var(--black);
+  color: var(--dark-red);
   letter-spacing: -0.015em;
   margin: 0 0 0.25rem;
 }
@@ -857,14 +847,14 @@ body {
 .skills-meta-sub {
   font-size: 0.74rem;
   font-weight: 600;
-  color: var(--grey);
+  color: var(--muted);
   margin: 0 0 0.55rem;
 }
 
 .skills-editorial-desc {
   font-size: 0.84rem;
   line-height: 1.55;
-  color: var(--grey);
+  color: var(--muted);
   margin: 0;
   max-width: 520px;
 }
@@ -887,7 +877,7 @@ body {
 }
 
 .exp-media-item:hover {
-  background-color: var(--casper-mist);
+  background-color: var(--stone);
 }
 
 .exp-thumb-box {
@@ -895,14 +885,14 @@ body {
   height: 88px;
   flex-shrink: 0;
   border-radius: 6px;
-  background-color: var(--casper-mist);
+  background-color: var(--stone);
   border: 1px solid var(--line);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 0.2rem;
-  color: var(--black);
+  color: var(--dark-red);
   transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
@@ -918,8 +908,8 @@ body {
 
 .exp-media-item.is-active .exp-thumb-box,
 .exp-media-item:hover .exp-thumb-box {
-  background-color: var(--black);
-  border-color: var(--black);
+  background-color: var(--deep-red);
+  border-color: var(--deep-red);
   color: var(--white);
 }
 
@@ -934,14 +924,14 @@ body {
   font-weight: 800;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--grey);
+  color: var(--deep-red);
   margin-bottom: 0.25rem;
 }
 
 .exp-media-title {
   font-size: 1rem;
   font-weight: 800;
-  color: var(--black);
+  color: var(--dark-red);
   line-height: 1.3;
   margin: 0 0 0.3rem;
 }
@@ -949,19 +939,19 @@ body {
 .exp-media-desc {
   font-size: 0.8rem;
   line-height: 1.5;
-  color: var(--grey);
+  color: var(--muted);
   margin: 0;
 }
 
 /* ==================== PORTFOLIO 3-CARD AUTO CAROUSEL ==================== */
 .work-section {
-  background-color: var(--casper-mist);
+  background-color: var(--stone);
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
 }
 
 .work-section .skills-section-title {
-  color: var(--black);
+  color: var(--dark-red);
 }
 
 .portfolio-nav-btn {
@@ -970,7 +960,7 @@ body {
   border-radius: 6px;
   background-color: var(--white);
   border: 1px solid var(--line);
-  color: var(--black);
+  color: var(--dark-red);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -980,8 +970,8 @@ body {
 }
 
 .portfolio-nav-btn:hover {
-  background-color: var(--black);
-  border-color: var(--black);
+  background-color: var(--deep-red);
+  border-color: var(--deep-red);
   color: var(--white);
 }
 
@@ -1014,20 +1004,20 @@ body {
   display: flex;
   flex-direction: column;
   margin-bottom: 0.85rem;
-  background-color: var(--black);
+  background-color: var(--dark-red);
   border: 1px solid var(--line);
   box-shadow: var(--shadow-soft);
   transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 }
 
 .portfolio-card:hover .portfolio-card-preview {
-  border-color: var(--black);
+  border-color: var(--dark-red);
   box-shadow: var(--shadow-hover);
   transform: translateY(-4px);
 }
 
 .portfolio-card-topbar {
-  background-color: var(--black);
+  background-color: var(--dark-red);
   padding: 0.45rem 0.85rem;
   display: flex;
   align-items: center;
@@ -1047,7 +1037,7 @@ body {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background-color: var(--casper);
+  background-color: var(--stone);
   display: inline-block;
 }
 
@@ -1069,7 +1059,7 @@ body {
 .portfolio-card-title {
   font-size: 1.25rem;
   font-weight: 800;
-  color: var(--black);
+  color: var(--dark-red);
   letter-spacing: -0.015em;
   margin: 0 0 0.45rem;
 }
@@ -1077,7 +1067,7 @@ body {
 .portfolio-card-desc {
   font-size: 0.84rem;
   line-height: 1.55;
-  color: var(--grey);
+  color: var(--muted);
   margin: 0 0 0.9rem;
   flex: 1;
 }
@@ -1098,43 +1088,43 @@ body {
   border-radius: 2px;
   background-color: var(--white);
   border: 1px solid var(--line);
-  color: var(--grey);
+  color: var(--muted);
 }
 
 .work-section .project-detail-btn {
-  background-color: var(--black);
-  border-color: var(--black);
+  background-color: var(--deep-red);
+  border-color: var(--deep-red);
   color: var(--white);
 }
 
 .work-section .project-detail-btn:hover,
 .work-section .project-detail-btn:focus-visible {
-  background-color: var(--black-hover);
-  border-color: var(--black-hover);
-  color: var(--white);
+  background-color: var(--dark-red);
+  border-color: var(--dark-red);
+  color: var(--stone);
 }
 
 .visual-burgundy {
-  background-color: var(--black);
+  background-color: var(--dark-red);
 }
 
 .visual-espresso {
-  background-color: var(--black);
+  background-color: var(--dark-red);
 }
 
 .visual-gold {
-  background-color: var(--casper);
+  background-color: var(--stone);
 }
 
 .visual-wine {
-  background-color: var(--casper);
+  background-color: var(--stone);
 }
 
 .visual-bar {
   height: 22px;
   width: 65%;
   border-radius: 4px;
-  background-color: var(--casper);
+  background-color: var(--stone);
 }
 
 .visual-lines span {
@@ -1159,7 +1149,7 @@ body {
 
 .visual-grid div {
   background-color: rgba(255, 255, 255, 0.22);
-  border: 1px solid var(--casper);
+  border: 1px solid var(--stone);
   border-radius: 4px;
 }
 
@@ -1173,7 +1163,7 @@ body {
 .visual-bars span {
   flex: 1;
   border-radius: 4px 4px 0 0;
-  background-color: var(--black);
+  background-color: var(--dark-red);
 }
 
 .visual-circle {
@@ -1195,7 +1185,7 @@ body {
   height: 4px;
   border: none;
   border-radius: 0;
-  background-color: rgba(104, 107, 108, 0.3);
+  background-color: rgba(39, 7, 7, 0.22);
   padding: 0;
   cursor: pointer;
   transition: width 0.25s ease, background-color 0.25s ease;
@@ -1203,7 +1193,7 @@ body {
 
 .portfolio-dot.is-active {
   width: 32px;
-  background-color: var(--black);
+  background-color: var(--deep-red);
 }
 
 /* ==================== CONTACT & FOOTER (SWISS EDITORIAL CONTACT) ==================== */
@@ -1212,11 +1202,11 @@ body {
   display: flex;
   flex-direction: column;
   scroll-snap-align: start;
-  background-color: var(--black);
+  background-color: var(--dark-red);
 }
 
 .cta-section {
-  background-color: var(--white);
+  background-color: var(--stone);
   flex: 1;
   display: flex;
   align-items: center;
@@ -1228,7 +1218,7 @@ body {
   font-weight: 800;
   letter-spacing: -0.04em;
   line-height: 0.95;
-  color: var(--black);
+  color: var(--dark-red);
   margin: 0 0 1.5rem;
 }
 
@@ -1242,13 +1232,13 @@ body {
   font-size: 0.82rem;
   font-weight: 600;
   line-height: 1.45;
-  color: var(--black);
+  color: var(--dark-red);
 }
 
 .contact-info-muted {
   font-size: 0.76rem;
   font-weight: 500;
-  color: var(--grey);
+  color: var(--muted);
   margin-bottom: 0.2rem;
 }
 
@@ -1256,7 +1246,7 @@ body {
   display: block;
   font-size: 0.72rem;
   font-weight: 700;
-  color: var(--black);
+  color: var(--dark-red);
   margin-bottom: 0.35rem;
 }
 
@@ -1264,22 +1254,22 @@ body {
   width: 100%;
   background: transparent;
   border: none;
-  border-bottom: 1.5px solid rgba(104, 107, 108, 0.38);
+  border-bottom: 1.5px solid rgba(110, 90, 91, 0.42);
   border-radius: 0;
   padding: 0.42rem 0;
   font-size: 0.86rem;
-  color: var(--black);
+  color: var(--dark-red);
   outline: none;
   transition: border-color 0.2s ease;
 }
 
 .editorial-underline-input::placeholder {
-  color: var(--grey);
-  opacity: 0.7;
+  color: var(--muted);
+  opacity: 0.72;
 }
 
 .editorial-underline-input:focus {
-  border-bottom-color: var(--black);
+  border-bottom-color: var(--deep-red);
 }
 
 .editorial-underline-select {
@@ -1301,7 +1291,7 @@ body {
 
 .service-dropdown-caret {
   font-size: 0.78rem;
-  color: var(--black);
+  color: var(--dark-red);
   transition: transform 0.2s ease;
 }
 
@@ -1310,7 +1300,7 @@ body {
 }
 
 .service-dropdown.is-open .service-dropdown-trigger {
-  border-bottom-color: var(--black);
+  border-bottom-color: var(--deep-red);
 }
 
 .service-dropdown-menu {
@@ -1339,7 +1329,7 @@ body {
   border-radius: 2px;
   font-size: 0.84rem;
   font-weight: 500;
-  color: var(--black);
+  color: var(--dark-red);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1349,16 +1339,17 @@ body {
 
 .service-dropdown-item i {
   opacity: 0;
-  color: var(--black);
+  color: var(--deep-red);
   font-size: 0.9rem;
 }
 
 .service-dropdown-item:hover {
-  background-color: var(--casper-mist);
+  background-color: var(--stone);
 }
 
 .service-dropdown-item.is-selected {
-  background-color: var(--casper-soft);
+  background-color: var(--stone);
+  color: var(--deep-red);
   font-weight: 700;
 }
 
@@ -1376,20 +1367,20 @@ body {
   font-size: clamp(1.25rem, 2.5vw, 2rem);
   font-weight: 800;
   letter-spacing: -0.02em;
-  color: var(--black);
+  color: var(--dark-red);
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
 .contact-big-link:hover {
-  color: var(--grey);
+  color: var(--deep-red);
 }
 
 /* ==================== MINIMAL EDITORIAL FOOTER ==================== */
 .site-footer {
-  background-color: var(--black);
-  color: var(--white);
-  border-top: 1px solid var(--line-on-dark);
+  background-color: var(--dark-red);
+  color: var(--stone);
+  border-top: 3px solid var(--deep-red);
 }
 
 .footer-nav-links a {
@@ -1397,35 +1388,38 @@ body {
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--white);
+  color: var(--stone);
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
 .footer-nav-links a:hover {
-  color: var(--casper);
+  color: var(--white);
+  text-decoration: underline;
+  text-decoration-color: var(--deep-red);
+  text-underline-offset: 4px;
 }
 
 .footer-social-icons a {
-  color: var(--white);
+  color: var(--stone);
   font-size: 0.98rem;
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
 .footer-social-icons a:hover {
-  color: var(--casper);
+  color: var(--white);
 }
 
 .footer-copy {
   font-size: 0.68rem;
-  color: rgba(255, 255, 255, 0.68);
+  color: rgba(241, 235, 235, 0.64);
   letter-spacing: 0.06em;
 }
 
 /* ==================== INDEX CTA & 3-COLUMN FOOTER ==================== */
 .cta-typo-section {
-  background-color: var(--white);
+  background-color: var(--deep-red);
   flex: 1;
   display: flex;
   align-items: center;
@@ -1437,15 +1431,40 @@ body {
   font-weight: 800;
   letter-spacing: -0.025em;
   line-height: 1.1;
-  color: var(--black);
+  color: var(--stone);
   max-width: 780px;
 }
 
 .cta-typo-desc {
   font-size: 0.95rem;
   line-height: 1.6;
-  color: var(--grey);
+  color: rgba(241, 235, 235, 0.85);
   max-width: 520px;
+}
+
+.cta-typo-section .btn-solid-dark {
+  background-color: var(--stone);
+  border-color: var(--stone);
+  color: var(--dark-red);
+}
+
+.cta-typo-section .btn-solid-dark:hover,
+.cta-typo-section .btn-solid-dark:focus-visible {
+  background-color: var(--white);
+  border-color: var(--white);
+  color: var(--dark-red);
+}
+
+.cta-typo-section .btn-outline-dark-custom {
+  color: var(--stone);
+  border-color: var(--stone);
+}
+
+.cta-typo-section .btn-outline-dark-custom:hover,
+.cta-typo-section .btn-outline-dark-custom:focus-visible {
+  background-color: var(--dark-red);
+  border-color: var(--dark-red);
+  color: var(--stone);
 }
 
 .footer-main-row {
@@ -1456,13 +1475,13 @@ body {
   font-weight: 800;
   font-size: 1.05rem;
   letter-spacing: 0.05em;
-  color: var(--white);
+  color: var(--stone);
 }
 
 .footer-bio {
   font-size: 0.8rem;
   line-height: 1.55;
-  color: rgba(255, 255, 255, 0.74);
+  color: rgba(241, 235, 235, 0.72);
   max-width: 360px;
 }
 
@@ -1471,7 +1490,7 @@ body {
   font-weight: 800;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--casper);
+  color: rgba(241, 235, 235, 0.58);
   margin-bottom: 0.65rem;
 }
 
@@ -1486,39 +1505,42 @@ body {
 .footer-col-links a {
   font-size: 0.8rem;
   font-weight: 500;
-  color: var(--white);
+  color: var(--stone);
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
 .footer-col-links a:hover {
-  color: var(--casper);
+  color: var(--white);
+  text-decoration: underline;
+  text-decoration-color: var(--deep-red);
+  text-underline-offset: 4px;
 }
 
 /* ==================== MODALS ==================== */
 .flat-modal {
   background-color: var(--white);
-  color: var(--black);
+  color: var(--dark-red);
   border-radius: 6px;
   border: 1px solid var(--line);
-  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.22);
 }
 
 .flat-input {
   background-color: var(--white);
-  color: var(--black);
+  color: var(--dark-red);
   border-radius: 4px;
   border: 1px solid var(--line);
 }
 
 .flat-input:focus {
-  border-color: var(--black);
+  border-color: var(--deep-red);
   box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.12);
 }
 
 .modal-category-badge {
-  background-color: var(--casper-soft);
-  color: var(--black);
+  background-color: var(--deep-red);
+  color: var(--stone);
   border-radius: 2px;
   font-weight: 700;
   letter-spacing: 0.06em;
@@ -1622,7 +1644,7 @@ body {
     flex: 0 0 auto !important;
     justify-content: flex-start;
     padding: 0.85rem 1.15rem;
-    border-top: 2px solid var(--black);
+    border-top: 2px solid var(--dark-red);
   }
 
   .ramon-brand-mark {
@@ -1654,7 +1676,7 @@ body {
   }
 
   .ramon-readmore-btn {
-    background-color: var(--black);
+    background-color: var(--deep-red);
     color: var(--white);
     padding: 0.38rem 0.78rem;
     font-size: 0.68rem;
@@ -1662,8 +1684,8 @@ body {
   }
 
   .ramon-readmore-btn:hover {
-    background-color: var(--black-hover);
-    color: var(--white);
+    background-color: var(--dark-red);
+    color: var(--stone);
   }
 
   .site-header .nav-link::after {
@@ -1783,7 +1805,7 @@ body {
   }
 
   .hero-inner > .hero-meta:last-child {
-    background-color: rgba(43, 43, 43, 0.78);
+    background-color: rgba(39, 7, 7, 0.85);
     padding: 0.45rem 0.75rem;
     border-radius: 4px;
   }
