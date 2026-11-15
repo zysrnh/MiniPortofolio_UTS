@@ -459,6 +459,49 @@ body {
   animation: heroBgSpinCCW 108s linear infinite;
 }
 
+.hero-navy-sheen {
+  position: absolute;
+  top: -28%;
+  left: 0;
+  width: min(32vw, 340px);
+  height: 156%;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate3d(-45vw, 0, 0) skewX(-22deg);
+  will-change: transform, opacity;
+}
+
+.hero-navy-sheen::before,
+.hero-navy-sheen::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  height: 100%;
+  pointer-events: none;
+}
+
+.hero-navy-sheen::before {
+  left: 0;
+  width: 100%;
+  background-color: rgba(18, 56, 145, 0.44);
+  box-shadow: 0 0 95px 30px rgba(29, 78, 216, 0.34);
+  filter: blur(22px);
+}
+
+.hero-navy-sheen::after {
+  left: 52%;
+  width: 24px;
+  background-color: rgba(191, 219, 254, 0.18);
+  box-shadow:
+    22px 0 0 0 rgba(239, 246, 255, 0.24),
+    0 0 26px rgba(96, 165, 250, 0.42);
+  filter: blur(2.5px);
+}
+
+.hero-section.is-hero-play .hero-navy-sheen {
+  animation: heroNavySheenSweep 7.8s cubic-bezier(0.32, 0.08, 0.24, 1) 0.85s infinite;
+}
+
 .hero-dust {
   position: absolute;
   left: var(--dx, 20%);
@@ -534,6 +577,24 @@ body {
   }
   50% {
     transform: translate3d(7px, -22px, 0);
+  }
+}
+
+@keyframes heroNavySheenSweep {
+  0% {
+    opacity: 0;
+    transform: translate3d(-45vw, 0, 0) skewX(-22deg);
+  }
+  5% {
+    opacity: 1;
+  }
+  26% {
+    opacity: 1;
+  }
+  32%,
+  100% {
+    opacity: 0;
+    transform: translate3d(138vw, 0, 0) skewX(-22deg);
   }
 }
 
@@ -1154,69 +1215,6 @@ body {
   }
 }
 
-.skills-navy-sheen {
-  position: absolute;
-  top: -28%;
-  left: 0;
-  width: min(32vw, 340px);
-  height: 156%;
-  pointer-events: none;
-  opacity: 0;
-  transform: translate3d(-45vw, 0, 0) skewX(-22deg);
-  will-change: transform, opacity;
-  animation: navyCarSheenSweep 8.5s cubic-bezier(0.32, 0.08, 0.24, 1) 1.6s infinite;
-  animation-play-state: paused;
-}
-
-.skills-navy-sheen::before,
-.skills-navy-sheen::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  height: 100%;
-  pointer-events: none;
-}
-
-.skills-navy-sheen::before {
-  left: 0;
-  width: 100%;
-  background-color: rgba(37, 99, 235, 0.22);
-  box-shadow: 0 0 85px 22px rgba(29, 78, 216, 0.34);
-  filter: blur(18px);
-}
-
-.skills-navy-sheen::after {
-  left: 52%;
-  width: 26px;
-  background-color: rgba(191, 219, 254, 0.16);
-  box-shadow:
-    24px 0 0 0 rgba(239, 246, 255, 0.22),
-    0 0 28px rgba(147, 197, 253, 0.38);
-  filter: blur(3px);
-}
-
-.skills-section.is-galaxy-active .skills-navy-sheen {
-  animation-play-state: running;
-}
-
-@keyframes navyCarSheenSweep {
-  0% {
-    opacity: 0;
-    transform: translate3d(-45vw, 0, 0) skewX(-22deg);
-  }
-  4% {
-    opacity: 1;
-  }
-  25% {
-    opacity: 1;
-  }
-  31%,
-  100% {
-    opacity: 0;
-    transform: translate3d(138vw, 0, 0) skewX(-22deg);
-  }
-}
-
 .skills-inner {
   position: relative;
   z-index: 2;
@@ -1516,24 +1514,24 @@ body {
 .orbit-chip::after {
   content: "";
   position: absolute;
-  top: -35%;
-  left: -65%;
-  width: 32%;
-  height: 170%;
-  background-color: rgba(219, 234, 254, 0.24);
-  box-shadow: 9px 0 0 0 rgba(239, 246, 255, 0.16);
-  transform: translate3d(0, 0, 0) rotate(24deg);
+  top: -45%;
+  left: 38%;
+  width: 24%;
+  height: 190%;
+  background-color: rgba(239, 246, 255, 0.26);
+  box-shadow: 7px 0 0 0 rgba(191, 219, 254, 0.14);
+  transform: rotate(38deg) translate3d(-340%, 0, 0);
   opacity: 0;
   pointer-events: none;
   z-index: 2;
 }
 
 .skills-section.is-galaxy-active .orbit-core::after {
-  animation: orbitSurfaceSheen 8.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 2.55s infinite;
+  animation: orbitBallPolish 9.2s cubic-bezier(0.22, 1, 0.36, 1) 0.45s infinite;
 }
 
 .skills-section.is-galaxy-active .orbit-chip::after {
-  animation: orbitSurfaceSheen 8.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) calc(2.75s - var(--float-delay, 0s) * 0.22) infinite;
+  animation: orbitBallPolish 9.2s cubic-bezier(0.22, 1, 0.36, 1) var(--ball-polish-delay, 1.1s) infinite;
 }
 
 .orbit-chip.is-dimmed::after {
@@ -1544,38 +1542,38 @@ body {
 .skills-section.is-galaxy-active .orbit-chip:hover::after,
 .skills-section.is-galaxy-active .orbit-chip:focus-visible::after,
 .skills-section.is-galaxy-active .orbit-chip.is-selected::after {
-  animation: orbitHoverSheen 0.68s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: orbitBallHoverPolish 0.56s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
-@keyframes orbitSurfaceSheen {
+@keyframes orbitBallPolish {
   0% {
     opacity: 0;
-    transform: translate3d(0, 0, 0) rotate(24deg);
+    transform: rotate(38deg) translate3d(-340%, 0, 0);
   }
-  5% {
-    opacity: 0.92;
+  2% {
+    opacity: 0.95;
   }
-  22% {
-    opacity: 0.92;
+  8% {
+    opacity: 0.95;
   }
-  28%,
+  11%,
   100% {
     opacity: 0;
-    transform: translate3d(720%, 0, 0) rotate(24deg);
+    transform: rotate(38deg) translate3d(340%, 0, 0);
   }
 }
 
-@keyframes orbitHoverSheen {
+@keyframes orbitBallHoverPolish {
   0% {
     opacity: 0;
-    transform: translate3d(0, 0, 0) rotate(24deg);
+    transform: rotate(38deg) translate3d(-340%, 0, 0);
   }
   18% {
     opacity: 1;
   }
   100% {
     opacity: 0;
-    transform: translate3d(720%, 0, 0) rotate(24deg);
+    transform: rotate(38deg) translate3d(340%, 0, 0);
   }
 }
 
@@ -3058,7 +3056,11 @@ body {
 .skills-section.is-galaxy-active .orbit-core {
   background-color: #0f2d73;
   border-color: #bfdbfe;
-  box-shadow: 0 0 28px rgba(59, 130, 246, 0.42), var(--shadow-btn);
+  box-shadow:
+    inset 0 2px 0 rgba(219, 234, 254, 0.28),
+    inset 0 -4px 8px rgba(2, 6, 23, 0.56),
+    0 0 28px rgba(59, 130, 246, 0.42),
+    var(--shadow-btn);
   transition-delay: 0.25s;
 }
 
@@ -3088,24 +3090,31 @@ body {
 
 .skills-section.is-galaxy-active .orbit-chip {
   background-color: #081536;
-  border-color: rgba(147, 197, 253, 0.32);
-  box-shadow: 0 6px 16px rgba(2, 6, 23, 0.52);
+  border-color: rgba(147, 197, 253, 0.34);
+  box-shadow:
+    inset 0 1.5px 0 rgba(219, 234, 254, 0.26),
+    inset 0 -3px 6px rgba(2, 6, 23, 0.55),
+    0 6px 16px rgba(2, 6, 23, 0.52);
   transition-duration: 1.15s, 1.15s, 1.15s, 0.28s, 0.28s, 0.34s;
 }
 
 .skills-section.is-galaxy-active .orbit-rotator--ring1 .orbit-chip {
+  --ball-polish-delay: 1.05s;
   transition-delay: 0.9s, 0.9s, 0.9s, 0s, 0s, 0s;
 }
 
 .skills-section.is-galaxy-active .orbit-rotator--ring2 .orbit-chip {
+  --ball-polish-delay: 1.75s;
   transition-delay: 1.6s, 1.6s, 1.6s, 0s, 0s, 0s;
 }
 
 .skills-section.is-galaxy-active .orbit-rotator--ring3 .orbit-chip {
+  --ball-polish-delay: 2.5s;
   transition-delay: 2.35s, 2.35s, 2.35s, 0s, 0s, 0s;
 }
 
 .skills-section.is-galaxy-active .orbit-rotator--ring4 .orbit-chip {
+  --ball-polish-delay: 3.25s;
   transition-delay: 3.1s, 3.1s, 3.1s, 0s, 0s, 0s;
 }
 
@@ -3115,7 +3124,10 @@ body {
 .skills-section.is-galaxy-active .orbit-chip.is-highlighted {
   background-color: #143d96;
   border-color: #bfdbfe;
-  box-shadow: 0 0 0 3px rgba(147, 197, 253, 0.22), 0 10px 22px rgba(2, 6, 23, 0.66);
+  box-shadow:
+    inset 0 1.5px 0 rgba(239, 246, 255, 0.36),
+    0 0 0 3px rgba(147, 197, 253, 0.22),
+    0 10px 22px rgba(2, 6, 23, 0.66);
 }
 
 .skills-section.is-galaxy-active .orbit-chip:hover,
@@ -3150,7 +3162,6 @@ body {
   .skills-galaxy-aura,
   .galaxy-star,
   .galaxy-meteor,
-  .skills-navy-sheen,
   .skills-section.is-galaxy-active .orbit-core::after,
   .skills-section.is-galaxy-active .orbit-chip::after,
   .hero-section.is-hero-play .hero-word-solid,
@@ -3163,12 +3174,13 @@ body {
   .hero-section.is-hero-play .hero-bg-rings,
   .hero-bg-ring--cw,
   .hero-bg-ring--ccw,
+  .hero-navy-sheen,
   .hero-dust {
     animation: none !important;
   }
 
   .galaxy-meteor,
-  .skills-navy-sheen,
+  .hero-navy-sheen,
   .orbit-core::after,
   .orbit-chip::after {
     display: none;
