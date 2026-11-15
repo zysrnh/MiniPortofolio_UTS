@@ -350,13 +350,9 @@ function initSkillsSection() {
   const orbitCoreImg = document.getElementById("orbitCoreImg");
   const orbitCoreCat = document.getElementById("orbitCoreCat");
   const orbitReadout = document.getElementById("orbitActiveReadout");
-  const expItems = document.querySelectorAll("#expTimelineList .exp-media-item");
-  const mobileTabBtns = document.querySelectorAll(".skills-tab-btn");
-  const toolkitPanel = document.getElementById("skillsToolkitPanel");
-  const expPanel = document.getElementById("skillsExpPanel");
 
   const defaultReadouts = {
-    all: "HOVER TO INSPECT",
+    all: "HOVER / TAP TO INSPECT",
     fe: "FRONTEND STACK (8)",
     be: "BACKEND & DATA (5)",
     tools: "TOOLS & WORKFLOW (3)",
@@ -463,29 +459,6 @@ function initSkillsSection() {
         } else {
           resetCorePreview();
         }
-      });
-    });
-  }
-
-  if (expItems.length) {
-    expItems.forEach((item) => {
-      item.addEventListener("click", () => {
-        expItems.forEach((el) => el.classList.remove("is-active"));
-        item.classList.add("is-active");
-      });
-    });
-  }
-
-  if (mobileTabBtns.length && toolkitPanel && expPanel) {
-    mobileTabBtns.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const target = btn.dataset.skillsTab;
-        mobileTabBtns.forEach((b) => b.classList.remove("is-active"));
-        btn.classList.add("is-active");
-
-        const showToolkit = target === "toolkit";
-        toolkitPanel.classList.toggle("is-active", showToolkit);
-        expPanel.classList.toggle("is-active", !showToolkit);
       });
     });
   }

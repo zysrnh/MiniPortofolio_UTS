@@ -690,9 +690,30 @@ body {
   color: var(--white);
 }
 
-/* ==================== SKILLS SECTION ==================== */
+/* ==================== SKILLS SECTION (Full-Screen Dark Red Constellation) ==================== */
 .skills-section {
-  background-color: var(--white);
+  background-color: var(--dark-red);
+  color: var(--stone);
+  height: calc(100vh - 64px);
+  height: calc(100svh - 64px);
+  min-height: 540px;
+  max-height: 860px;
+  display: flex;
+  align-items: stretch;
+  position: relative;
+  overflow: hidden;
+}
+
+.skills-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.skills-top-bar,
+.skills-bottom-bar {
+  position: relative;
+  z-index: 4;
 }
 
 .skills-section-title {
@@ -703,32 +724,8 @@ body {
   line-height: 1.1;
 }
 
-.skills-mobile-tabs {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  overflow: hidden;
-  background-color: var(--white);
-  box-shadow: var(--shadow-soft);
-}
-
-.skills-tab-btn {
-  border: none;
-  background: transparent;
-  padding: 0.72rem 1rem;
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--muted);
-  cursor: pointer;
-  transition: background-color 0.2s ease, color 0.2s ease;
-}
-
-.skills-tab-btn.is-active {
-  background-color: var(--deep-red);
-  color: var(--white);
+.skills-section .skills-section-title {
+  color: var(--stone);
 }
 
 .stack-filter-group {
@@ -738,69 +735,76 @@ body {
 }
 
 .stack-filter-btn {
-  background-color: var(--white);
-  border: 1px solid var(--line);
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(241, 235, 235, 0.22);
   border-radius: 6px;
   padding: 0.38rem 0.85rem;
   font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: rgba(241, 235, 235, 0.82);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
 .stack-filter-btn:hover {
-  border-color: var(--deep-red);
-  color: var(--deep-red);
+  border-color: var(--stone);
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--white);
 }
 
 .stack-filter-btn.is-active {
   background-color: var(--deep-red);
-  border-color: var(--deep-red);
+  border-color: var(--stone);
   color: var(--white);
 }
 
-/* Left Column: Skill Constellation / Dual Orbit Showcase + Editorial Text */
-.skills-showcase-box {
-  background-color: var(--dark-red);
-  border-radius: 10px;
-  padding: 0.9rem 1rem 0.7rem;
-  display: flex;
-  flex-direction: column;
-  box-shadow: var(--shadow-soft);
-  overflow: hidden;
-}
-
-.orbit-hud-top {
+.skills-stage {
+  position: relative;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-  padding-bottom: 0.52rem;
-  margin-bottom: 0.25rem;
-  border-bottom: 1px solid var(--line-on-dark);
+  justify-content: center;
+  width: 100%;
 }
 
-.orbit-hud-tag {
-  font-size: 0.64rem;
-  font-weight: 800;
-  letter-spacing: 0.14em;
+.skills-backdrop-word {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-display);
+  font-size: clamp(5.2rem, 20vw, 17.5rem);
+  line-height: 0.88;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: rgba(241, 235, 235, 0.74);
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(241, 235, 235, 0.08);
+  user-select: none;
+  pointer-events: none;
+  white-space: nowrap;
+  z-index: 1;
+}
+
+.skills-orbit-center {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  max-width: 560px;
 }
 
 .orbit-hud-status {
-  font-size: 0.63rem;
+  font-size: 0.68rem;
   font-weight: 800;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.09em;
   text-transform: uppercase;
   color: var(--stone);
   background-color: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(241, 235, 235, 0.2);
+  border: 1px solid rgba(241, 235, 235, 0.22);
   border-radius: 4px;
-  padding: 0.18rem 0.5rem;
+  padding: 0.26rem 0.68rem;
   white-space: nowrap;
   transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
@@ -814,7 +818,7 @@ body {
 .orbit-viewport {
   position: relative;
   width: 100%;
-  height: 370px;
+  height: 440px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -822,8 +826,8 @@ body {
 
 .orbit-stage {
   position: relative;
-  width: 446px;
-  height: 370px;
+  width: 524px;
+  height: 440px;
   flex-shrink: 0;
   transform-origin: center center;
 }
@@ -839,29 +843,45 @@ body {
 }
 
 .constellation-dot--1 {
-  top: 10%;
-  left: 7%;
+  top: 8%;
+  left: 6%;
   animation-delay: 0s;
 }
 
 .constellation-dot--2 {
-  top: 13%;
-  right: 8%;
+  top: 12%;
+  right: 7%;
   animation-delay: -1.1s;
 }
 
 .constellation-dot--3 {
-  bottom: 12%;
-  left: 10%;
+  bottom: 11%;
+  left: 9%;
   animation-delay: -2.2s;
 }
 
 .constellation-dot--4 {
   bottom: 9%;
-  right: 7%;
+  right: 6%;
   width: 5px;
   height: 5px;
   animation-delay: -3.1s;
+}
+
+.constellation-dot--5 {
+  top: 48%;
+  left: 2%;
+  width: 3px;
+  height: 3px;
+  animation-delay: -0.7s;
+}
+
+.constellation-dot--6 {
+  top: 44%;
+  right: 2%;
+  width: 3px;
+  height: 3px;
+  animation-delay: -1.9s;
 }
 
 .orbit-track {
@@ -874,15 +894,15 @@ body {
 }
 
 .orbit-track--inner {
-  width: 158px;
-  height: 158px;
-  border: 1.5px dashed rgba(241, 235, 235, 0.3);
+  width: 192px;
+  height: 192px;
+  border: 1.5px dashed rgba(241, 235, 235, 0.32);
 }
 
 .orbit-track--outer {
-  width: 332px;
-  height: 332px;
-  border: 1.5px dashed rgba(241, 235, 235, 0.2);
+  width: 396px;
+  height: 396px;
+  border: 1.5px dashed rgba(241, 235, 235, 0.22);
 }
 
 .orbit-core-wrap {
@@ -898,18 +918,18 @@ body {
 
 .orbit-core-pulse {
   position: absolute;
-  width: 66px;
-  height: 66px;
+  width: 76px;
+  height: 76px;
   border-radius: 50%;
-  border: 1.5px solid rgba(241, 235, 235, 0.38);
+  border: 1.5px solid rgba(241, 235, 235, 0.4);
   pointer-events: none;
   animation: orbitCorePulse 2.8s ease-out infinite;
 }
 
 .orbit-core {
   position: relative;
-  width: 66px;
-  height: 66px;
+  width: 76px;
+  height: 76px;
   border-radius: 50%;
   background-color: var(--deep-red);
   border: 2px solid var(--stone);
@@ -958,7 +978,7 @@ body {
 
 .orbit-core-monogram {
   font-family: "Plus Jakarta Sans", sans-serif;
-  font-size: 1.12rem;
+  font-size: 1.25rem;
   font-weight: 800;
   letter-spacing: 0.06em;
   color: var(--white);
@@ -966,7 +986,7 @@ body {
 
 .orbit-core-sub {
   margin-top: 2px;
-  font-size: 0.45rem;
+  font-size: 0.48rem;
   font-weight: 700;
   letter-spacing: 0.16em;
   color: var(--stone);
@@ -974,15 +994,15 @@ body {
 }
 
 .orbit-core-preview-img {
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
   object-fit: contain;
   display: block;
 }
 
 .orbit-core-preview-cat {
   margin-top: 3px;
-  font-size: 0.46rem;
+  font-size: 0.48rem;
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -1060,13 +1080,13 @@ body {
   pointer-events: auto;
   display: inline-flex;
   align-items: center;
-  gap: 0.34rem;
-  padding: 0.28rem 0.52rem;
+  gap: 0.4rem;
+  padding: 0.34rem 0.64rem;
   white-space: nowrap;
   background-color: #340a0c;
   border: 1px solid rgba(241, 235, 235, 0.24);
   border-radius: 999px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.32);
   cursor: pointer;
   animation: orbitFloat 3.6s ease-in-out infinite;
   animation-delay: var(--float-delay, 0s);
@@ -1084,8 +1104,8 @@ body {
 .orbit-chip.is-selected {
   background-color: var(--deep-red);
   border-color: var(--stone);
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.48);
-  scale: 1.07;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.5);
+  scale: 1.08;
   outline: none;
 }
 
@@ -1107,8 +1127,8 @@ body {
 }
 
 .stack-logo-svg {
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 16px;
   object-fit: contain;
   flex-shrink: 0;
   display: block;
@@ -1116,7 +1136,7 @@ body {
 
 .stack-item-name {
   display: block;
-  font-size: 0.64rem;
+  font-size: 0.7rem;
   font-weight: 700;
   color: var(--stone);
   line-height: 1.15;
@@ -1173,127 +1193,6 @@ body {
     opacity: 0.65;
     transform: scale(1.3);
   }
-}
-
-.skills-editorial-meta {
-  margin-top: 1.15rem;
-}
-
-.skills-meta-kicker {
-  display: block;
-  font-size: 0.66rem;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--deep-red);
-  margin-bottom: 0.35rem;
-}
-
-.skills-editorial-title {
-  font-size: 1.25rem;
-  font-weight: 800;
-  color: var(--dark-red);
-  letter-spacing: -0.015em;
-  margin: 0 0 0.25rem;
-}
-
-.skills-meta-sub {
-  font-size: 0.74rem;
-  font-weight: 600;
-  color: var(--muted);
-  margin: 0 0 0.55rem;
-}
-
-.skills-editorial-desc {
-  font-size: 0.84rem;
-  line-height: 1.55;
-  color: var(--muted);
-  margin: 0;
-  max-width: 520px;
-}
-
-/* Right Column: 3 Horizontal Media-List Items (Experience) */
-.exp-media-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1.15rem;
-}
-
-.exp-media-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 1.15rem;
-  padding: 0.5rem 0.6rem;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.exp-media-item:hover {
-  background-color: var(--stone);
-}
-
-.exp-thumb-box {
-  width: 88px;
-  height: 88px;
-  flex-shrink: 0;
-  border-radius: 6px;
-  background-color: var(--stone);
-  border: 1px solid var(--line);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.2rem;
-  color: var(--dark-red);
-  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
-}
-
-.exp-thumb-box i {
-  font-size: 1.35rem;
-}
-
-.exp-thumb-box span {
-  font-size: 0.66rem;
-  font-weight: 800;
-  letter-spacing: 0.06em;
-}
-
-.exp-media-item.is-active .exp-thumb-box,
-.exp-media-item:hover .exp-thumb-box {
-  background-color: var(--deep-red);
-  border-color: var(--deep-red);
-  color: var(--white);
-}
-
-.exp-media-body {
-  flex: 1;
-  min-width: 0;
-}
-
-.exp-media-kicker {
-  display: block;
-  font-size: 0.66rem;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--deep-red);
-  margin-bottom: 0.25rem;
-}
-
-.exp-media-title {
-  font-size: 1rem;
-  font-weight: 800;
-  color: var(--dark-red);
-  line-height: 1.3;
-  margin: 0 0 0.3rem;
-}
-
-.exp-media-desc {
-  font-size: 0.8rem;
-  line-height: 1.5;
-  color: var(--muted);
-  margin: 0;
 }
 
 /* ==================== PORTFOLIO 3-CARD AUTO CAROUSEL ==================== */
@@ -1911,12 +1810,18 @@ body {
   scroll-snap-align: start;
 }
 
+.hero-section,
+.skills-section {
+  height: calc(100vh - 64px);
+  height: calc(100svh - 64px);
+  align-items: stretch;
+}
+
 @media (min-width: 992px) {
   html {
     scroll-snap-type: y proximity;
   }
 
-  .skills-section,
   .work-section {
     padding: 1.5rem 0 !important;
   }
@@ -1927,55 +1832,27 @@ body {
 }
 
 /* ==================== RESPONSIVE ==================== */
-@media (max-width: 1399.98px) {
+@media (max-height: 790px) and (min-width: 768px) {
   .orbit-viewport {
-    height: 340px;
+    height: 374px;
   }
 
   .orbit-stage {
-    transform: scale(0.92);
+    transform: scale(0.85);
   }
 }
 
-@media (max-width: 1199.98px) {
+@media (max-height: 670px) and (min-width: 768px) {
   .orbit-viewport {
-    height: 318px;
+    height: 334px;
   }
 
   .orbit-stage {
-    transform: scale(0.86);
+    transform: scale(0.76);
   }
 }
 
 @media (max-width: 991.98px) {
-  .skills-panel-col {
-    display: none;
-  }
-
-  .skills-panel-col.is-active {
-    display: block;
-  }
-
-  .skills-showcase-box {
-    padding: 0.9rem 1rem 0.7rem;
-  }
-
-  .orbit-viewport {
-    height: 370px;
-  }
-
-  .orbit-stage {
-    transform: scale(1);
-  }
-
-  .exp-thumb-box {
-    width: 68px;
-    height: 68px;
-  }
-
-  .exp-media-list {
-    gap: 0.8rem;
-  }
 
   .about-section {
     min-height: calc(100vh - 64px);
@@ -2138,28 +2015,24 @@ body {
 }
 
 @media (max-width: 767.98px) {
-  .hero-section {
+  .hero-section,
+  .skills-section {
     height: calc(100vh - 64px);
     height: calc(100svh - 64px);
-    min-height: 500px;
+    min-height: 520px;
+    max-height: none;
   }
 
-  .skills-section,
   .work-section {
     padding: 1rem 0 !important;
-  }
-
-  .exp-item {
-    grid-template-columns: 1fr;
-    gap: 0.25rem;
-    padding: 0.7rem 0.5rem;
   }
 
   .hero-stage {
     margin-top: 9.5rem;
   }
 
-  .hero-word {
+  .hero-word,
+  .skills-backdrop-word {
     font-size: clamp(4.2rem, 23vw, 7.5rem);
     letter-spacing: 0.03em;
   }
@@ -2194,31 +2067,22 @@ body {
   }
 
   .orbit-viewport {
-    height: 356px;
+    height: 396px;
   }
 
   .orbit-stage {
-    transform: scale(0.96);
+    transform: scale(0.9);
   }
 }
 
 @media (max-width: 575.98px) {
-  .skills-showcase-box {
-    padding: 0.75rem 0.7rem 0.55rem;
+  .stack-filter-btn {
+    padding: 0.3rem 0.58rem;
+    font-size: 0.65rem;
   }
 
   .orbit-viewport {
-    height: 296px;
-  }
-
-  .orbit-stage {
-    transform: scale(0.8);
-  }
-}
-
-@media (max-width: 419.98px) {
-  .orbit-viewport {
-    height: 260px;
+    height: 308px;
   }
 
   .orbit-stage {
@@ -2226,13 +2090,23 @@ body {
   }
 }
 
-@media (max-width: 359.98px) {
+@media (max-width: 419.98px) {
   .orbit-viewport {
-    height: 230px;
+    height: 272px;
   }
 
   .orbit-stage {
-    transform: scale(0.62);
+    transform: scale(0.61);
+  }
+}
+
+@media (max-width: 359.98px) {
+  .orbit-viewport {
+    height: 238px;
+  }
+
+  .orbit-stage {
+    transform: scale(0.54);
   }
 }
 
