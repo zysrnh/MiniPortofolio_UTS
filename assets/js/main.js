@@ -717,7 +717,7 @@ function initSkillsSection() {
   const orbitCoreCat = document.getElementById("orbitCoreCat");
 
   const coreFilterStates = {
-    all: { title: "AP", sub: "ALL STACK", wide: false },
+    all: { title: "ZY", sub: "ALL STACK", wide: false },
     fe: { title: "FE", sub: "FRONTEND", wide: false },
     be: { title: "BE", sub: "BACKEND", wide: false },
     tools: { title: "TOOLS", sub: "WORKFLOW", wide: true },

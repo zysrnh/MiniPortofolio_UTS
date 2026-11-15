@@ -1718,39 +1718,44 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
   line-height: 1.1;
 }
 
-.skills-section .skills-section-title {
-  color: var(--stone);
-}
-
 .stack-filter-group {
-  display: flex;
+  display: inline-flex;
+  align-items: center;
   flex-wrap: wrap;
-  gap: 0.4rem;
+  gap: 4px;
+  padding: 4px;
+  background-color: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(241, 235, 235, 0.22);
+  border-radius: 4px;
+  transition: background-color 1.15s ease 2.85s, border-color 1.15s ease 2.85s;
 }
 
 .stack-filter-btn {
-  background-color: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(241, 235, 235, 0.22);
-  border-radius: 6px;
-  padding: 0.38rem 0.85rem;
+  min-width: 58px;
+  text-align: center;
+  background-color: transparent;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  padding: 0.4rem 0.78rem;
   font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  line-height: 1.1;
   text-transform: uppercase;
-  color: rgba(241, 235, 235, 0.82);
+  color: rgba(241, 235, 235, 0.78);
   cursor: pointer;
   transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
 .stack-filter-btn:hover {
-  border-color: var(--stone);
-  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(241, 235, 235, 0.32);
+  background-color: rgba(255, 255, 255, 0.08);
   color: var(--white);
 }
 
 .stack-filter-btn.is-active {
   background-color: var(--deep-red);
-  border-color: var(--stone);
+  border-color: rgba(241, 235, 235, 0.36);
   color: var(--white);
 }
 
@@ -3583,17 +3588,15 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
 }
 
 @media (max-width: 575.98px) {
-  .skills-section .skills-section-title {
-    font-size: 1.38rem;
-  }
-
   .stack-filter-group {
-    gap: 0.25rem;
+    gap: 3px;
+    padding: 3px;
   }
 
   .stack-filter-btn {
-    padding: 0.28rem 0.52rem;
-    font-size: 0.6rem;
+    min-width: 44px;
+    padding: 0.3rem 0.52rem;
+    font-size: 0.62rem;
   }
 }
 
@@ -3665,22 +3668,25 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
   transition: border-color 1.1s ease 0.25s;
 }
 
+.skills-section.is-galaxy-active .stack-filter-group {
+  background-color: rgba(8, 21, 54, 0.72);
+  border-color: rgba(147, 197, 253, 0.28);
+}
+
 .skills-section.is-galaxy-active .stack-filter-btn {
-  background-color: rgba(147, 197, 253, 0.08);
-  border-color: rgba(147, 197, 253, 0.26);
-  transition: background-color 1.15s ease 2.85s, border-color 1.15s ease 2.85s, color 0.2s ease;
+  background-color: transparent;
+  border-color: transparent;
 }
 
 .skills-section.is-galaxy-active .stack-filter-btn:hover {
-  background-color: rgba(59, 130, 246, 0.2);
-  border-color: #bfdbfe;
-  transition-delay: 0s;
+  background-color: rgba(59, 130, 246, 0.22);
+  border-color: rgba(191, 219, 254, 0.45);
 }
 
 .skills-section.is-galaxy-active .stack-filter-btn.is-active {
   background-color: #15429e;
   border-color: #bfdbfe;
-  transition-delay: 2.85s;
+  color: var(--white);
 }
 
 .skills-section.is-galaxy-active .orbit-chip {
