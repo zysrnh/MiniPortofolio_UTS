@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact — Alex Pratama</title>
+
+  <!-- Google Fonts: Bebas Neue (Display) & Plus Jakarta Sans (Clean Body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Bootstrap 5 CSS & Bootstrap Icons -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    rel="stylesheet"
+  />
+
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <!-- ==================== NAVBAR ==================== -->
+  <header class="site-header sticky-top">
+    <nav class="navbar navbar-expand-lg py-3">
+      <div class="container">
+        <a class="navbar-brand fw-extrabold text-uppercase tracking-wide" href="index.html#home">
+          ALEX PRATAMA
+        </a>
+
+        <button
+          class="navbar-toggler border-0 shadow-none"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#mainNavbar"
+          aria-controls="mainNavbar"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="mainNavbar">
+          <ul class="navbar-nav ms-auto gap-lg-4 mt-3 mt-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html#home">HOME</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="index.html#about">ABOUT ME</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="index.html#work">WORK</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="contact.html">CONTACT</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ==================== CONTACT PAGE (1-Screen Fit) ==================== -->
+  <div class="contact-page-shell">
+    <main class="cta-section">
+      <div class="container">
+        <!-- Giant Editorial Title -->
+        <h1 class="contact-giant-title">Contact me</h1>
+
+        <!-- 2-Column Middle: Info Left + Underline Form Right -->
+        <div class="row g-4 g-lg-5 align-items-start mt-1">
+          <div class="col-lg-5">
+            <div class="contact-info-stack">
+              <div class="contact-info-block">
+                <p class="contact-info-text mb-0">Bandung, Indonesia</p>
+                <p class="contact-info-text mb-0">2026</p>
+              </div>
+
+              <div class="contact-info-block">
+                <p class="contact-info-muted mb-0">Available hours</p>
+                <p class="contact-info-text mb-0">Monday &ndash; Friday</p>
+                <p class="contact-info-text mb-0">09:00 AM &ndash; 05:00 PM WIB</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-7">
+            <form id="editorialContactForm" class="editorial-contact-form" novalidate>
+              <div class="mb-3">
+                <span class="editorial-field-label">Name (required)</span>
+                <div class="row g-3">
+                  <div class="col-sm-6">
+                    <input
+                      type="text"
+                      id="edFirstName"
+                      class="editorial-underline-input"
+                      placeholder="First Name"
+                      required
+                    />
+                  </div>
+                  <div class="col-sm-6">
+                    <input
+                      type="text"
+                      id="edLastName"
+                      class="editorial-underline-input"
+                      placeholder="Last Name"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="edService" class="editorial-field-label">Service</label>
+                <select id="edService" class="editorial-underline-input editorial-underline-select">
+                  <option value="Web Development">Web Development</option>
+                  <option value="UI/UX Design">UI/UX Design</option>
+                  <option value="Fullstack Laravel">Fullstack Laravel</option>
+                  <option value="Consultation">Consultation</option>
+                </select>
+              </div>
+
+              <div class="mb-3">
+                <label for="edEmail" class="editorial-field-label">Email (required)</label>
+                <input
+                  type="email"
+                  id="edEmail"
+                  class="editorial-underline-input"
+                  placeholder="you@example.com"
+                  required
+                />
+              </div>
+
+              <div class="mb-3">
+                <label for="edProjectDesc" class="editorial-field-label">Project description</label>
+                <input
+                  type="text"
+                  id="edProjectDesc"
+                  class="editorial-underline-input"
+                  placeholder="Tell me briefly about your project..."
+                  required
+                />
+              </div>
+
+              <div
+                id="edFormFeedback"
+                class="small mb-2 d-none"
+                role="status"
+                aria-live="polite"
+              ></div>
+
+              <button type="submit" class="btn btn-solid-dark mt-1">Submit</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Big Contact Row (Email Left + Phone/WA Right) -->
+        <div class="contact-big-row d-flex flex-wrap justify-content-between align-items-baseline gap-3">
+          <a href="mailto:hello@alexpratama.dev" class="contact-big-link">
+            hello@alexpratama.dev
+          </a>
+          <a
+            href="https://wa.me/6281234567890"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="contact-big-link"
+          >
+            (+62) 812 3456 7890
+          </a>
+        </div>
+      </div>
+    </main>
+
+    <!-- ==================== MINIMAL EDITORIAL FOOTER ==================== -->
+    <footer class="site-footer py-3">
+      <div class="container">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+          <span class="footer-copy">&copy; 2026 ALEX PRATAMA. ALL RIGHTS RESERVED.</span>
+
+          <ul class="list-unstyled d-flex flex-wrap gap-4 mb-0 footer-nav-links">
+            <li><a href="index.html#home">Home</a></li>
+            <li><a href="index.html#about">About</a></li>
+            <li><a href="index.html#skills">Skills</a></li>
+            <li><a href="index.html#work">Work</a></li>
+          </ul>
+
+          <div class="d-flex align-items-center gap-3 footer-social-icons">
+            <a href="https://github.com/zysrnh" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+              <i class="bi bi-github"></i>
+            </a>
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+              <i class="bi bi-linkedin"></i>
+            </a>
+            <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+              <i class="bi bi-whatsapp"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Bootstrap 5 JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Custom Script -->
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

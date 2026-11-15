@@ -1295,6 +1295,76 @@ body {
   letter-spacing: 0.06em;
 }
 
+/* ==================== INDEX CTA & 3-COLUMN FOOTER ==================== */
+.cta-typo-section {
+  background-color: var(--ice-white);
+  padding: 4.5rem 0;
+  scroll-snap-align: start;
+}
+
+.cta-typo-heading {
+  font-size: clamp(2rem, 4.2vw, 3.35rem);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+  color: var(--midnight-navy);
+  max-width: 780px;
+}
+
+.cta-typo-desc {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--ink-muted);
+  max-width: 520px;
+}
+
+.footer-main-row {
+  border-bottom: 1px solid rgba(146, 180, 204, 0.18);
+}
+
+.footer-name {
+  font-weight: 800;
+  font-size: 1.05rem;
+  letter-spacing: 0.05em;
+  color: var(--ice-white);
+}
+
+.footer-bio {
+  font-size: 0.8rem;
+  line-height: 1.55;
+  color: rgba(220, 232, 242, 0.74);
+  max-width: 360px;
+}
+
+.footer-col-title {
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--sky-blue);
+  margin-bottom: 0.65rem;
+}
+
+.footer-col-links li {
+  margin-bottom: 0.38rem;
+}
+
+.footer-col-links li:last-child {
+  margin-bottom: 0;
+}
+
+.footer-col-links a {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--ice-white);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer-col-links a:hover {
+  color: var(--sky-blue);
+}
+
 /* ==================== MODALS ==================== */
 .flat-modal {
   background-color: var(--surface-white);
