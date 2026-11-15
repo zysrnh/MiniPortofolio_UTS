@@ -530,6 +530,9 @@ function initSkillsSection() {
         pinnedChip = null;
         if (orbitBox) orbitBox.classList.remove("is-paused");
         resetCorePreview();
+        if (orbitController && typeof orbitController.setCategory === "function") {
+          orbitController.setCategory(activeCategory);
+        }
         playTabSwitchFX(activeCategory);
       });
     });
@@ -537,15 +540,19 @@ function initSkillsSection() {
 }
 
 /**
- * Solves 4 concentric ring radii with equal visual edge-to-edge gap along a half-axis.
+ * Solves concentric ring radii with equal visual edge-to-edge gap along a half-axis.
  */
 function solveRingRadii(coreR, orbSizes, rMax) {
-  const occupied = coreR + orbSizes[0] + orbSizes[1] + orbSizes[2] + orbSizes[3] / 2;
-  const freePerGap = (rMax - occupied) / 4;
+  const count = orbSizes.length;
+  let occupied = coreR + orbSizes[count - 1] / 2;
+  for (let i = 0; i < count - 1; i += 1) {
+    occupied += orbSizes[i];
+  }
+  const freePerGap = (rMax - occupied) / count;
   const radii = [];
   let prevEdge = coreR;
 
-  for (let i = 0; i < 4; i += 1) {
+  for (let i = 0; i < count; i += 1) {
     const center = prevEdge + freePerGap + orbSizes[i] / 2;
     radii.push(center);
     prevEdge = center + orbSizes[i] / 2;
@@ -554,8 +561,8 @@ function solveRingRadii(coreR, orbSizes, rMax) {
 }
 
 /**
- * Dynamically fits the 4-ring constellation across the full container as an ellipse
- * (wide on desktop, contained tall oval on mobile) while keeping all 50 circular orbs upright.
+ * Dynamically fits the constellation orbit across the container:
+ * 4-ring full ellipse on desktop/tablet, and airy 2-ring cyclic waves on mobile (< 768px).
  */
 function setupEllipticalOrbitController(orbitBox, isInteractionPaused) {
   if (!orbitBox) return null;
@@ -569,8 +576,9 @@ function setupEllipticalOrbitController(orbitBox, isInteractionPaused) {
     { key: "ring4", speedDegPerSec: -360 / 72 },
   ];
 
+  const allItems = [];
   const rings = ringConfigs
-    .map((cfg) => {
+    .map((cfg, ringIdx) => {
       const rotator = orbitStage.querySelector(`.orbit-rotator--${cfg.key}`);
       const track = orbitStage.querySelector(`.orbit-track--${cfg.key}`);
       if (!rotator) return null;
@@ -578,7 +586,18 @@ function setupEllipticalOrbitController(orbitBox, isInteractionPaused) {
       const anchors = Array.from(rotator.querySelectorAll(".orbit-anchor")).map((el) => {
         const angleMatch = (el.getAttribute("style") || "").match(/--angle:\s*([-\d.]+)deg/);
         const deg = angleMatch ? parseFloat(angleMatch[1]) : 0;
-        return { el, baseRad: (deg * Math.PI) / 180 };
+        const chip = el.querySelector(".orbit-chip");
+        const item = {
+          el,
+          chip,
+          cat: chip ? chip.dataset.stackCat || "" : "",
+          desktopRingIdx: ringIdx,
+          baseRad: (deg * Math.PI) / 180,
+          mobileRingIndex: -1,
+          mobileAngleRad: 0,
+        };
+        allItems.push(item);
+        return item;
       });
 
       return {
@@ -595,12 +614,221 @@ function setupEllipticalOrbitController(orbitBox, isInteractionPaused) {
   if (!rings.length) return null;
   orbitBox.classList.add("is-elliptical");
 
+  const MOBILE_BREAKPOINT = 768;
+  const MOBILE_DWELL_MS = 4200;
+  const MOBILE_EXIT_MS = 620;
+  const MOBILE_ENTER_MS = 840;
+
   const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
   let isInViewport = true;
   let lastFrameTime = performance.now();
   let impulseEnergy = 0;
 
+  let isMobileCycle = false;
+  let currentCategory = "all";
+  let mobileWaves = [];
+  let mobileWaveIndex = 0;
+  let cyclePhase = "idle";
+  let dwellTimerId = null;
+  let phaseTimerId = null;
+
+  function clearCycleTimers() {
+    if (dwellTimerId) {
+      clearTimeout(dwellTimerId);
+      dwellTimerId = null;
+    }
+    if (phaseTimerId) {
+      clearTimeout(phaseTimerId);
+      phaseTimerId = null;
+    }
+    cyclePhase = "idle";
+  }
+
+  function setChipCycleState(item, state, delayMs = 0) {
+    const chip = item.chip;
+    if (!chip) return;
+
+    if (state === "hidden") {
+      chip.classList.remove("is-cycle-out", "is-cycle-in");
+      chip.classList.add("is-cycle-hidden");
+      chip.removeAttribute("data-mobile-ring");
+      chip.style.removeProperty("--cycle-delay");
+      chip.setAttribute("aria-hidden", "true");
+      chip.tabIndex = -1;
+      return;
+    }
+
+    if (state === "out") {
+      chip.classList.remove("is-cycle-in");
+      chip.style.setProperty("--cycle-delay", `${delayMs}ms`);
+      chip.classList.add("is-cycle-out");
+      return;
+    }
+
+    if (state === "in") {
+      chip.setAttribute("data-mobile-ring", String(item.mobileRingIndex));
+      chip.setAttribute("aria-hidden", "false");
+      chip.tabIndex = 0;
+      chip.style.setProperty("--cycle-delay", `${delayMs}ms`);
+      chip.classList.remove("is-cycle-hidden", "is-cycle-out");
+      chip.classList.add("is-cycle-in");
+      return;
+    }
+
+    // "visible" / desktop restore
+    chip.classList.remove("is-cycle-hidden", "is-cycle-out", "is-cycle-in");
+    chip.style.removeProperty("--cycle-delay");
+    chip.removeAttribute("aria-hidden");
+    chip.tabIndex = 0;
+    if (!isMobileCycle) {
+      chip.removeAttribute("data-mobile-ring");
+    } else if (item.mobileRingIndex >= 0) {
+      chip.setAttribute("data-mobile-ring", String(item.mobileRingIndex));
+    }
+  }
+
+  function buildMobileWaves(category) {
+    const pool = category === "all" ? allItems : allItems.filter((item) => item.cat === category);
+    if (!pool.length) return [];
+    if (pool.length <= 6) return [pool];
+
+    const waveCount = Math.max(2, Math.ceil(pool.length / 13));
+    const waves = [];
+    const baseSize = Math.floor(pool.length / waveCount);
+    const extra = pool.length % waveCount;
+    let cursor = 0;
+
+    for (let w = 0; w < waveCount; w += 1) {
+      const count = baseSize + (w < extra ? 1 : 0);
+      waves.push(pool.slice(cursor, cursor + count));
+      cursor += count;
+    }
+    return waves;
+  }
+
+  function assignWaveSlots(waveItems, waveIdx) {
+    allItems.forEach((item) => {
+      item.mobileRingIndex = -1;
+    });
+
+    const total = waveItems.length;
+    const ring0Count = total <= 3 ? total : Math.max(2, Math.round(total * 0.36));
+    const ring1Count = total - ring0Count;
+    const waveAngleOffset = (waveIdx % 4) * 0.28;
+
+    waveItems.forEach((item, idx) => {
+      const isInner = idx < ring0Count;
+      const ringIndex = isInner ? 0 : 1;
+      const localIdx = isInner ? idx : idx - ring0Count;
+      const localCount = isInner ? ring0Count : ring1Count;
+      const step = (Math.PI * 2) / Math.max(1, localCount);
+      const staggerHalf = isInner ? 0 : step * 0.5;
+
+      item.mobileRingIndex = ringIndex;
+      item.mobileAngleRad = -Math.PI / 2 + localIdx * step + staggerHalf + waveAngleOffset;
+    });
+  }
+
+  function scheduleNextWave(delayMs) {
+    if (dwellTimerId) {
+      clearTimeout(dwellTimerId);
+    }
+    if (!isMobileCycle || mobileWaves.length < 2) return;
+    dwellTimerId = setTimeout(advanceMobileWave, delayMs);
+  }
+
+  function applyMobileWave(waveIdx, animateEntrance) {
+    const waveItems = mobileWaves[waveIdx] || [];
+    const waveSet = new Set(waveItems);
+
+    assignWaveSlots(waveItems, waveIdx);
+
+    allItems.forEach((item) => {
+      if (!waveSet.has(item)) {
+        setChipCycleState(item, "hidden");
+      }
+    });
+
+    if (animateEntrance && !reducedMotionQuery.matches) {
+      waveItems.forEach((item) => {
+        setChipCycleState(item, "hidden");
+        if (item.chip) {
+          item.chip.setAttribute("data-mobile-ring", String(item.mobileRingIndex));
+        }
+      });
+      renderRingPositions();
+      void orbitStage.offsetWidth;
+
+      cyclePhase = "entering";
+      waveItems.forEach((item, idx) => {
+        setChipCycleState(item, "in", idx * 28);
+      });
+
+      if (phaseTimerId) clearTimeout(phaseTimerId);
+      phaseTimerId = setTimeout(() => {
+        waveItems.forEach((item) => {
+          setChipCycleState(item, "visible");
+        });
+        cyclePhase = "idle";
+        scheduleNextWave(MOBILE_DWELL_MS);
+      }, MOBILE_ENTER_MS);
+    } else {
+      waveItems.forEach((item) => {
+        setChipCycleState(item, "visible");
+      });
+      renderRingPositions();
+      cyclePhase = "idle";
+      scheduleNextWave(MOBILE_DWELL_MS);
+    }
+  }
+
+  function advanceMobileWave() {
+    if (!isMobileCycle || mobileWaves.length < 2 || cyclePhase !== "idle") return;
+
+    if (!isInViewport || isInteractionPaused() || reducedMotionQuery.matches) {
+      scheduleNextWave(900);
+      return;
+    }
+
+    const currentWave = mobileWaves[mobileWaveIndex] || [];
+    cyclePhase = "exiting";
+
+    currentWave.forEach((item, idx) => {
+      setChipCycleState(item, "out", idx * 20);
+    });
+
+    if (phaseTimerId) clearTimeout(phaseTimerId);
+    phaseTimerId = setTimeout(() => {
+      if (!isMobileCycle) return;
+      mobileWaveIndex = (mobileWaveIndex + 1) % mobileWaves.length;
+      applyMobileWave(mobileWaveIndex, true);
+    }, MOBILE_EXIT_MS);
+  }
+
+  function resetMobileWavesForCategory(category) {
+    currentCategory = category || "all";
+    if (!isMobileCycle) return;
+
+    clearCycleTimers();
+    mobileWaves = buildMobileWaves(currentCategory);
+    mobileWaveIndex = 0;
+    applyMobileWave(0, true);
+  }
+
   function renderRingPositions() {
+    if (isMobileCycle) {
+      for (let i = 0; i < allItems.length; i += 1) {
+        const item = allItems[i];
+        if (item.mobileRingIndex !== 0 && item.mobileRingIndex !== 1) continue;
+        const ring = rings[item.mobileRingIndex];
+        const theta = item.mobileAngleRad + ring.offsetRad;
+        const x = ring.rx * Math.cos(theta);
+        const y = ring.ry * Math.sin(theta);
+        item.el.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0)`;
+      }
+      return;
+    }
+
     for (let r = 0; r < rings.length; r += 1) {
       const ring = rings[r];
       const anchors = ring.anchors;
@@ -615,22 +843,6 @@ function setupEllipticalOrbitController(orbitBox, isInteractionPaused) {
   }
 
   function computeEllipseLayout() {
-    const isMobileGrid = window.innerWidth < 768;
-    orbitBox.classList.toggle("is-mobile-grid", isMobileGrid);
-    if (isMobileGrid) {
-      orbitBox.style.removeProperty("--core-size");
-      for (let i = 1; i <= 4; i += 1) {
-        orbitBox.style.removeProperty(`--orb-${i}`);
-      }
-      for (let r = 0; r < rings.length; r += 1) {
-        if (rings[r].track) {
-          rings[r].track.style.removeProperty("width");
-          rings[r].track.style.removeProperty("height");
-        }
-      }
-      return;
-    }
-
     const rawW = orbitStage.clientWidth;
     const rawH = orbitStage.clientHeight;
     const viewportSafeW = Math.max(240, document.documentElement.clientWidth - 20);
@@ -638,29 +850,71 @@ function setupEllipticalOrbitController(orbitBox, isInteractionPaused) {
     const stageH = rawH;
     if (stageW < 80 || stageH < 80) return;
 
-    const minDim = Math.min(stageW, stageH);
-    const isNarrow = stageW < 560;
+    const wasMobile = isMobileCycle;
+    isMobileCycle = window.innerWidth < MOBILE_BREAKPOINT;
+    orbitBox.classList.toggle("is-mobile-cycle", isMobileCycle);
+    orbitBox.classList.remove("is-mobile-grid");
 
-    let coreSize = isNarrow
-      ? Math.round(Math.max(54, Math.min(72, stageW * 0.175)))
-      : Math.round(Math.max(82, Math.min(116, stageH * 0.165)));
+    if (isMobileCycle) {
+      const coreSize = Math.round(Math.max(66, Math.min(84, stageW * 0.21)));
+      const orb1 = Math.round(Math.max(36, Math.min(42, stageW * 0.106)));
+      const orb2 = Math.round(Math.max(40, Math.min(46, stageW * 0.116)));
+      const coreRadius = coreSize / 2;
+      const outerMargin = orb2 / 2 + 8;
 
-    let baseOrb = isNarrow
-      ? Math.round(Math.max(24, Math.min(31, stageW * 0.076)))
-      : Math.round(Math.max(36, Math.min(50, stageH * 0.072)));
+      const rxMax = Math.max(108, Math.min(stageW / 2 - outerMargin, stageW * 0.435));
+      const ryAvail = Math.max(125, stageH / 2 - outerMargin);
+      const ryMax = Math.min(ryAvail, rxMax * 1.24);
 
-    const approxCoreR = coreSize / 2;
-    const minorLimit = isNarrow ? stageW / 2 - 22 : Math.min(stageH / 2 - 26, stageW / 2 - 24);
-    const safeOrbCap = Math.max(22, Math.floor((minorLimit - approxCoreR - 18) / 4.2));
-    baseOrb = Math.min(baseOrb, safeOrbCap);
+      const rxList = solveRingRadii(coreRadius, [orb1, orb2], rxMax);
+      const ryList = solveRingRadii(coreRadius, [orb1, orb2], ryMax);
 
-    if (coreSize > minDim * 0.24) {
-      coreSize = Math.max(54, Math.round(minDim * 0.19));
+      rings.forEach((ring, idx) => {
+        if (idx < 2) {
+          ring.rx = rxList[idx];
+          ring.ry = ryList[idx];
+          if (ring.track) {
+            ring.track.style.width = `${(ring.rx * 2).toFixed(1)}px`;
+            ring.track.style.height = `${(ring.ry * 2).toFixed(1)}px`;
+          }
+        } else if (ring.track) {
+          ring.track.style.removeProperty("width");
+          ring.track.style.removeProperty("height");
+        }
+      });
+
+      orbitBox.style.setProperty("--core-size", `${coreSize}px`);
+      orbitBox.style.setProperty("--orb-1", `${orb1}px`);
+      orbitBox.style.setProperty("--orb-2", `${orb2}px`);
+      orbitBox.style.setProperty("--orb-3", `${orb2}px`);
+      orbitBox.style.setProperty("--orb-4", `${orb2}px`);
+
+      if (!wasMobile) {
+        resetMobileWavesForCategory(currentCategory);
+      } else {
+        renderRingPositions();
+      }
+      return;
     }
+
+    if (wasMobile) {
+      clearCycleTimers();
+      allItems.forEach((item) => {
+        item.mobileRingIndex = -1;
+        setChipCycleState(item, "visible");
+      });
+    }
+
+    const minDim = Math.min(stageW, stageH);
+    const coreSize = Math.min(Math.round(Math.max(82, Math.min(116, stageH * 0.165))), Math.max(66, Math.round(minDim * 0.22)));
+    const approxCoreR = coreSize / 2;
+    const minorLimit = Math.min(stageH / 2 - 26, stageW / 2 - 24);
+    const safeOrbCap = Math.max(26, Math.floor((minorLimit - approxCoreR - 18) / 4.2));
+    const baseOrb = Math.min(Math.round(Math.max(36, Math.min(50, stageH * 0.072))), safeOrbCap);
 
     const orbSizes = [baseOrb, baseOrb + 1, baseOrb + 3, baseOrb + 5];
     const coreRadius = coreSize / 2;
-    const outerMargin = orbSizes[3] / 2 + (isNarrow ? 6 : 8);
+    const outerMargin = orbSizes[3] / 2 + 8;
 
     const ryAvail = Math.max(115, stageH / 2 - outerMargin);
     const rxAvail = Math.max(110, stageW / 2 - outerMargin);
@@ -699,17 +953,13 @@ function setupEllipticalOrbitController(orbitBox, isInteractionPaused) {
     const dtSec = Math.min(0.05, Math.max(0, (now - lastFrameTime) / 1000));
     lastFrameTime = now;
 
-    if (
-      window.innerWidth >= 768 &&
-      isInViewport &&
-      !reducedMotionQuery.matches &&
-      (!isInteractionPaused() || impulseEnergy > 0.02)
-    ) {
+    if (isInViewport && !reducedMotionQuery.matches && (!isInteractionPaused() || impulseEnergy > 0.02)) {
       const boost = 1 + impulseEnergy * 4.5;
       impulseEnergy *= Math.pow(0.012, dtSec);
       if (impulseEnergy < 0.01) impulseEnergy = 0;
 
-      for (let r = 0; r < rings.length; r += 1) {
+      const activeRingCount = isMobileCycle ? 2 : rings.length;
+      for (let r = 0; r < activeRingCount; r += 1) {
         const ring = rings[r];
         ring.offsetRad = (ring.offsetRad + ((ring.speedDegPerSec * boost * dtSec) * Math.PI) / 180) % (Math.PI * 2);
       }
@@ -742,7 +992,11 @@ function setupEllipticalOrbitController(orbitBox, isInteractionPaused) {
   if (skillsSection && typeof IntersectionObserver !== "undefined") {
     const io = new IntersectionObserver(
       (entries) => {
+        const prevVisible = isInViewport;
         isInViewport = entries[0]?.isIntersecting ?? true;
+        if (!prevVisible && isInViewport && isMobileCycle && cyclePhase === "idle") {
+          scheduleNextWave(MOBILE_DWELL_MS);
+        }
       },
       { threshold: 0.05 }
     );
@@ -750,6 +1004,12 @@ function setupEllipticalOrbitController(orbitBox, isInteractionPaused) {
   }
 
   return {
+    setCategory(category) {
+      currentCategory = category || "all";
+      if (isMobileCycle) {
+        resetMobileWavesForCategory(currentCategory);
+      }
+    },
     triggerImpulse() {
       if (!reducedMotionQuery.matches) {
         impulseEnergy = 1;
