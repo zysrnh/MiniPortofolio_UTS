@@ -222,35 +222,39 @@
     <!-- ==================== ABOUT ME SECTION (Editorial Blueprint + Ramon 3-Panel) ==================== -->
     <section id="about" class="about-section">
       <div class="about-ambient-bg" aria-hidden="true">
-        <div class="about-backdrop-word">ABOUT ME</div>
+        <div class="about-backdrop-word about-backdrop-word--top">ABOUT</div>
+        <div class="about-backdrop-word about-backdrop-word--bottom">PROFILE</div>
         <svg class="about-bg-reticle" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <pattern id="aboutGridPattern" width="56" height="56" patternUnits="userSpaceOnUse">
+              <path d="M 56 0 L 0 0 0 56" fill="none" stroke="rgba(39, 7, 7, 0.085)" stroke-width="1" />
+              <path d="M 53 0 L 59 0 M 56 -3 L 56 3" fill="none" stroke="rgba(102, 8, 16, 0.16)" stroke-width="1" />
+            </pattern>
+          </defs>
+          <rect width="1200" height="700" fill="url(#aboutGridPattern)" />
+
           <!-- Hairline Blueprint Axes -->
-          <line x1="0" y1="350" x2="1200" y2="350" stroke="rgba(39, 7, 7, 0.07)" stroke-width="1" stroke-dasharray="4 10" />
-          <line x1="600" y1="0" x2="600" y2="700" stroke="rgba(39, 7, 7, 0.07)" stroke-width="1" stroke-dasharray="4 10" />
-          <line x1="120" y1="70" x2="1080" y2="630" stroke="rgba(39, 7, 7, 0.035)" stroke-width="1" />
-          <line x1="1080" y1="70" x2="120" y2="630" stroke="rgba(39, 7, 7, 0.035)" stroke-width="1" />
-          <!-- Reference Frame & Target Ring -->
-          <circle cx="600" cy="350" r="285" fill="none" stroke="rgba(102, 8, 16, 0.09)" stroke-width="1" stroke-dasharray="6 12" />
-          <circle cx="600" cy="350" r="395" fill="none" stroke="rgba(39, 7, 7, 0.05)" stroke-width="1" />
+          <line x1="0" y1="350" x2="1200" y2="350" stroke="rgba(39, 7, 7, 0.2)" stroke-width="1" stroke-dasharray="5 9" />
+          <line x1="600" y1="0" x2="600" y2="700" stroke="rgba(39, 7, 7, 0.2)" stroke-width="1" stroke-dasharray="5 9" />
+          <line x1="90" y1="55" x2="1110" y2="645" stroke="rgba(39, 7, 7, 0.1)" stroke-width="1" />
+          <line x1="1110" y1="55" x2="90" y2="645" stroke="rgba(39, 7, 7, 0.1)" stroke-width="1" />
+
+          <!-- Wide Reference Frame & Target Rings -->
+          <circle cx="600" cy="350" r="390" fill="none" stroke="rgba(102, 8, 16, 0.22)" stroke-width="1.2" stroke-dasharray="8 10" />
+          <circle cx="600" cy="350" r="515" fill="none" stroke="rgba(39, 7, 7, 0.14)" stroke-width="1" />
+
           <!-- Corner Blueprint Brackets -->
-          <path d="M28 56 L28 28 L56 28" fill="none" stroke="rgba(39, 7, 7, 0.2)" stroke-width="1.2" />
-          <path d="M1144 28 L1172 28 L1172 56" fill="none" stroke="rgba(39, 7, 7, 0.2)" stroke-width="1.2" />
-          <path d="M28 644 L28 672 L56 672" fill="none" stroke="rgba(39, 7, 7, 0.2)" stroke-width="1.2" />
-          <path d="M1144 672 L1172 672 L1172 644" fill="none" stroke="rgba(39, 7, 7, 0.2)" stroke-width="1.2" />
+          <path d="M24 58 L24 24 L58 24" fill="none" stroke="rgba(102, 8, 16, 0.5)" stroke-width="1.8" />
+          <path d="M1142 24 L1176 24 L1176 58" fill="none" stroke="rgba(102, 8, 16, 0.5)" stroke-width="1.8" />
+          <path d="M24 642 L24 676 L58 676" fill="none" stroke="rgba(102, 8, 16, 0.5)" stroke-width="1.8" />
+          <path d="M1142 676 L1176 676 L1176 642" fill="none" stroke="rgba(102, 8, 16, 0.5)" stroke-width="1.8" />
+
           <!-- Registration Crosshairs (+) -->
-          <path d="M52 350 L68 350 M60 342 L60 358 M1132 350 L1148 350 M1140 342 L1140 358 M592 26 L608 26 M600 18 L600 34 M592 674 L608 674 M600 666 L600 682" stroke="rgba(102, 8, 16, 0.22)" stroke-width="1.2" />
+          <path d="M44 350 L64 350 M54 340 L54 360 M1136 350 L1156 350 M1146 340 L1146 360 M590 24 L610 24 M600 14 L600 34 M590 676 L610 676 M600 666 L600 686" stroke="rgba(102, 8, 16, 0.55)" stroke-width="1.6" />
         </svg>
       </div>
 
       <div class="container position-relative about-container">
-        <div class="about-section-meta d-flex justify-content-between align-items-center mb-3">
-          <span class="about-meta-tag">
-            <span class="about-meta-dot" aria-hidden="true"></span>
-            <span data-i18n="about.kicker">02 // TENTANG</span>
-          </span>
-          <span class="about-meta-handle">ZAKI YUSRON &mdash; z.ysrnh</span>
-        </div>
-
         <div class="ramon-card" id="aboutRamonCard">
           <div class="ramon-grid">
             <!-- Panel 1: Left White Intro -->

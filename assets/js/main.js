@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initSitePreloader();
   initLanguageSwitcher();
   initHeroEntrance();
+  initAboutEntrance();
   initAboutCarousel();
   initSkillsSection();
   initPortfolioAutoCarousel();
@@ -12,6 +13,39 @@ document.addEventListener("DOMContentLoaded", () => {
   initMobileNavClose();
   initAppBottomBar();
 });
+
+/**
+ * Trigger editorial scroll-entrance choreography when #about enters viewport.
+ */
+function initAboutEntrance() {
+  const aboutSection = document.getElementById("about");
+  if (!aboutSection) return;
+
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  if (prefersReducedMotion.matches || typeof IntersectionObserver === "undefined") {
+    return;
+  }
+
+  aboutSection.classList.add("is-about-ready");
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      const entry = entries[0];
+      if (!entry) return;
+      if (!entry.isIntersecting) {
+        aboutSection.classList.remove("is-about-play");
+      } else if (
+        entry.intersectionRatio >= 0.16 ||
+        entry.boundingClientRect.top < window.innerHeight * 0.82
+      ) {
+        aboutSection.classList.add("is-about-play");
+      }
+    },
+    { threshold: [0.01, 0.16] }
+  );
+
+  observer.observe(aboutSection);
+}
 
 /**
  * Interactive slide & expand animation for the About Me card (inspired by vide.mp4).
@@ -1449,7 +1483,6 @@ const SITE_TRANSLATIONS = {
     "hero.portraitAlt": "Potret Zaki Yusron Hasyimmi",
     "hero.arrowAria": "Gulir ke bagian Tentang",
     "hero.githubAria": "Profil GitHub Zaki Yusron Hasyimmi",
-    "about.kicker": "02 // TENTANG",
     "about.back": "Kembali",
     "about.backAria": "Kembali ke ringkasan",
     "about.readMore": "SELENGKAPNYA",
@@ -1474,7 +1507,6 @@ const SITE_TRANSLATIONS = {
     "hero.portraitAlt": "Portrait of Zaki Yusron Hasyimmi",
     "hero.arrowAria": "Scroll to About section",
     "hero.githubAria": "GitHub profile of Zaki Yusron Hasyimmi",
-    "about.kicker": "02 // PROFILE",
     "about.back": "Back",
     "about.backAria": "Back to overview",
     "about.readMore": "READ MORE",
