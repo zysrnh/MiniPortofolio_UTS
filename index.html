@@ -285,13 +285,13 @@
       </div>
     </section>
 
-    <!-- ==================== SKILLS SECTION (Full-Screen Constellation Orbit) ==================== -->
+    <!-- ==================== TECH STACK SECTION (Full-Screen Constellation Orbit) ==================== -->
     <section id="skills" class="skills-section" aria-labelledby="skillsHeading">
-      <div class="container skills-inner d-flex flex-column justify-content-between py-2 py-lg-3">
+      <div class="container skills-inner d-flex flex-column py-2 py-lg-3">
         <!-- Top Bar (Mirrors Hero Top Bar) -->
-        <div class="skills-top-bar d-flex flex-wrap justify-content-between align-items-center gap-3">
+        <div class="skills-top-bar d-flex flex-wrap justify-content-between align-items-center gap-2 gap-sm-3">
           <div>
-            <h2 class="skills-section-title mb-0" id="skillsHeading">Skills.</h2>
+            <h2 class="skills-section-title mb-0" id="skillsHeading">Tech Stack.</h2>
           </div>
 
           <div class="stack-filter-group" role="group" aria-label="Filter stack">
@@ -304,7 +304,31 @@
 
         <!-- Center Stage: Full-Container Elliptical Orbit Constellation -->
         <div class="skills-stage flex-grow-1">
-          <div class="skills-backdrop-word" aria-hidden="true">SKILLS</div>
+          <div class="skills-backdrop-word" aria-hidden="true">TECH STACK</div>
+
+          <svg class="skills-bg-reticle" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <!-- Crosshair Coordinate Axes -->
+            <line x1="0" y1="350" x2="1200" y2="350" stroke="rgba(241, 235, 235, 0.05)" stroke-width="1" stroke-dasharray="4 10" />
+            <line x1="600" y1="0" x2="600" y2="700" stroke="rgba(241, 235, 235, 0.05)" stroke-width="1" stroke-dasharray="4 10" />
+            <!-- Diagonal Alignment Rays -->
+            <line x1="160" y1="80" x2="1040" y2="620" stroke="rgba(241, 235, 235, 0.028)" stroke-width="1" />
+            <line x1="1040" y1="80" x2="160" y2="620" stroke="rgba(241, 235, 235, 0.028)" stroke-width="1" />
+            <!-- Outer Telemetry Compass Arcs -->
+            <circle cx="600" cy="350" r="320" fill="none" stroke="rgba(241, 235, 235, 0.045)" stroke-width="1" />
+            <circle cx="600" cy="350" r="465" fill="none" stroke="rgba(241, 235, 235, 0.035)" stroke-width="1" stroke-dasharray="2 14" />
+            <!-- Corner Brackets -->
+            <path d="M28 52 L28 28 L52 28" fill="none" stroke="rgba(241, 235, 235, 0.14)" stroke-width="1.2" />
+            <path d="M1148 28 L1172 28 L1172 52" fill="none" stroke="rgba(241, 235, 235, 0.14)" stroke-width="1.2" />
+            <path d="M28 648 L28 672 L52 672" fill="none" stroke="rgba(241, 235, 235, 0.14)" stroke-width="1.2" />
+            <path d="M1148 672 L1172 672 L1172 648" fill="none" stroke="rgba(241, 235, 235, 0.14)" stroke-width="1.2" />
+            <!-- Faint Corner Star Constellation Links -->
+            <polyline points="72,118 148,84 196,156" fill="none" stroke="rgba(241, 235, 235, 0.065)" stroke-width="1" />
+            <polyline points="1128,112 1044,76 998,144" fill="none" stroke="rgba(241, 235, 235, 0.065)" stroke-width="1" />
+            <polyline points="84,592 162,626 210,554" fill="none" stroke="rgba(241, 235, 235, 0.065)" stroke-width="1" />
+            <polyline points="1118,588 1036,628 986,562" fill="none" stroke="rgba(241, 235, 235, 0.065)" stroke-width="1" />
+            <!-- Center Reticle Ticks -->
+            <path d="M594 26 L606 26 M594 674 L606 674 M24 344 L24 356 M1176 344 L1176 356" stroke="rgba(241, 235, 235, 0.16)" stroke-width="1.2" />
+          </svg>
 
           <div class="skills-orbit-center orbit-showcase" id="skillsOrbitBox">
             <div class="orbit-viewport" id="showcaseStackGrid">
@@ -315,13 +339,18 @@
                 <span class="constellation-dot constellation-dot--4" aria-hidden="true"></span>
                 <span class="constellation-dot constellation-dot--5" aria-hidden="true"></span>
                 <span class="constellation-dot constellation-dot--6" aria-hidden="true"></span>
+                <span class="constellation-dot constellation-dot--7" aria-hidden="true"></span>
+                <span class="constellation-dot constellation-dot--8" aria-hidden="true"></span>
+                <span class="constellation-dot constellation-dot--9" aria-hidden="true"></span>
+                <span class="constellation-dot constellation-dot--10" aria-hidden="true"></span>
 
                 <div class="orbit-track orbit-track--ring4" aria-hidden="true"></div>
                 <div class="orbit-track orbit-track--ring3" aria-hidden="true"></div>
                 <div class="orbit-track orbit-track--ring2" aria-hidden="true"></div>
                 <div class="orbit-track orbit-track--ring1" aria-hidden="true"></div>
 
-                <div class="orbit-core-wrap">
+                <div class="orbit-core-wrap" id="orbitCoreWrap">
+                  <span class="orbit-switch-wave" aria-hidden="true"></span>
                   <span class="orbit-core-pulse" aria-hidden="true"></span>
                   <div class="orbit-core" id="orbitCore" aria-live="polite">
                     <div class="orbit-core-default">
@@ -805,11 +834,6 @@
             </div>
           </div>
         </div>
-
-        <!-- Bottom Bar (Mirrors Hero Bottom Bar) -->
-        <div class="d-flex align-items-center skills-bottom-bar hero-meta">
-          <span>Fullstack Web &amp; UI Engineering &bull; 50 Core Technologies</span>
-        </div>
       </div>
     </section>
 
@@ -1099,7 +1123,7 @@
             <ul class="list-unstyled footer-col-links mb-0">
               <li><a href="#home">Home</a></li>
               <li><a href="#about">About Me</a></li>
-              <li><a href="#skills">Skills</a></li>
+              <li><a href="#skills">Tech Stack</a></li>
               <li><a href="#work">Portfolio</a></li>
             </ul>
           </div>

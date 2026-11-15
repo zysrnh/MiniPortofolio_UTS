@@ -346,6 +346,7 @@ function initSkillsSection() {
   const filterBtns = document.querySelectorAll(".stack-filter-btn");
   const orbitBox = document.getElementById("skillsOrbitBox");
   const orbitChips = document.querySelectorAll(".orbit-chip");
+  const orbitCoreWrap = document.getElementById("orbitCoreWrap");
   const orbitCore = document.getElementById("orbitCore");
   const orbitCoreTitle = document.getElementById("orbitCoreTitle");
   const orbitCoreSub = document.getElementById("orbitCoreSub");
@@ -362,6 +363,7 @@ function initSkillsSection() {
   let activeCategory = "all";
   let pinnedChip = null;
   let hoveredInteractive = false;
+  let switchCleanupTimer = null;
 
   function applyCoreFilterState() {
     const state = coreFilterStates[activeCategory] || coreFilterStates.all;
@@ -458,10 +460,63 @@ function initSkillsSection() {
     }
   }
 
+  const orbitController = setupEllipticalOrbitController(orbitBox, () => {
+    const hasKeyboardFocus = Boolean(orbitBox && orbitBox.querySelector(".orbit-chip:focus-visible"));
+    return Boolean(pinnedChip || hoveredInteractive || hasKeyboardFocus);
+  });
+
+  function playTabSwitchFX(nextCategory) {
+    if (switchCleanupTimer) {
+      clearTimeout(switchCleanupTimer);
+    }
+
+    if (orbitBox) orbitBox.classList.add("is-switching-tabs");
+
+    if (orbitCoreWrap) {
+      orbitCoreWrap.classList.remove("is-switching");
+      void orbitCoreWrap.offsetWidth;
+      orbitCoreWrap.classList.add("is-switching");
+    }
+
+    if (orbitCore) {
+      orbitCore.classList.remove("is-morphing");
+      void orbitCore.offsetWidth;
+      orbitCore.classList.add("is-morphing");
+    }
+
+    let matchCounter = 0;
+    orbitChips.forEach((chip, idx) => {
+      chip.classList.remove("is-entering");
+      const match = nextCategory === "all" || chip.dataset.stackCat === nextCategory;
+      const delayMs = match ? (matchCounter % 8) * 24 : (idx % 6) * 16;
+      chip.style.setProperty("--switch-delay", `${delayMs}ms`);
+      if (match) {
+        matchCounter += 1;
+        void chip.offsetWidth;
+        chip.classList.add("is-entering");
+      }
+    });
+
+    if (orbitController) {
+      orbitController.triggerImpulse();
+    }
+
+    switchCleanupTimer = setTimeout(() => {
+      if (orbitBox) orbitBox.classList.remove("is-switching-tabs");
+      if (orbitCoreWrap) orbitCoreWrap.classList.remove("is-switching");
+      if (orbitCore) orbitCore.classList.remove("is-morphing");
+      orbitChips.forEach((chip) => {
+        chip.classList.remove("is-entering");
+        chip.style.removeProperty("--switch-delay");
+      });
+    }, 680);
+  }
+
   if (filterBtns.length && orbitChips.length) {
     filterBtns.forEach((btn) => {
       btn.addEventListener("click", () => {
-        activeCategory = btn.dataset.stack || "all";
+        const nextCategory = btn.dataset.stack || "all";
+        activeCategory = nextCategory;
         filterBtns.forEach((b) => b.classList.remove("is-active"));
         btn.classList.add("is-active");
 
@@ -475,24 +530,37 @@ function initSkillsSection() {
         pinnedChip = null;
         if (orbitBox) orbitBox.classList.remove("is-paused");
         resetCorePreview();
+        playTabSwitchFX(activeCategory);
       });
     });
   }
+}
 
-  setupEllipticalOrbitController(orbitBox, () => {
-    const hasKeyboardFocus = Boolean(orbitBox && orbitBox.querySelector(".orbit-chip:focus-visible"));
-    return Boolean(pinnedChip || hoveredInteractive || hasKeyboardFocus);
-  });
+/**
+ * Solves 4 concentric ring radii with equal visual edge-to-edge gap along a half-axis.
+ */
+function solveRingRadii(coreR, orbSizes, rMax) {
+  const occupied = coreR + orbSizes[0] + orbSizes[1] + orbSizes[2] + orbSizes[3] / 2;
+  const freePerGap = (rMax - occupied) / 4;
+  const radii = [];
+  let prevEdge = coreR;
+
+  for (let i = 0; i < 4; i += 1) {
+    const center = prevEdge + freePerGap + orbSizes[i] / 2;
+    radii.push(center);
+    prevEdge = center + orbSizes[i] / 2;
+  }
+  return radii;
 }
 
 /**
  * Dynamically fits the 4-ring constellation across the full container as an ellipse
- * (wide on desktop, balanced circle/oval on mobile) while keeping all 50 circular orbs upright.
+ * (wide on desktop, contained tall oval on mobile) while keeping all 50 circular orbs upright.
  */
 function setupEllipticalOrbitController(orbitBox, isInteractionPaused) {
-  if (!orbitBox) return;
+  if (!orbitBox) return null;
   const orbitStage = orbitBox.querySelector(".orbit-stage");
-  if (!orbitStage) return;
+  if (!orbitStage) return null;
 
   const ringConfigs = [
     { key: "ring1", speedDegPerSec: 360 / 28 },
@@ -524,12 +592,13 @@ function setupEllipticalOrbitController(orbitBox, isInteractionPaused) {
     })
     .filter(Boolean);
 
-  if (!rings.length) return;
+  if (!rings.length) return null;
   orbitBox.classList.add("is-elliptical");
 
   const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
   let isInViewport = true;
   let lastFrameTime = performance.now();
+  let impulseEnergy = 0;
 
   function renderRingPositions() {
     for (let r = 0; r < rings.length; r += 1) {
@@ -546,36 +615,39 @@ function setupEllipticalOrbitController(orbitBox, isInteractionPaused) {
   }
 
   function computeEllipseLayout() {
-    const stageW = orbitStage.clientWidth;
-    const stageH = orbitStage.clientHeight;
+    const rawW = orbitStage.clientWidth;
+    const rawH = orbitStage.clientHeight;
+    const viewportSafeW = Math.max(240, document.documentElement.clientWidth - 20);
+    const stageW = Math.min(rawW, viewportSafeW);
+    const stageH = rawH;
     if (stageW < 80 || stageH < 80) return;
 
     const minDim = Math.min(stageW, stageH);
     const isNarrow = stageW < 560;
 
     let coreSize = isNarrow
-      ? Math.round(Math.max(60, Math.min(82, minDim * 0.19)))
+      ? Math.round(Math.max(54, Math.min(72, stageW * 0.175)))
       : Math.round(Math.max(82, Math.min(116, stageH * 0.165)));
 
     let baseOrb = isNarrow
-      ? Math.round(Math.max(25, Math.min(34, minDim * 0.08)))
+      ? Math.round(Math.max(24, Math.min(31, stageW * 0.076)))
       : Math.round(Math.max(36, Math.min(50, stageH * 0.072)));
 
     const approxCoreR = coreSize / 2;
-    const availMinorHalf = Math.min(stageH / 2 - 26, isNarrow ? stageW / 2 - 20 : stageH / 2 - 26);
-    const safeOrbCap = Math.max(24, Math.floor((availMinorHalf - approxCoreR - 22) / 4.25));
+    const minorLimit = isNarrow ? stageW / 2 - 22 : Math.min(stageH / 2 - 26, stageW / 2 - 24);
+    const safeOrbCap = Math.max(22, Math.floor((minorLimit - approxCoreR - 18) / 4.2));
     baseOrb = Math.min(baseOrb, safeOrbCap);
 
     if (coreSize > minDim * 0.24) {
-      coreSize = Math.max(58, Math.round(minDim * 0.21));
+      coreSize = Math.max(54, Math.round(minDim * 0.19));
     }
 
-    const orbSizes = [baseOrb, baseOrb + 1, baseOrb + 3, baseOrb + 6];
+    const orbSizes = [baseOrb, baseOrb + 1, baseOrb + 3, baseOrb + 5];
     const coreRadius = coreSize / 2;
-    const outerMargin = orbSizes[3] / 2 + 8;
+    const outerMargin = orbSizes[3] / 2 + (isNarrow ? 6 : 8);
 
-    const ryAvail = Math.max(120, stageH / 2 - outerMargin);
-    const rxAvail = Math.max(120, stageW / 2 - outerMargin);
+    const ryAvail = Math.max(115, stageH / 2 - outerMargin);
+    const rxAvail = Math.max(110, stageW / 2 - outerMargin);
 
     let rx4;
     let ry4;
@@ -584,19 +656,15 @@ function setupEllipticalOrbitController(orbitBox, isInteractionPaused) {
       rx4 = Math.min(rxAvail, ry4 * 2.3);
     } else {
       rx4 = rxAvail;
-      ry4 = Math.min(ryAvail, rx4 * 1.42);
+      ry4 = Math.min(ryAvail, rx4 * 1.48);
     }
 
-    const ryMin = coreRadius + orbSizes[0] / 2 + Math.max(8, (ry4 - coreRadius) * 0.08);
-    const rxMin = coreRadius + orbSizes[0] / 2 + Math.max(10, (rx4 - coreRadius) * 0.13);
-    const safeRyMin = Math.min(ryMin, ry4 - 66);
-    const safeRxMin = Math.min(rxMin, rx4 - 66);
+    const rxList = solveRingRadii(coreRadius, orbSizes, rx4);
+    const ryList = solveRingRadii(coreRadius, orbSizes, ry4);
 
-    const fractions = [0, 0.33, 0.67, 1];
     rings.forEach((ring, idx) => {
-      const t = fractions[idx] ?? idx / 3;
-      ring.rx = safeRxMin + (rx4 - safeRxMin) * t;
-      ring.ry = safeRyMin + (ry4 - safeRyMin) * t;
+      ring.rx = rxList[idx];
+      ring.ry = ryList[idx];
       if (ring.track) {
         ring.track.style.width = `${(ring.rx * 2).toFixed(1)}px`;
         ring.track.style.height = `${(ring.ry * 2).toFixed(1)}px`;
@@ -615,10 +683,14 @@ function setupEllipticalOrbitController(orbitBox, isInteractionPaused) {
     const dtSec = Math.min(0.05, Math.max(0, (now - lastFrameTime) / 1000));
     lastFrameTime = now;
 
-    if (isInViewport && !reducedMotionQuery.matches && !isInteractionPaused()) {
+    if (isInViewport && !reducedMotionQuery.matches && (!isInteractionPaused() || impulseEnergy > 0.02)) {
+      const boost = 1 + impulseEnergy * 4.5;
+      impulseEnergy *= Math.pow(0.012, dtSec);
+      if (impulseEnergy < 0.01) impulseEnergy = 0;
+
       for (let r = 0; r < rings.length; r += 1) {
         const ring = rings[r];
-        ring.offsetRad = (ring.offsetRad + ((ring.speedDegPerSec * dtSec) * Math.PI) / 180) % (Math.PI * 2);
+        ring.offsetRad = (ring.offsetRad + ((ring.speedDegPerSec * boost * dtSec) * Math.PI) / 180) % (Math.PI * 2);
       }
       renderRingPositions();
     }
@@ -650,6 +722,14 @@ function setupEllipticalOrbitController(orbitBox, isInteractionPaused) {
     );
     io.observe(skillsSection);
   }
+
+  return {
+    triggerImpulse() {
+      if (!reducedMotionQuery.matches) {
+        impulseEnergy = 1;
+      }
+    },
+  };
 }
 
 /**

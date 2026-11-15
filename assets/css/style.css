@@ -774,15 +774,24 @@ body {
   top: 50%;
   transform: translate(-50%, -50%);
   font-family: var(--font-display);
-  font-size: clamp(6.5rem, 26vw, 24rem);
+  font-size: clamp(3.6rem, 15.5vw, 15.5rem);
   line-height: 0.88;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: transparent;
-  -webkit-text-stroke: 1.5px rgba(241, 235, 235, 0.08);
+  -webkit-text-stroke: 1.5px rgba(241, 235, 235, 0.075);
   user-select: none;
   pointer-events: none;
   white-space: nowrap;
+  z-index: 1;
+}
+
+.skills-bg-reticle {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
   z-index: 1;
 }
 
@@ -865,6 +874,38 @@ body {
   animation-delay: -1.9s;
 }
 
+.constellation-dot--7 {
+  top: 22%;
+  left: 16%;
+  width: 3px;
+  height: 3px;
+  animation-delay: -0.4s;
+}
+
+.constellation-dot--8 {
+  top: 24%;
+  right: 17%;
+  width: 4px;
+  height: 4px;
+  animation-delay: -2.6s;
+}
+
+.constellation-dot--9 {
+  bottom: 20%;
+  left: 17%;
+  width: 3px;
+  height: 3px;
+  animation-delay: -1.5s;
+}
+
+.constellation-dot--10 {
+  bottom: 19%;
+  right: 15%;
+  width: 4px;
+  height: 4px;
+  animation-delay: -3.4s;
+}
+
 .orbit-track {
   position: absolute;
   left: 50%;
@@ -909,6 +950,23 @@ body {
   justify-content: center;
 }
 
+.orbit-switch-wave {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--core-size, 100px);
+  height: var(--core-size, 100px);
+  border-radius: 50%;
+  border: 2px solid var(--stone);
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.orbit-core-wrap.is-switching .orbit-switch-wave {
+  animation: orbitSwitchWave 0.68s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
 .orbit-core-pulse {
   position: absolute;
   width: var(--core-size, 100px);
@@ -935,6 +993,10 @@ body {
   color: var(--white);
   cursor: default;
   transition: transform 0.22s ease, border-color 0.22s ease;
+}
+
+.orbit-core.is-morphing {
+  animation: orbitCoreMorph 0.42s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .orbit-core-default,
@@ -1137,12 +1199,16 @@ body {
   animation: orbitFloat 3.6s ease-in-out infinite;
   animation-delay: var(--float-delay, 0s);
   transition:
-    background-color 0.2s ease,
-    border-color 0.2s ease,
-    box-shadow 0.2s ease,
-    opacity 0.25s ease,
-    filter 0.25s ease,
-    scale 0.2s ease;
+    background-color 0.24s ease,
+    border-color 0.24s ease,
+    box-shadow 0.24s ease,
+    opacity 0.28s ease,
+    filter 0.28s ease,
+    scale 0.34s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.orbit-showcase.is-switching-tabs .orbit-chip {
+  transition-delay: var(--switch-delay, 0s);
 }
 
 .orbit-rotator--ring2 .orbit-chip {
@@ -1171,19 +1237,37 @@ body {
 }
 
 .orbit-chip.is-highlighted {
+  --chip-rest-scale: 1.08;
   background-color: var(--deep-red);
   border-color: var(--stone);
+  box-shadow: 0 0 0 3px rgba(241, 235, 235, 0.16), 0 10px 22px rgba(0, 0, 0, 0.56);
+  scale: 1.08;
+}
+
+.orbit-chip.is-highlighted:hover,
+.orbit-chip.is-highlighted:focus-visible,
+.orbit-chip.is-highlighted.is-selected {
+  scale: 1.22;
+}
+
+.orbit-chip.is-entering {
+  animation:
+    orbitFloat 3.6s ease-in-out var(--float-delay, 0s) infinite,
+    orbitChipPop 0.46s cubic-bezier(0.22, 1, 0.36, 1) var(--switch-delay, 0s) both;
 }
 
 .orbit-chip.is-dimmed {
-  opacity: 0.2;
-  filter: grayscale(75%);
-  border-color: rgba(241, 235, 235, 0.08);
+  opacity: 0.13;
+  scale: 0.8;
+  filter: grayscale(90%);
+  border-color: rgba(241, 235, 235, 0.06);
+  box-shadow: none;
 }
 
 .orbit-chip.is-dimmed:hover,
 .orbit-chip.is-dimmed:focus-visible {
   opacity: 0.92;
+  scale: 1.12;
   filter: none;
 }
 
@@ -1247,6 +1331,43 @@ body {
   100% {
     transform: scale(1.42);
     opacity: 0;
+  }
+}
+
+@keyframes orbitSwitchWave {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.85;
+    border-width: 2.5px;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(4.8);
+    opacity: 0;
+    border-width: 1px;
+  }
+}
+
+@keyframes orbitCoreMorph {
+  0% {
+    transform: scale(0.84);
+  }
+  55% {
+    transform: scale(1.12);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes orbitChipPop {
+  0% {
+    scale: 0.72;
+  }
+  62% {
+    scale: 1.2;
+  }
+  100% {
+    scale: var(--chip-rest-scale, 1);
   }
 }
 
@@ -2115,9 +2236,17 @@ body {
 }
 
 @media (max-width: 575.98px) {
+  .skills-section .skills-section-title {
+    font-size: 1.38rem;
+  }
+
+  .stack-filter-group {
+    gap: 0.25rem;
+  }
+
   .stack-filter-btn {
-    padding: 0.3rem 0.58rem;
-    font-size: 0.65rem;
+    padding: 0.28rem 0.52rem;
+    font-size: 0.6rem;
   }
 }
 
@@ -2126,6 +2255,8 @@ body {
   .orbit-upright,
   .orbit-chip,
   .orbit-core-pulse,
+  .orbit-switch-wave,
+  .orbit-core.is-morphing,
   .constellation-dot {
     animation: none !important;
   }
