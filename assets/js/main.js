@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   initTopOnRefresh();
+  initLanguageSwitcher();
   initHeroEntrance();
   initAboutCarousel();
   initSkillsSection();
@@ -1425,5 +1426,112 @@ function initTopOnRefresh() {
   });
   window.addEventListener("pageshow", (event) => {
     if (event.persisted) snapTop();
+  });
+}
+
+const SITE_TRANSLATIONS = {
+  id: {
+    "title.home": "Portofolio — Z.yrsnh",
+    "title.contact": "Kontak — Z.yrsnh",
+    "nav.home": "BERANDA",
+    "nav.about": "TENTANG",
+    "nav.work": "KARYA",
+    "nav.contact": "KONTAK",
+    "nav.mobileAria": "Navigasi Seluler",
+    "mobile.home": "Beranda",
+    "mobile.about": "Tentang",
+    "mobile.stack": "Stack",
+    "mobile.work": "Karya",
+    "mobile.contact": "Kontak",
+    "lang.groupAria": "Pilih bahasa",
+    "hero.portraitAlt": "Potret Z.yrsnh",
+    "hero.arrowAria": "Gulir ke bagian Tentang"
+  },
+  en: {
+    "title.home": "Portfolio — Z.yrsnh",
+    "title.contact": "Contact — Z.yrsnh",
+    "nav.home": "HOME",
+    "nav.about": "ABOUT ME",
+    "nav.work": "WORK",
+    "nav.contact": "CONTACT",
+    "nav.mobileAria": "Mobile Navigation",
+    "mobile.home": "Home",
+    "mobile.about": "About",
+    "mobile.stack": "Stack",
+    "mobile.work": "Work",
+    "mobile.contact": "Contact",
+    "lang.groupAria": "Choose language",
+    "hero.portraitAlt": "Portrait of Z.yrsnh",
+    "hero.arrowAria": "Scroll to About section"
+  }
+};
+
+/**
+ * Initialize and persist ID / EN language switching across Navbar and Hero elements.
+ */
+function initLanguageSwitcher() {
+  const STORAGE_KEY = "portfolioLang";
+  const langButtons = document.querySelectorAll(".lang-btn[data-lang]");
+  const textNodes = document.querySelectorAll("[data-i18n]");
+  const ariaNodes = document.querySelectorAll("[data-i18n-aria]");
+  const altNodes = document.querySelectorAll("[data-i18n-alt]");
+
+  function readSavedLang() {
+    try {
+      const saved = window.localStorage.getItem(STORAGE_KEY);
+      return saved && SITE_TRANSLATIONS[saved] ? saved : "id";
+    } catch (_) {
+      return "id";
+    }
+  }
+
+  function saveLang(lang) {
+    try {
+      window.localStorage.setItem(STORAGE_KEY, lang);
+    } catch (_) {
+      // Ignore storage errors when restricted under local file contexts.
+    }
+  }
+
+  function applyLanguage(lang, persist = true) {
+    const activeLang = SITE_TRANSLATIONS[lang] ? lang : "id";
+    const dict = SITE_TRANSLATIONS[activeLang];
+    const pageKey = document.body.dataset.page === "contact" ? "title.contact" : "title.home";
+
+    document.documentElement.lang = activeLang;
+    if (dict[pageKey]) {
+      document.title = dict[pageKey];
+    }
+
+    textNodes.forEach((node) => {
+      const key = node.dataset.i18n;
+      if (dict[key]) node.textContent = dict[key];
+    });
+
+    ariaNodes.forEach((node) => {
+      const key = node.dataset.i18nAria;
+      if (dict[key]) node.setAttribute("aria-label", dict[key]);
+    });
+
+    altNodes.forEach((node) => {
+      const key = node.dataset.i18nAlt;
+      if (dict[key]) node.setAttribute("alt", dict[key]);
+    });
+
+    langButtons.forEach((btn) => {
+      const isActive = btn.dataset.lang === activeLang;
+      btn.classList.toggle("is-active", isActive);
+      btn.setAttribute("aria-pressed", isActive ? "true" : "false");
+    });
+
+    if (persist) saveLang(activeLang);
+  }
+
+  applyLanguage(readSavedLang(), false);
+
+  langButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      applyLanguage(btn.dataset.lang, true);
+    });
   });
 }

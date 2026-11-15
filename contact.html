@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Contact — Alex Pratama</title>
+  <title>Kontak — Z.yrsnh</title>
 
   <!-- Google Fonts: Bebas Neue (Display) & Plus Jakarta Sans (Clean Body) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -26,13 +26,13 @@
   <!-- Custom Stylesheet -->
   <link rel="stylesheet" href="assets/css/style.css" />
 </head>
-<body>
+<body data-page="contact">
   <!-- ==================== NAVBAR ==================== -->
   <header class="site-header sticky-top">
     <nav class="navbar navbar-expand-lg py-3">
       <div class="container">
-        <a class="navbar-brand fw-extrabold text-uppercase tracking-wide" href="index.html#home">
-          ALEX PRATAMA
+        <a class="navbar-brand fw-extrabold tracking-wide" href="index.html#home">
+          Z.yrsnh
         </a>
 
         <button
@@ -48,18 +48,24 @@
         </button>
 
         <div class="collapse navbar-collapse" id="mainNavbar">
-          <ul class="navbar-nav ms-auto gap-lg-4 mt-3 mt-lg-0">
+          <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-4 mt-3 mt-lg-0">
             <li class="nav-item">
-              <a class="nav-link" href="index.html#home">HOME</a>
+              <a class="nav-link" href="index.html#home" data-i18n="nav.home">BERANDA</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="index.html#about">ABOUT ME</a>
+              <a class="nav-link" href="index.html#about" data-i18n="nav.about">TENTANG</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="index.html#work">WORK</a>
+              <a class="nav-link" href="index.html#work" data-i18n="nav.work">KARYA</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="contact.html">CONTACT</a>
+              <a class="nav-link active" aria-current="page" href="contact.html" data-i18n="nav.contact">KONTAK</a>
+            </li>
+            <li class="nav-item ms-lg-2 pt-2 pt-lg-0">
+              <div class="lang-switcher" role="group" aria-label="Pilih bahasa" data-i18n-aria="lang.groupAria">
+                <button type="button" class="lang-btn is-active" data-lang="id" aria-pressed="true">ID</button>
+                <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+              </div>
             </li>
           </ul>
         </div>
@@ -215,7 +221,7 @@
     <footer class="site-footer py-3">
       <div class="container">
         <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
-          <span class="footer-copy">&copy; 2026 ALEX PRATAMA. ALL RIGHTS RESERVED.</span>
+          <span class="footer-copy">&copy; 2026 Z.yrsnh. ALL RIGHTS RESERVED.</span>
 
           <div class="d-flex align-items-center gap-3 footer-social-icons">
             <a href="https://github.com/zysrnh" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
@@ -234,28 +240,32 @@
   </div>
 
   <!-- ==================== MOBILE APP BOTTOM TOOLBAR ==================== -->
-  <nav class="mobile-app-bar" id="mobileAppBar" aria-label="Mobile Navigation">
+  <nav class="mobile-app-bar" id="mobileAppBar" aria-label="Navigasi Seluler" data-i18n-aria="nav.mobileAria">
     <div class="mobile-app-bar-inner">
       <a href="index.html#home" class="mobile-app-item">
         <i class="bi bi-house" aria-hidden="true"></i>
-        <span class="mobile-app-label">Home</span>
+        <span class="mobile-app-label" data-i18n="mobile.home">Beranda</span>
       </a>
       <a href="index.html#about" class="mobile-app-item">
         <i class="bi bi-person" aria-hidden="true"></i>
-        <span class="mobile-app-label">About</span>
+        <span class="mobile-app-label" data-i18n="mobile.about">Tentang</span>
       </a>
       <a href="index.html#skills" class="mobile-app-item">
         <i class="bi bi-layers" aria-hidden="true"></i>
-        <span class="mobile-app-label">Stack</span>
+        <span class="mobile-app-label" data-i18n="mobile.stack">Stack</span>
       </a>
       <a href="index.html#work" class="mobile-app-item">
         <i class="bi bi-grid" aria-hidden="true"></i>
-        <span class="mobile-app-label">Work</span>
+        <span class="mobile-app-label" data-i18n="mobile.work">Karya</span>
       </a>
       <a href="contact.html" class="mobile-app-item is-active" aria-current="page">
         <i class="bi bi-envelope" aria-hidden="true"></i>
-        <span class="mobile-app-label">Contact</span>
+        <span class="mobile-app-label" data-i18n="mobile.contact">Kontak</span>
       </a>
+      <div class="mobile-app-lang" role="group" aria-label="Pilih bahasa" data-i18n-aria="lang.groupAria">
+        <button type="button" class="lang-btn is-active" data-lang="id" aria-pressed="true">ID</button>
+        <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+      </div>
     </div>
   </nav>
 

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Portfolio — Alex Pratama</title>
+  <title>Portofolio — Z.yrsnh</title>
 
   <!-- Google Fonts: Bebas Neue (Display) & Plus Jakarta Sans (Clean Body) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -44,13 +44,13 @@
     })();
   </script>
 </head>
-<body>
+<body data-page="home">
   <!-- ==================== NAVBAR ==================== -->
   <header class="site-header sticky-top">
     <nav class="navbar navbar-expand-lg py-3">
       <div class="container">
-        <a class="navbar-brand fw-extrabold text-uppercase tracking-wide" href="#home">
-          ALEX PRATAMA
+        <a class="navbar-brand fw-extrabold tracking-wide" href="#home">
+          Z.yrsnh
         </a>
 
         <button
@@ -66,18 +66,24 @@
         </button>
 
         <div class="collapse navbar-collapse" id="mainNavbar">
-          <ul class="navbar-nav ms-auto gap-lg-4 mt-3 mt-lg-0">
+          <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-4 mt-3 mt-lg-0">
             <li class="nav-item">
-              <a class="nav-link" href="#home">HOME</a>
+              <a class="nav-link" href="#home" data-i18n="nav.home">BERANDA</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#about">ABOUT ME</a>
+              <a class="nav-link" href="#about" data-i18n="nav.about">TENTANG</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#work">WORK</a>
+              <a class="nav-link" href="#work" data-i18n="nav.work">KARYA</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#contact">CONTACT</a>
+              <a class="nav-link" href="#contact" data-i18n="nav.contact">KONTAK</a>
+            </li>
+            <li class="nav-item ms-lg-2 pt-2 pt-lg-0">
+              <div class="lang-switcher" role="group" aria-label="Pilih bahasa" data-i18n-aria="lang.groupAria">
+                <button type="button" class="lang-btn is-active" data-lang="id" aria-pressed="true">ID</button>
+                <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+              </div>
             </li>
           </ul>
         </div>
@@ -119,7 +125,8 @@
       <div class="hero-portrait-wrap">
         <img
           src="assets/img/hero-portrait.png"
-          alt="Portrait of Alex Pratama"
+          alt="Potret Z.yrsnh"
+          data-i18n-alt="hero.portraitAlt"
           class="hero-portrait-img"
         />
       </div>
@@ -127,8 +134,13 @@
       <div class="container hero-inner d-flex flex-column justify-content-between py-4 py-lg-5">
         <!-- Top Bar -->
         <div class="d-flex justify-content-between align-items-center hero-meta">
-          <span>Web Developer &amp; Designer</span>
-          <a href="#about" class="hero-arrow-link" aria-label="Scroll to About section">
+          <span>Web Developer</span>
+          <a
+            href="#about"
+            class="hero-arrow-link"
+            aria-label="Gulir ke bagian Tentang"
+            data-i18n-aria="hero.arrowAria"
+          >
             <i class="bi bi-arrow-right"></i>
           </a>
         </div>
@@ -141,8 +153,15 @@
 
         <!-- Bottom Bar -->
         <div class="d-flex justify-content-between align-items-center hero-meta">
-          <span>Alex Pratama</span>
-          <span>www.alexpratama.dev</span>
+          <span>Z.yrsnh</span>
+          <a
+            href="https://github.com/zysrnh"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hero-meta-link"
+          >
+            github.com/zysrnh
+          </a>
         </div>
       </div>
 
@@ -357,7 +376,7 @@
         <span class="galaxy-meteor galaxy-meteor--2"></span>
       </div>
       <div class="skills-galaxy-wave" aria-hidden="true"></div>
-      <div class="skills-galaxy-wave skills-galaxy-wave--secondary" aria-hidden="true"></div>
+      <div class="skills-galaxy-wave skills-galaxy- wave--secondary" aria-hidden="true"></div>
 
       <div class="container skills-inner d-flex flex-column py-2 py-lg-3">
         <!-- Top Bar (Mirrors Hero Top Bar) -->
@@ -1182,7 +1201,7 @@
         <div class="row gy-4 justify-content-between align-items-start pb-3 footer-main-row">
           <!-- Column 1: Brand & Role -->
           <div class="col-md-5">
-            <div class="footer-name mb-2">ALEX PRATAMA</div>
+            <div class="footer-name mb-2">Z.yrsnh</div>
             <p class="footer-bio mb-0">
               Web Developer &amp; UI Designer focused on clean code, structured interfaces, and
               responsive web experiences.
@@ -1216,7 +1235,7 @@
         </div>
 
         <div class="d-flex flex-wrap justify-content-between align-items-center pt-3 gap-2">
-          <span class="footer-copy">&copy; 2026 ALEX PRATAMA. ALL RIGHTS RESERVED.</span>
+          <span class="footer-copy">&copy; 2026 Z.yrsnh. ALL RIGHTS RESERVED.</span>
           <span class="footer-copy">BUILT WITH HTML5, CSS3 &amp; BOOTSTRAP 5</span>
         </div>
       </div>
@@ -1292,28 +1311,32 @@
   </div>
 
   <!-- ==================== MOBILE APP BOTTOM TOOLBAR ==================== -->
-  <nav class="mobile-app-bar" id="mobileAppBar" aria-label="Mobile Navigation">
+  <nav class="mobile-app-bar" id="mobileAppBar" aria-label="Navigasi Seluler" data-i18n-aria="nav.mobileAria">
     <div class="mobile-app-bar-inner">
       <a href="#home" class="mobile-app-item is-active" data-app-section="home">
         <i class="bi bi-house" aria-hidden="true"></i>
-        <span class="mobile-app-label">Home</span>
+        <span class="mobile-app-label" data-i18n="mobile.home">Beranda</span>
       </a>
       <a href="#about" class="mobile-app-item" data-app-section="about">
         <i class="bi bi-person" aria-hidden="true"></i>
-        <span class="mobile-app-label">About</span>
+        <span class="mobile-app-label" data-i18n="mobile.about">Tentang</span>
       </a>
       <a href="#skills" class="mobile-app-item" data-app-section="skills">
         <i class="bi bi-layers" aria-hidden="true"></i>
-        <span class="mobile-app-label">Stack</span>
+        <span class="mobile-app-label" data-i18n="mobile.stack">Stack</span>
       </a>
       <a href="#work" class="mobile-app-item" data-app-section="work">
         <i class="bi bi-grid" aria-hidden="true"></i>
-        <span class="mobile-app-label">Work</span>
+        <span class="mobile-app-label" data-i18n="mobile.work">Karya</span>
       </a>
       <a href="#contact" class="mobile-app-item" data-app-section="contact">
         <i class="bi bi-envelope" aria-hidden="true"></i>
-        <span class="mobile-app-label">Contact</span>
+        <span class="mobile-app-label" data-i18n="mobile.contact">Kontak</span>
       </a>
+      <div class="mobile-app-lang" role="group" aria-label="Pilih bahasa" data-i18n-aria="lang.groupAria">
+        <button type="button" class="lang-btn is-active" data-lang="id" aria-pressed="true">ID</button>
+        <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+      </div>
     </div>
   </nav>
 
