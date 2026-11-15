@@ -633,7 +633,7 @@ function initSkillsSection() {
                   galaxyDelayTimer = null;
                   syncGalaxyOrigin();
                   skillsSection.classList.add("is-galaxy-active");
-                }, 180);
+                }, 350);
               }
             } else if (!entry.isIntersecting) {
               if (galaxyDelayTimer) {

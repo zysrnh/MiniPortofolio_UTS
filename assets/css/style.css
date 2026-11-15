@@ -722,8 +722,8 @@ body {
 }
 
 .skills-section.is-galaxy-active .skills-galaxy-bg {
-  clip-path: circle(155% at var(--gx) var(--gy));
-  transition: clip-path 2.8s cubic-bezier(0.28, 0.72, 0.22, 1);
+  clip-path: circle(82% at var(--gx) var(--gy));
+  transition: clip-path 5s cubic-bezier(0.45, 0.05, 0.55, 0.95);
 }
 
 .skills-galaxy-wave {
@@ -742,7 +742,7 @@ body {
 }
 
 .skills-section.is-galaxy-active .skills-galaxy-wave {
-  animation: galaxyCenterRipple 2.4s cubic-bezier(0.2, 0.75, 0.25, 1) forwards;
+  animation: galaxyCenterRipple 4.4s cubic-bezier(0.4, 0.08, 0.3, 1) forwards;
 }
 
 @keyframes galaxyCenterRipple {
@@ -754,7 +754,7 @@ body {
     opacity: 0.36;
   }
   100% {
-    transform: translate(-50%, -50%) scale(15);
+    transform: translate(-50%, -50%) scale(10.5);
     opacity: 0;
   }
 }
@@ -765,7 +765,7 @@ body {
   pointer-events: none;
   filter: blur(88px);
   opacity: 0;
-  transition: opacity 2.2s ease 0.45s;
+  transition: opacity 3.6s ease 0.8s;
 }
 
 .skills-section.is-galaxy-active .skills-galaxy-aura {
@@ -809,7 +809,7 @@ body {
   opacity: 0;
   animation: galaxyStarTwinkle 3.8s ease-in-out var(--sd, 0s) infinite;
   animation-play-state: paused;
-  transition: opacity 1.4s ease 1.1s;
+  transition: opacity 1.6s ease 2.6s;
 }
 
 .skills-section.is-galaxy-active .galaxy-star {
@@ -2555,63 +2555,63 @@ body {
 .skills-section .orbit-core {
   transition:
     transform 0.22s ease,
-    background-color 0.85s ease,
-    border-color 0.85s ease,
-    box-shadow 0.85s ease;
+    background-color 1.15s ease,
+    border-color 1.15s ease,
+    box-shadow 1.15s ease;
 }
 
 .skills-section .orbit-track {
-  transition: border-color 0.9s ease;
+  transition: border-color 1.2s ease;
 }
 
 .skills-section.is-galaxy-active .skills-backdrop-word {
   -webkit-text-stroke-color: rgba(147, 197, 253, 0.11);
-  transition: -webkit-text-stroke-color 1.2s ease 1.05s;
+  transition: -webkit-text-stroke-color 1.4s ease 2.65s;
 }
 
 .skills-section.is-galaxy-active .constellation-dot {
   background-color: rgba(191, 219, 254, 0.72);
   box-shadow: 0 0 8px rgba(96, 165, 250, 0.6);
-  transition: background-color 1.1s ease 1.15s, box-shadow 1.1s ease 1.15s;
+  transition: background-color 1.3s ease 2.75s, box-shadow 1.3s ease 2.75s;
 }
 
 .skills-section.is-galaxy-active .orbit-track--ring1 {
   border-color: rgba(147, 197, 253, 0.44);
-  transition-delay: 0.42s;
+  transition-delay: 0.9s;
 }
 
 .skills-section.is-galaxy-active .orbit-track--ring2 {
   border-color: rgba(147, 197, 253, 0.34);
-  transition-delay: 0.75s;
+  transition-delay: 1.6s;
 }
 
 .skills-section.is-galaxy-active .orbit-track--ring3 {
   border-color: rgba(147, 197, 253, 0.25);
-  transition-delay: 1.08s;
+  transition-delay: 2.35s;
 }
 
 .skills-section.is-galaxy-active .orbit-track--ring4 {
   border-color: rgba(147, 197, 253, 0.18);
-  transition-delay: 1.4s;
+  transition-delay: 3.1s;
 }
 
 .skills-section.is-galaxy-active .orbit-core {
   background-color: #0f2d73;
   border-color: #bfdbfe;
   box-shadow: 0 0 28px rgba(59, 130, 246, 0.42), var(--shadow-btn);
-  transition-delay: 0.12s;
+  transition-delay: 0.25s;
 }
 
 .skills-section.is-galaxy-active .orbit-core-pulse,
 .skills-section.is-galaxy-active .orbit-switch-wave {
   border-color: rgba(147, 197, 253, 0.55);
-  transition: border-color 0.8s ease 0.12s;
+  transition: border-color 1.1s ease 0.25s;
 }
 
 .skills-section.is-galaxy-active .stack-filter-btn {
   background-color: rgba(147, 197, 253, 0.08);
   border-color: rgba(147, 197, 253, 0.26);
-  transition: background-color 0.85s ease 1.2s, border-color 0.85s ease 1.2s, color 0.2s ease;
+  transition: background-color 1.15s ease 2.85s, border-color 1.15s ease 2.85s, color 0.2s ease;
 }
 
 .skills-section.is-galaxy-active .stack-filter-btn:hover {
@@ -2623,30 +2623,30 @@ body {
 .skills-section.is-galaxy-active .stack-filter-btn.is-active {
   background-color: #15429e;
   border-color: #bfdbfe;
-  transition-delay: 1.2s;
+  transition-delay: 2.85s;
 }
 
 .skills-section.is-galaxy-active .orbit-chip {
   background-color: #081536;
   border-color: rgba(147, 197, 253, 0.32);
   box-shadow: 0 6px 16px rgba(2, 6, 23, 0.52);
-  transition-duration: 0.75s, 0.75s, 0.75s, 0.28s, 0.28s, 0.34s;
+  transition-duration: 1.15s, 1.15s, 1.15s, 0.28s, 0.28s, 0.34s;
 }
 
 .skills-section.is-galaxy-active .orbit-rotator--ring1 .orbit-chip {
-  transition-delay: 0.42s, 0.42s, 0.42s, 0s, 0s, 0s;
+  transition-delay: 0.9s, 0.9s, 0.9s, 0s, 0s, 0s;
 }
 
 .skills-section.is-galaxy-active .orbit-rotator--ring2 .orbit-chip {
-  transition-delay: 0.75s, 0.75s, 0.75s, 0s, 0s, 0s;
+  transition-delay: 1.6s, 1.6s, 1.6s, 0s, 0s, 0s;
 }
 
 .skills-section.is-galaxy-active .orbit-rotator--ring3 .orbit-chip {
-  transition-delay: 1.08s, 1.08s, 1.08s, 0s, 0s, 0s;
+  transition-delay: 2.35s, 2.35s, 2.35s, 0s, 0s, 0s;
 }
 
 .skills-section.is-galaxy-active .orbit-rotator--ring4 .orbit-chip {
-  transition-delay: 1.4s, 1.4s, 1.4s, 0s, 0s, 0s;
+  transition-delay: 3.1s, 3.1s, 3.1s, 0s, 0s, 0s;
 }
 
 .skills-section.is-galaxy-active .orbit-chip:hover,
