@@ -745,6 +745,16 @@ body {
   animation: galaxyCenterRipple 4.4s cubic-bezier(0.4, 0.08, 0.3, 1) forwards;
 }
 
+.skills-galaxy-wave--secondary {
+  border-width: 1.5px;
+  border-color: rgba(191, 219, 254, 0.36);
+  box-shadow: 0 0 22px rgba(96, 165, 250, 0.32);
+}
+
+.skills-section.is-galaxy-active .skills-galaxy-wave--secondary {
+  animation: galaxyCenterRipple 4.6s cubic-bezier(0.36, 0.08, 0.28, 1) 0.55s forwards;
+}
+
 @keyframes galaxyCenterRipple {
   0% {
     transform: translate(-50%, -50%) scale(0.55);
@@ -765,11 +775,13 @@ body {
   pointer-events: none;
   filter: blur(88px);
   opacity: 0;
+  will-change: transform, opacity;
   transition: opacity 3.6s ease 0.8s;
 }
 
 .skills-section.is-galaxy-active .skills-galaxy-aura {
-  opacity: 0.5;
+  opacity: 0.52;
+  animation-play-state: running;
 }
 
 .skills-galaxy-aura--core {
@@ -779,6 +791,8 @@ body {
   top: var(--gy);
   transform: translate(-50%, -50%);
   background-color: #13409c;
+  animation: galaxyAuraCoreBreath 18s ease-in-out infinite alternate;
+  animation-play-state: paused;
 }
 
 .skills-galaxy-aura--left {
@@ -787,6 +801,8 @@ body {
   left: -8%;
   top: 12%;
   background-color: #0b2663;
+  animation: galaxyAuraDriftLeft 22s ease-in-out infinite alternate;
+  animation-play-state: paused;
 }
 
 .skills-galaxy-aura--right {
@@ -795,6 +811,105 @@ body {
   right: -10%;
   bottom: 4%;
   background-color: #1a3a8f;
+  animation: galaxyAuraDriftRight 25s ease-in-out infinite alternate;
+  animation-play-state: paused;
+}
+
+@keyframes galaxyAuraCoreBreath {
+  0% {
+    transform: translate(-50%, -50%) scale(0.94);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.12);
+  }
+}
+
+@keyframes galaxyAuraDriftLeft {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  100% {
+    transform: translate3d(5%, 7%, 0) scale(1.09);
+  }
+}
+
+@keyframes galaxyAuraDriftRight {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  100% {
+    transform: translate3d(-6%, -6%, 0) scale(1.1);
+  }
+}
+
+.galaxy-meteor {
+  position: absolute;
+  left: var(--mx, 12%);
+  top: var(--my, 18%);
+  width: 84px;
+  height: 1.5px;
+  border-radius: 999px;
+  background-color: rgba(191, 219, 254, 0.42);
+  box-shadow: 0 0 8px rgba(147, 197, 253, 0.5);
+  opacity: 0;
+  pointer-events: none;
+  transform: rotate(var(--meteor-rot, 22deg)) translate3d(-60px, 0, 0);
+  will-change: transform, opacity;
+  animation: galaxyMeteorShoot var(--meteor-dur, 10.5s) cubic-bezier(0.22, 0.61, 0.36, 1) var(--meteor-delay, 2.6s) infinite;
+  animation-play-state: paused;
+}
+
+.galaxy-meteor::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: #eff6ff;
+  box-shadow: 0 0 10px 2px rgba(147, 197, 253, 0.85);
+  transform: translate(50%, -50%);
+}
+
+.galaxy-meteor--1 {
+  --mx: 12%;
+  --my: 18%;
+  --meteor-rot: 22deg;
+  --meteor-dur: 10.5s;
+  --meteor-delay: 2.6s;
+}
+
+.galaxy-meteor--2 {
+  --mx: 54%;
+  --my: 14%;
+  --meteor-rot: 27deg;
+  --meteor-dur: 14.5s;
+  --meteor-delay: 6.2s;
+}
+
+.skills-section.is-galaxy-active .galaxy-meteor {
+  animation-play-state: running;
+}
+
+@keyframes galaxyMeteorShoot {
+  0% {
+    opacity: 0;
+    transform: rotate(var(--meteor-rot, 22deg)) translate3d(-60px, 0, 0);
+  }
+  3% {
+    opacity: 0.92;
+    transform: rotate(var(--meteor-rot, 22deg)) translate3d(25px, 0, 0);
+  }
+  12% {
+    opacity: 0.85;
+    transform: rotate(var(--meteor-rot, 22deg)) translate3d(350px, 0, 0);
+  }
+  17%,
+  100% {
+    opacity: 0;
+    transform: rotate(var(--meteor-rot, 22deg)) translate3d(450px, 0, 0);
+  }
 }
 
 .galaxy-star {
@@ -2669,8 +2784,10 @@ body {
   .skills-section,
   .skills-galaxy-bg,
   .skills-galaxy-wave,
+  .skills-galaxy-wave--secondary,
   .skills-galaxy-aura,
   .galaxy-star,
+  .galaxy-meteor,
   .skills-section .orbit-core,
   .skills-section .orbit-track {
     transition: none !important;
@@ -2684,7 +2801,14 @@ body {
   .orbit-core.is-morphing,
   .constellation-dot,
   .skills-galaxy-wave,
-  .galaxy-star {
+  .skills-galaxy-wave--secondary,
+  .skills-galaxy-aura,
+  .galaxy-star,
+  .galaxy-meteor {
     animation: none !important;
+  }
+
+  .galaxy-meteor {
+    display: none;
   }
 }
