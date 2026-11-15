@@ -1049,12 +1049,8 @@
       </div>
 
       <div class="container position-relative work-container">
-        <div class="work-header d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4">
+        <div class="work-header d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
           <div>
-            <div class="work-kicker">
-              <span class="work-kicker-square" aria-hidden="true"></span>
-              <span data-i18n="work.kicker">04 // KARYA PILIHAN</span>
-            </div>
             <h2 class="skills-section-title mb-0" data-i18n="work.title">PORTFOLIO.</h2>
           </div>
 
@@ -1398,7 +1394,7 @@
     </footer>
   </div>
 
-  <!-- ==================== PROJECT DETAIL MODAL ==================== -->
+  <!-- ==================== PROJECT DETAIL MODAL (FULL-SCREEN DARK EDITORIAL) ==================== -->
   <div
     class="modal fade"
     id="projectModal"
@@ -1406,40 +1402,93 @@
     aria-labelledby="projectModalLabel"
     aria-hidden="true"
   >
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content flat-modal">
-        <div class="modal-header flat-modal-header">
-          <div>
-            <span id="modalCategory" class="flat-modal-kicker">01 // PENGEMBANGAN WEB</span>
-            <h5 class="modal-title fw-bold mb-0" id="projectModalLabel">Project Title</h5>
-          </div>
-          <button
-            type="button"
-            class="btn-close btn-close-white"
-            data-bs-dismiss="modal"
-            aria-label="Tutup"
-            data-i18n-aria="modal.closeAria"
-          ></button>
+    <div class="modal-dialog modal-fullscreen">
+      <div class="modal-content project-fullscreen-modal">
+        <div class="project-fullscreen-ambient" aria-hidden="true">
+          <svg class="project-fullscreen-reticle" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice">
+            <defs>
+              <pattern id="projectModalGridPattern" width="64" height="64" patternUnits="userSpaceOnUse">
+                <path d="M 64 0 L 0 0 0 64" fill="none" stroke="rgba(241, 235, 235, 0.045)" stroke-width="1" />
+                <path d="M 61 0 L 67 0 M 64 -3 L 64 3" fill="none" stroke="rgba(241, 235, 235, 0.09)" stroke-width="1" />
+              </pattern>
+            </defs>
+            <rect width="1200" height="700" fill="url(#projectModalGridPattern)" />
+            <path d="M24 58 L24 24 L58 24" fill="none" stroke="rgba(241, 235, 235, 0.22)" stroke-width="1.5" />
+            <path d="M1142 24 L1176 24 L1176 58" fill="none" stroke="rgba(241, 235, 235, 0.22)" stroke-width="1.5" />
+            <path d="M24 642 L24 676 L58 676" fill="none" stroke="rgba(241, 235, 235, 0.22)" stroke-width="1.5" />
+            <path d="M1142 676 L1176 676 L1176 642" fill="none" stroke="rgba(241, 235, 235, 0.22)" stroke-width="1.5" />
+          </svg>
         </div>
-        <div class="modal-body p-4">
-          <div class="project-modal-preview">
-            <img id="modalPreviewImg" src="" alt="" class="project-modal-img" />
+
+        <header class="project-fullscreen-topbar">
+          <div class="container d-flex align-items-center justify-content-between gap-3">
+            <button
+              type="button"
+              class="project-fullscreen-back"
+              data-bs-dismiss="modal"
+            >
+              <i class="bi bi-arrow-left" aria-hidden="true"></i>
+              <span data-i18n="work.modalBack">KEMBALI</span>
+            </button>
+
+            <div class="d-flex align-items-center gap-2 gap-sm-3">
+              <span class="project-fullscreen-counter" id="projectModalCounter" aria-live="polite">01 / 06</span>
+              <div class="d-flex align-items-center gap-1">
+                <button
+                  type="button"
+                  class="project-fullscreen-nav-btn"
+                  id="projectModalPrevBtn"
+                  aria-label="Proyek sebelumnya"
+                  data-i18n-aria="work.modalPrevAria"
+                >
+                  <i class="bi bi-chevron-left" aria-hidden="true"></i>
+                </button>
+                <button
+                  type="button"
+                  class="project-fullscreen-nav-btn"
+                  id="projectModalNextBtn"
+                  aria-label="Proyek berikutnya"
+                  data-i18n-aria="work.modalNextAria"
+                >
+                  <i class="bi bi-chevron-right" aria-hidden="true"></i>
+                </button>
+              </div>
+              <button
+                type="button"
+                class="project-fullscreen-close"
+                data-bs-dismiss="modal"
+                aria-label="Tutup"
+                data-i18n-aria="modal.closeAria"
+              >
+                <i class="bi bi-x-lg" aria-hidden="true"></i>
+              </button>
+            </div>
           </div>
-          <p id="modalDescription" class="project-modal-desc mb-3"></p>
-          <div class="project-modal-stack-block">
-            <div class="project-modal-stack-label" data-i18n="work.modalStack">TECH STACK</div>
-            <div id="modalStack" class="slide-stack-row mb-0"></div>
+        </header>
+
+        <div class="project-fullscreen-body">
+          <div class="container">
+            <div class="project-fullscreen-grid">
+              <div class="project-fullscreen-preview">
+                <img id="modalPreviewImg" src="" alt="" class="project-fullscreen-img" />
+              </div>
+
+              <div class="project-fullscreen-info">
+                <div class="project-fullscreen-kicker">
+                  <span class="project-fullscreen-kicker-sq" aria-hidden="true"></span>
+                  <span id="modalCategory">01 // PENGEMBANGAN WEB</span>
+                </div>
+                <h2 class="project-fullscreen-title" id="projectModalLabel">Project Title</h2>
+                <div class="project-fullscreen-rule" aria-hidden="true"></div>
+                <p id="modalDescription" class="project-fullscreen-desc"></p>
+
+                <div class="project-fullscreen-stack-block">
+                  <div class="project-fullscreen-stack-label" data-i18n="work.modalStack">TECH STACK</div>
+                  <div id="modalStack" class="project-fullscreen-stack-row"></div>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="modal-footer project-modal-footer">
-          <button
-            type="button"
-            class="btn btn-solid-dark btn-sm px-4"
-            data-bs-dismiss="modal"
-            data-i18n="work.modalClose"
-          >
-            TUTUP
-          </button>
         </div>
       </div>
     </div>

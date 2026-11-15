@@ -343,7 +343,7 @@ function initAboutCarousel() {
 }
 
 /**
- * Populate and open Bootstrap modal when clicking project cards.
+ * Populate and open full-screen dark project detail overlay with prev/next project switching.
  */
 function initProjectModal() {
   const modalElement = document.getElementById("projectModal");
@@ -352,19 +352,29 @@ function initProjectModal() {
   const projectModal = new bootstrap.Modal(modalElement);
   const titleEl = document.getElementById("projectModalLabel");
   const categoryEl = document.getElementById("modalCategory");
-  const previewWrap = modalElement.querySelector(".project-modal-preview");
+  const counterEl = document.getElementById("projectModalCounter");
+  const prevBtn = document.getElementById("projectModalPrevBtn");
+  const nextBtn = document.getElementById("projectModalNextBtn");
+  const previewWrap = modalElement.querySelector(".project-fullscreen-preview");
   const previewImgEl = document.getElementById("modalPreviewImg");
   const descEl = document.getElementById("modalDescription");
   const stackEl = document.getElementById("modalStack");
 
-  let activeBtn = null;
+  const projectButtons = Array.from(document.querySelectorAll(".project-detail-btn"));
+  if (!projectButtons.length) return;
 
-  function renderProjectDetails(btn) {
+  let activeIndex = 0;
+
+  function renderProjectByIndex(idx) {
+    const total = projectButtons.length;
+    activeIndex = ((idx % total) + total) % total;
+    const btn = projectButtons[activeIndex];
     if (!btn) return;
+
     const lang = document.documentElement.lang === "en" ? "en" : "id";
     const dict = SITE_TRANSLATIONS[lang] || SITE_TRANSLATIONS.id;
     const key = btn.dataset.projectKey || "";
-    const index = btn.dataset.projectIndex || "";
+    const index = btn.dataset.projectIndex || String(activeIndex + 1).padStart(2, "0");
     const card = btn.closest(".portfolio-card");
     const cardImg = card ? card.querySelector(".portfolio-card-img") : null;
 
@@ -382,9 +392,18 @@ function initProjectModal() {
       card?.querySelector(".portfolio-card-desc")?.textContent?.trim() ||
       "";
 
-    categoryEl.textContent = index ? `${index} // ${category}` : category;
-    titleEl.textContent = title;
-    descEl.textContent = desc;
+    if (categoryEl) {
+      categoryEl.textContent = index ? `${index} // ${category}` : category;
+    }
+    if (titleEl) {
+      titleEl.textContent = title;
+    }
+    if (descEl) {
+      descEl.textContent = desc;
+    }
+    if (counterEl) {
+      counterEl.textContent = `${String(activeIndex + 1).padStart(2, "0")} / ${String(total).padStart(2, "0")}`;
+    }
 
     if (previewImgEl && previewWrap) {
       const imgSrc = cardImg ? cardImg.getAttribute("src") || "" : "";
@@ -414,17 +433,39 @@ function initProjectModal() {
     }
   }
 
-  document.querySelectorAll(".project-detail-btn").forEach((btn) => {
+  projectButtons.forEach((btn, idx) => {
     btn.addEventListener("click", () => {
-      activeBtn = btn;
-      renderProjectDetails(btn);
+      renderProjectByIndex(idx);
       projectModal.show();
     });
   });
 
+  if (prevBtn) {
+    prevBtn.addEventListener("click", () => {
+      renderProjectByIndex(activeIndex - 1);
+    });
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener("click", () => {
+      renderProjectByIndex(activeIndex + 1);
+    });
+  }
+
+  document.addEventListener("keydown", (event) => {
+    if (!modalElement.classList.contains("show")) return;
+    if (event.key === "ArrowLeft") {
+      event.preventDefault();
+      renderProjectByIndex(activeIndex - 1);
+    } else if (event.key === "ArrowRight") {
+      event.preventDefault();
+      renderProjectByIndex(activeIndex + 1);
+    }
+  });
+
   window.addEventListener("portfolio:langchange", () => {
-    if (activeBtn && modalElement.classList.contains("show")) {
-      renderProjectDetails(activeBtn);
+    if (modalElement.classList.contains("show")) {
+      renderProjectByIndex(activeIndex);
     }
   });
 }
@@ -1872,14 +1913,15 @@ const SITE_TRANSLATIONS = {
     "modal.messageLabel": "Pesan / Detail Proyek",
     "modal.messagePlaceholder": "Tulis pesan atau kebutuhan proyek...",
     "modal.submit": "KIRIM PESAN",
-    "work.kicker": "04 // KARYA PILIHAN",
     "work.title": "PORTFOLIO.",
     "work.prevAria": "Proyek sebelumnya",
     "work.nextAria": "Proyek berikutnya",
     "work.dotsAria": "Navigasi halaman portofolio",
     "work.viewDetails": "SELENGKAPNYA",
     "work.modalStack": "TECH STACK",
-    "work.modalClose": "TUTUP",
+    "work.modalBack": "KEMBALI",
+    "work.modalPrevAria": "Proyek sebelumnya",
+    "work.modalNextAria": "Proyek berikutnya",
     "work.p1.cat": "Pengembangan Web",
     "work.p1.title": "Company Profile Website",
     "work.p1.desc": "Landing page profil perusahaan yang responsif dengan HTML5 semantik, CSS3, dan Bootstrap 5.",
@@ -1945,14 +1987,15 @@ const SITE_TRANSLATIONS = {
     "modal.messageLabel": "Message / Project Details",
     "modal.messagePlaceholder": "Tell me about your message or project...",
     "modal.submit": "SEND MESSAGE",
-    "work.kicker": "04 // SELECTED WORKS",
     "work.title": "PORTFOLIO.",
     "work.prevAria": "Previous projects",
     "work.nextAria": "Next projects",
     "work.dotsAria": "Portfolio slide pagination",
     "work.viewDetails": "VIEW DETAILS",
     "work.modalStack": "TECH STACK",
-    "work.modalClose": "CLOSE",
+    "work.modalBack": "BACK",
+    "work.modalPrevAria": "Previous project",
+    "work.modalNextAria": "Next project",
     "work.p1.cat": "Web Development",
     "work.p1.title": "Company Profile Website",
     "work.p1.desc": "Responsive corporate landing page built with semantic HTML5, CSS3, and Bootstrap 5.",
