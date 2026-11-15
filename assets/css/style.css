@@ -970,15 +970,24 @@ body {
   display: flex;
   flex-direction: column;
   margin-bottom: 0.95rem;
+  background-color: var(--midnight-navy);
 }
 
 .portfolio-card-topbar {
-  background-color: rgba(0, 0, 42, 0.35);
+  background-color: var(--midnight-navy);
   padding: 0.4rem 0.7rem;
   display: flex;
   align-items: center;
   gap: 0.35rem;
   font-size: 0.66rem;
+}
+
+.portfolio-card-img {
+  width: 100%;
+  height: 155px;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
 }
 
 .portfolio-card-topbar .dot {
@@ -1539,7 +1548,7 @@ body {
     flex: 0 0 100%;
   }
 
-  .portfolio-card-visual {
-    height: 130px;
+  .portfolio-card-img {
+    height: 135px;
   }
 }
