@@ -1278,11 +1278,11 @@ body {
 }
 
 .cta-section {
-  min-height: calc(100vh - 240px);
-  min-height: calc(100svh - 240px);
+  min-height: calc(100vh - 290px);
+  min-height: calc(100svh - 290px);
   display: flex;
   align-items: center;
-  padding: 2rem 0;
+  padding: 1.5rem 0;
   scroll-snap-align: start;
 }
 
@@ -1294,10 +1294,6 @@ body {
   .skills-section,
   .work-section {
     padding: 1.5rem 0 !important;
-  }
-
-  .site-footer {
-    scroll-snap-align: end;
   }
 
   .work-section .mb-4 {
