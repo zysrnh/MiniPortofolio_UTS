@@ -1158,97 +1158,140 @@ body {
   background-color: var(--midnight-navy);
 }
 
-/* ==================== CONTACT & FOOTER (TYPOGRAPHIC CTA + CHANNELS + 3-COL FOOTER) ==================== */
+/* ==================== CONTACT & FOOTER (SWISS EDITORIAL CONTACT) ==================== */
 .contact-page-shell {
   min-height: calc(100vh - 64px);
   min-height: calc(100svh - 64px);
   display: flex;
   flex-direction: column;
   scroll-snap-align: start;
-  background-color: var(--ice-white);
+  background-color: var(--surface-white);
 }
 
 .cta-section {
-  background-color: var(--ice-white);
+  background-color: var(--surface-white);
   flex: 1;
   display: flex;
   align-items: center;
-  padding: 2rem 0;
+  padding: 1.75rem 0;
 }
 
-.cta-typo-heading {
-  font-size: clamp(2rem, 4.2vw, 3.35rem);
+.contact-giant-title {
+  font-size: clamp(2.8rem, 7vw, 5.25rem);
   font-weight: 800;
-  letter-spacing: -0.025em;
-  line-height: 1.1;
+  letter-spacing: -0.04em;
+  line-height: 0.95;
   color: var(--midnight-navy);
-  max-width: 780px;
+  margin: 0 0 1.5rem;
 }
 
-.cta-typo-desc {
-  font-size: 0.95rem;
-  line-height: 1.6;
+.contact-info-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1.35rem;
+}
+
+.contact-info-text {
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.45;
+  color: var(--midnight-navy);
+}
+
+.contact-info-muted {
+  font-size: 0.76rem;
+  font-weight: 500;
   color: var(--ink-muted);
-  max-width: 520px;
+  margin-bottom: 0.2rem;
 }
 
-/* ==================== 3-COLUMN FOOTER ==================== */
+.editorial-field-label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--midnight-navy);
+  margin-bottom: 0.35rem;
+}
+
+.editorial-underline-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1.5px solid rgba(26, 63, 117, 0.28);
+  border-radius: 0;
+  padding: 0.42rem 0;
+  font-size: 0.86rem;
+  color: var(--midnight-navy);
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.editorial-underline-input::placeholder {
+  color: rgba(71, 85, 105, 0.65);
+}
+
+.editorial-underline-input:focus {
+  border-bottom-color: var(--bright-blue);
+}
+
+.editorial-underline-select {
+  cursor: pointer;
+}
+
+.contact-big-row {
+  margin-top: 2rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border-ice);
+}
+
+.contact-big-link {
+  font-size: clamp(1.25rem, 2.5vw, 2rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--midnight-navy);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.contact-big-link:hover {
+  color: var(--bright-blue);
+}
+
+/* ==================== MINIMAL EDITORIAL FOOTER ==================== */
 .site-footer {
   background-color: var(--midnight-navy);
   color: var(--ice-white);
   border-top: 2px solid var(--slate-blue);
 }
 
-.footer-main-row {
-  border-bottom: 1px solid rgba(146, 180, 204, 0.18);
-}
-
-.footer-name {
-  font-weight: 800;
-  font-size: 1.05rem;
-  letter-spacing: 0.05em;
-  color: var(--ice-white);
-}
-
-.footer-bio {
-  font-size: 0.8rem;
-  line-height: 1.55;
-  color: rgba(220, 232, 242, 0.74);
-  max-width: 360px;
-}
-
-.footer-col-title {
-  font-size: 0.68rem;
-  font-weight: 800;
-  letter-spacing: 0.14em;
+.footer-nav-links a {
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--sky-blue);
-  margin-bottom: 0.65rem;
-}
-
-.footer-col-links li {
-  margin-bottom: 0.38rem;
-}
-
-.footer-col-links li:last-child {
-  margin-bottom: 0;
-}
-
-.footer-col-links a {
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: var(--ice-white);
+  color: var(--ice-blue);
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
-.footer-col-links a:hover {
+.footer-nav-links a:hover {
+  color: var(--sky-blue);
+}
+
+.footer-social-icons a {
+  color: var(--ice-blue);
+  font-size: 0.98rem;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer-social-icons a:hover {
   color: var(--sky-blue);
 }
 
 .footer-copy {
   font-size: 0.68rem;
-  color: rgba(220, 232, 242, 0.62);
+  color: rgba(220, 232, 242, 0.68);
   letter-spacing: 0.06em;
 }
 

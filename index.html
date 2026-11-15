@@ -734,72 +734,137 @@
   <!-- ==================== CONTACT & FOOTER SHELL (1-Screen Fit) ==================== -->
   <div class="contact-page-shell">
     <section id="contact" class="cta-section">
-      <div class="container text-center">
-        <span class="about-kicker d-block mb-2">05 / CONTACT</span>
-        <h2 class="cta-typo-heading mx-auto mb-2">
-          Have a Project in Mind?<br class="d-none d-md-inline" />
-          Let&rsquo;s Build Something Great.
-        </h2>
-        <p class="cta-typo-desc mx-auto mb-4">
-          Open for freelance web development, UI engineering, and fullstack collaboration.
-        </p>
+      <div class="container">
+        <!-- Giant Editorial Title -->
+        <h2 class="contact-giant-title">Contact me</h2>
 
-        <div class="d-flex justify-content-center flex-wrap gap-3">
-          <button
-            type="button"
-            class="btn btn-solid-dark"
-            data-bs-toggle="modal"
-            data-bs-target="#contactModal"
+        <!-- 2-Column Middle: Info Left + Underline Form Right -->
+        <div class="row g-4 g-lg-5 align-items-start mt-1">
+          <div class="col-lg-5">
+            <div class="contact-info-stack">
+              <div class="contact-info-block">
+                <p class="contact-info-text mb-0">Bandung, Indonesia</p>
+                <p class="contact-info-text mb-0">2026</p>
+              </div>
+
+              <div class="contact-info-block">
+                <p class="contact-info-muted mb-0">Available hours</p>
+                <p class="contact-info-text mb-0">Monday &ndash; Friday</p>
+                <p class="contact-info-text mb-0">09:00 AM &ndash; 05:00 PM WIB</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-7">
+            <form id="editorialContactForm" class="editorial-contact-form" novalidate>
+              <div class="mb-3">
+                <span class="editorial-field-label">Name (required)</span>
+                <div class="row g-3">
+                  <div class="col-sm-6">
+                    <input
+                      type="text"
+                      id="edFirstName"
+                      class="editorial-underline-input"
+                      placeholder="First Name"
+                      required
+                    />
+                  </div>
+                  <div class="col-sm-6">
+                    <input
+                      type="text"
+                      id="edLastName"
+                      class="editorial-underline-input"
+                      placeholder="Last Name"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="edService" class="editorial-field-label">Service</label>
+                <select id="edService" class="editorial-underline-input editorial-underline-select">
+                  <option value="Web Development">Web Development</option>
+                  <option value="UI/UX Design">UI/UX Design</option>
+                  <option value="Fullstack Laravel">Fullstack Laravel</option>
+                  <option value="Consultation">Consultation</option>
+                </select>
+              </div>
+
+              <div class="mb-3">
+                <label for="edEmail" class="editorial-field-label">Email (required)</label>
+                <input
+                  type="email"
+                  id="edEmail"
+                  class="editorial-underline-input"
+                  placeholder="you@example.com"
+                  required
+                />
+              </div>
+
+              <div class="mb-3">
+                <label for="edProjectDesc" class="editorial-field-label">Project description</label>
+                <input
+                  type="text"
+                  id="edProjectDesc"
+                  class="editorial-underline-input"
+                  placeholder="Tell me briefly about your project..."
+                  required
+                />
+              </div>
+
+              <div
+                id="edFormFeedback"
+                class="small mb-2 d-none"
+                role="status"
+                aria-live="polite"
+              ></div>
+
+              <button type="submit" class="btn btn-solid-dark mt-1">Submit</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Big Contact Row (Email Left + Phone/WA Right) -->
+        <div class="contact-big-row d-flex flex-wrap justify-content-between align-items-baseline gap-3">
+          <a href="mailto:hello@alexpratama.dev" class="contact-big-link">
+            hello@alexpratama.dev
+          </a>
+          <a
+            href="https://wa.me/6281234567890"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="contact-big-link"
           >
-            CONTACT
-          </button>
-          <a href="#work" class="btn btn-outline-dark-custom">VIEW MY WORK</a>
+            (+62) 812 3456 7890
+          </a>
         </div>
       </div>
     </section>
 
-    <!-- ==================== 3-COLUMN FOOTER ==================== -->
-    <footer class="site-footer py-4">
+    <!-- ==================== MINIMAL EDITORIAL FOOTER ==================== -->
+    <footer class="site-footer py-3">
       <div class="container">
-        <div class="row gy-4 justify-content-between align-items-start pb-3 footer-main-row">
-          <!-- Column 1: Brand & Role -->
-          <div class="col-md-5">
-            <div class="footer-name mb-2">ALEX PRATAMA</div>
-            <p class="footer-bio mb-0">
-              Web Developer &amp; UI Designer focused on clean code, structured interfaces, and
-              responsive web experiences.
-            </p>
-          </div>
-
-          <!-- Column 2: Navigation -->
-          <div class="col-6 col-md-3">
-            <div class="footer-col-title">Navigation</div>
-            <ul class="list-unstyled footer-col-links mb-0">
-              <li><a href="#home">Home</a></li>
-              <li><a href="#about">About Me</a></li>
-              <li><a href="#skills">Skills</a></li>
-              <li><a href="#work">Portfolio</a></li>
-            </ul>
-          </div>
-
-          <!-- Column 3: Connect -->
-          <div class="col-6 col-md-3">
-            <div class="footer-col-title">Connect</div>
-            <ul class="list-unstyled footer-col-links mb-0">
-              <li><a href="mailto:hello@alexpratama.dev">hello@alexpratama.dev</a></li>
-              <li>
-                <a href="https://github.com/zysrnh" target="_blank" rel="noopener noreferrer">GitHub</a>
-              </li>
-              <li>
-                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="d-flex flex-wrap justify-content-between align-items-center pt-3 gap-2">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
           <span class="footer-copy">&copy; 2026 ALEX PRATAMA. ALL RIGHTS RESERVED.</span>
-          <span class="footer-copy">BUILT WITH HTML5, CSS3 &amp; BOOTSTRAP 5</span>
+
+          <ul class="list-unstyled d-flex flex-wrap gap-4 mb-0 footer-nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#work">Work</a></li>
+          </ul>
+
+          <div class="d-flex align-items-center gap-3 footer-social-icons">
+            <a href="https://github.com/zysrnh" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+              <i class="bi bi-github"></i>
+            </a>
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+              <i class="bi bi-linkedin"></i>
+            </a>
+            <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+              <i class="bi bi-whatsapp"></i>
+            </a>
+          </div>
         </div>
       </div>
     </footer>

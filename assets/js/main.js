@@ -268,11 +268,11 @@ function initContactForm() {
 
   bindForm("contactForm", "senderName", "senderEmail", "senderMessage", "formFeedback");
   bindForm(
-    "inlineContactForm",
-    "inlineSenderName",
-    "inlineSenderEmail",
-    "inlineSenderMessage",
-    "inlineFormFeedback"
+    "editorialContactForm",
+    "edFirstName",
+    "edEmail",
+    "edProjectDesc",
+    "edFormFeedback"
   );
 }
 
