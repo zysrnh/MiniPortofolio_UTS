@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initContactForm();
   initServiceDropdown();
   initMobileNavClose();
+  initAppBottomBar();
 });
 
 /**
@@ -337,6 +338,55 @@ function initMobileNavClose() {
       }
     });
   });
+}
+
+/**
+ * Scroll-spy & tap highlight for the mobile app-style bottom toolbar.
+ */
+function initAppBottomBar() {
+  const bar = document.getElementById("mobileAppBar");
+  if (!bar) return;
+
+  const sectionItems = Array.from(bar.querySelectorAll(".mobile-app-item[data-app-section]"));
+  if (!sectionItems.length) return;
+
+  const setActive = (targetId) => {
+    sectionItems.forEach((item) => {
+      item.classList.toggle("is-active", item.dataset.appSection === targetId);
+    });
+  };
+
+  sectionItems.forEach((item) => {
+    item.addEventListener("click", () => {
+      const id = item.dataset.appSection;
+      if (id) setActive(id);
+    });
+  });
+
+  if (typeof IntersectionObserver === "undefined") return;
+
+  const sections = sectionItems
+    .map((item) => document.getElementById(item.dataset.appSection || ""))
+    .filter(Boolean);
+
+  if (!sections.length) return;
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      const visible = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (visible && visible.target && visible.target.id) {
+        setActive(visible.target.id);
+      }
+    },
+    {
+      rootMargin: "-35% 0px -45% 0px",
+      threshold: [0, 0.25, 0.5],
+    }
+  );
+
+  sections.forEach((section) => observer.observe(section));
 }
 
 /**
