@@ -117,13 +117,47 @@
               </div>
 
               <div class="mb-3">
-                <label for="edService" class="editorial-field-label">Service</label>
-                <select id="edService" class="editorial-underline-input editorial-underline-select">
-                  <option value="Web Development">Web Development</option>
-                  <option value="UI/UX Design">UI/UX Design</option>
-                  <option value="Fullstack Laravel">Fullstack Laravel</option>
-                  <option value="Consultation">Consultation</option>
-                </select>
+                <label class="editorial-field-label" id="serviceDropdownLabelText">Service</label>
+                <div class="service-dropdown" id="serviceDropdown">
+                  <input type="hidden" id="edService" value="Web Development" />
+                  <button
+                    type="button"
+                    class="editorial-underline-input service-dropdown-trigger"
+                    id="serviceDropdownBtn"
+                    aria-haspopup="listbox"
+                    aria-expanded="false"
+                    aria-labelledby="serviceDropdownLabelText serviceDropdownLabel"
+                  >
+                    <span id="serviceDropdownLabel">Web Development</span>
+                    <i class="bi bi-chevron-down service-dropdown-caret" aria-hidden="true"></i>
+                  </button>
+                  <ul class="service-dropdown-menu list-unstyled mb-0" role="listbox">
+                    <li>
+                      <button type="button" class="service-dropdown-item is-selected" data-value="Web Development" role="option" aria-selected="true">
+                        <span>Web Development</span>
+                        <i class="bi bi-check2" aria-hidden="true"></i>
+                      </button>
+                    </li>
+                    <li>
+                      <button type="button" class="service-dropdown-item" data-value="UI/UX Design" role="option" aria-selected="false">
+                        <span>UI/UX Design</span>
+                        <i class="bi bi-check2" aria-hidden="true"></i>
+                      </button>
+                    </li>
+                    <li>
+                      <button type="button" class="service-dropdown-item" data-value="Fullstack Laravel" role="option" aria-selected="false">
+                        <span>Fullstack Laravel</span>
+                        <i class="bi bi-check2" aria-hidden="true"></i>
+                      </button>
+                    </li>
+                    <li>
+                      <button type="button" class="service-dropdown-item" data-value="Consultation" role="option" aria-selected="false">
+                        <span>Consultation</span>
+                        <i class="bi bi-check2" aria-hidden="true"></i>
+                      </button>
+                    </li>
+                  </ul>
+                </div>
               </div>
 
               <div class="mb-3">
@@ -182,13 +216,6 @@
       <div class="container">
         <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
           <span class="footer-copy">&copy; 2026 ALEX PRATAMA. ALL RIGHTS RESERVED.</span>
-
-          <ul class="list-unstyled d-flex flex-wrap gap-4 mb-0 footer-nav-links">
-            <li><a href="index.html#home">Home</a></li>
-            <li><a href="index.html#about">About</a></li>
-            <li><a href="index.html#skills">Skills</a></li>
-            <li><a href="index.html#work">Work</a></li>
-          </ul>
 
           <div class="d-flex align-items-center gap-3 footer-social-icons">
             <a href="https://github.com/zysrnh" target="_blank" rel="noopener noreferrer" aria-label="GitHub">

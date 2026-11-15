@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initPortfolioAutoCarousel();
   initProjectModal();
   initContactForm();
+  initServiceDropdown();
   initMobileNavClose();
 });
 
@@ -274,6 +275,51 @@ function initContactForm() {
     "edProjectDesc",
     "edFormFeedback"
   );
+}
+
+/**
+ * Custom editorial dropdown for Service field on contact.html.
+ */
+function initServiceDropdown() {
+  const dropdown = document.getElementById("serviceDropdown");
+  const trigger = document.getElementById("serviceDropdownBtn");
+  const label = document.getElementById("serviceDropdownLabel");
+  const hiddenInput = document.getElementById("edService");
+  if (!dropdown || !trigger || !label || !hiddenInput) return;
+
+  const items = dropdown.querySelectorAll(".service-dropdown-item");
+
+  const closeMenu = () => {
+    dropdown.classList.remove("is-open");
+    trigger.setAttribute("aria-expanded", "false");
+  };
+
+  trigger.addEventListener("click", (event) => {
+    event.stopPropagation();
+    const isOpen = dropdown.classList.toggle("is-open");
+    trigger.setAttribute("aria-expanded", String(isOpen));
+  });
+
+  items.forEach((item) => {
+    item.addEventListener("click", () => {
+      const val = item.dataset.value || "";
+      hiddenInput.value = val;
+      label.textContent = val;
+
+      items.forEach((el) => {
+        const selected = el === item;
+        el.classList.toggle("is-selected", selected);
+        el.setAttribute("aria-selected", String(selected));
+      });
+      closeMenu();
+    });
+  });
+
+  document.addEventListener("click", (event) => {
+    if (!dropdown.contains(event.target)) {
+      closeMenu();
+    }
+  });
 }
 
 /**
