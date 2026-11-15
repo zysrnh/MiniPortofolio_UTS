@@ -792,13 +792,13 @@ body {
   display: flex;
   justify-content: center;
   width: 100%;
-  max-width: 620px;
+  max-width: 680px;
 }
 
 .orbit-viewport {
   position: relative;
   width: 100%;
-  height: 560px;
+  height: 644px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -806,8 +806,8 @@ body {
 
 .orbit-stage {
   position: relative;
-  width: 560px;
-  height: 560px;
+  width: 644px;
+  height: 644px;
   flex-shrink: 0;
   transform-origin: center center;
 }
@@ -873,16 +873,28 @@ body {
   pointer-events: none;
 }
 
-.orbit-track--inner {
-  width: 276px;
-  height: 276px;
+.orbit-track--ring1 {
+  width: 176px;
+  height: 176px;
   border: 1.5px dashed rgba(241, 235, 235, 0.34);
 }
 
-.orbit-track--outer {
-  width: 496px;
-  height: 496px;
+.orbit-track--ring2 {
+  width: 304px;
+  height: 304px;
+  border: 1.5px dashed rgba(241, 235, 235, 0.28);
+}
+
+.orbit-track--ring3 {
+  width: 444px;
+  height: 444px;
   border: 1.5px dashed rgba(241, 235, 235, 0.22);
+}
+
+.orbit-track--ring4 {
+  width: 588px;
+  height: 588px;
+  border: 1.5px dashed rgba(241, 235, 235, 0.16);
 }
 
 .orbit-core-wrap {
@@ -890,7 +902,7 @@ body {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  z-index: 6;
+  z-index: 8;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -898,8 +910,8 @@ body {
 
 .orbit-core-pulse {
   position: absolute;
-  width: 124px;
-  height: 124px;
+  width: 98px;
+  height: 98px;
   border-radius: 50%;
   border: 1.5px solid rgba(241, 235, 235, 0.42);
   pointer-events: none;
@@ -908,8 +920,8 @@ body {
 
 .orbit-core {
   position: relative;
-  width: 124px;
-  height: 124px;
+  width: 98px;
+  height: 98px;
   border-radius: 50%;
   background-color: var(--deep-red);
   border: 2px solid var(--stone);
@@ -918,7 +930,7 @@ body {
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 0.75rem;
+  padding: 0.5rem;
   color: var(--white);
   cursor: default;
   transition: transform 0.22s ease, border-color 0.22s ease;
@@ -937,7 +949,7 @@ body {
 .orbit-core-preview {
   position: absolute;
   inset: 0;
-  padding: 0.75rem;
+  padding: 0.45rem;
   opacity: 0;
   transform: scale(0.85);
   pointer-events: none;
@@ -960,7 +972,7 @@ body {
 
 .orbit-core-monogram {
   font-family: "Plus Jakarta Sans", sans-serif;
-  font-size: 1.85rem;
+  font-size: 1.55rem;
   font-weight: 800;
   letter-spacing: 0.06em;
   color: var(--white);
@@ -968,40 +980,40 @@ body {
 }
 
 .orbit-core.is-wide-label .orbit-core-monogram {
-  font-size: 1.32rem;
+  font-size: 1.08rem;
   letter-spacing: 0.05em;
 }
 
 .orbit-core-sub {
-  margin-top: 4px;
-  font-size: 0.56rem;
+  margin-top: 3px;
+  font-size: 0.48rem;
   font-weight: 700;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.14em;
   color: var(--stone);
   opacity: 0.9;
 }
 
 .orbit-core-preview-img {
-  width: 38px;
-  height: 38px;
+  width: 30px;
+  height: 30px;
   object-fit: contain;
   display: block;
 }
 
 .orbit-core-preview-name {
-  margin-top: 6px;
-  font-size: 0.72rem;
+  margin-top: 4px;
+  font-size: 0.65rem;
   font-weight: 800;
   color: var(--white);
-  line-height: 1.1;
-  max-width: 98px;
+  line-height: 1.08;
+  max-width: 82px;
 }
 
 .orbit-core-preview-cat {
-  margin-top: 3px;
-  font-size: 0.5rem;
+  margin-top: 2px;
+  font-size: 0.44rem;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.11em;
   text-transform: uppercase;
   color: var(--stone);
   opacity: 0.88;
@@ -1015,12 +1027,30 @@ body {
   will-change: transform;
 }
 
-.orbit-rotator--inner {
-  animation: orbitSpinCW 36s linear infinite;
+.orbit-rotator--ring1 {
+  z-index: 6;
+  animation: orbitSpinCW 28s linear infinite;
 }
 
-.orbit-rotator--outer {
-  animation: orbitSpinCCW 54s linear infinite;
+.orbit-rotator--ring2 {
+  z-index: 5;
+  animation: orbitSpinCCW 40s linear infinite;
+}
+
+.orbit-rotator--ring3 {
+  z-index: 4;
+  animation: orbitSpinCW 54s linear infinite;
+}
+
+.orbit-rotator--ring4 {
+  z-index: 3;
+  animation: orbitSpinCCW 72s linear infinite;
+}
+
+.orbit-rotator:has(.orbit-chip:hover),
+.orbit-rotator:has(.orbit-chip:focus-visible),
+.orbit-rotator:has(.orbit-chip.is-selected) {
+  z-index: 20;
 }
 
 .orbit-anchor {
@@ -1047,12 +1077,20 @@ body {
   will-change: transform;
 }
 
-.orbit-rotator--inner .orbit-upright {
-  animation: orbitSpinCCW 36s linear infinite;
+.orbit-rotator--ring1 .orbit-upright {
+  animation: orbitSpinCCW 28s linear infinite;
 }
 
-.orbit-rotator--outer .orbit-upright {
-  animation: orbitSpinCW 54s linear infinite;
+.orbit-rotator--ring2 .orbit-upright {
+  animation: orbitSpinCW 40s linear infinite;
+}
+
+.orbit-rotator--ring3 .orbit-upright {
+  animation: orbitSpinCCW 54s linear infinite;
+}
+
+.orbit-rotator--ring4 .orbit-upright {
+  animation: orbitSpinCW 72s linear infinite;
 }
 
 .orbit-centerer {
@@ -1079,13 +1117,13 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 54px;
-  height: 54px;
+  width: 42px;
+  height: 42px;
   padding: 0;
   background-color: #340a0c;
   border: 1.5px solid rgba(241, 235, 235, 0.26);
   border-radius: 50%;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.36);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.36);
   cursor: pointer;
   animation: orbitFloat 3.6s ease-in-out infinite;
   animation-delay: var(--float-delay, 0s);
@@ -1098,9 +1136,14 @@ body {
     scale 0.2s ease;
 }
 
-.orbit-rotator--outer .orbit-chip {
-  width: 58px;
-  height: 58px;
+.orbit-rotator--ring3 .orbit-chip {
+  width: 44px;
+  height: 44px;
+}
+
+.orbit-rotator--ring4 .orbit-chip {
+  width: 46px;
+  height: 46px;
 }
 
 .orbit-chip:hover,
@@ -1109,7 +1152,7 @@ body {
   background-color: var(--deep-red);
   border-color: var(--stone);
   box-shadow: 0 10px 22px rgba(0, 0, 0, 0.52);
-  scale: 1.14;
+  scale: 1.18;
   outline: none;
 }
 
@@ -1131,16 +1174,21 @@ body {
 }
 
 .stack-logo-svg {
-  width: 26px;
-  height: 26px;
+  width: 20px;
+  height: 20px;
   object-fit: contain;
   flex-shrink: 0;
   display: block;
 }
 
-.orbit-rotator--outer .stack-logo-svg {
-  width: 28px;
-  height: 28px;
+.orbit-rotator--ring3 .stack-logo-svg {
+  width: 21px;
+  height: 21px;
+}
+
+.orbit-rotator--ring4 .stack-logo-svg {
+  width: 22px;
+  height: 22px;
 }
 
 @keyframes orbitSpinCW {
@@ -1832,33 +1880,33 @@ body {
 }
 
 /* ==================== RESPONSIVE ==================== */
-@media (max-height: 820px) and (min-width: 768px) {
+@media (max-height: 860px) and (min-width: 768px) {
   .orbit-viewport {
-    height: 482px;
+    height: 541px;
   }
 
   .orbit-stage {
-    transform: scale(0.86);
+    transform: scale(0.84);
   }
 }
 
-@media (max-height: 730px) and (min-width: 768px) {
+@media (max-height: 750px) and (min-width: 768px) {
   .orbit-viewport {
-    height: 436px;
+    height: 490px;
   }
 
   .orbit-stage {
-    transform: scale(0.78);
+    transform: scale(0.76);
   }
 }
 
-@media (max-height: 640px) and (min-width: 768px) {
+@media (max-height: 650px) and (min-width: 768px) {
   .orbit-viewport {
-    height: 380px;
+    height: 425px;
   }
 
   .orbit-stage {
-    transform: scale(0.68);
+    transform: scale(0.66);
   }
 }
 
@@ -2077,11 +2125,11 @@ body {
   }
 
   .orbit-viewport {
-    height: 426px;
+    height: 451px;
   }
 
   .orbit-stage {
-    transform: scale(0.76);
+    transform: scale(0.7);
   }
 }
 
@@ -2092,17 +2140,7 @@ body {
   }
 
   .orbit-viewport {
-    height: 358px;
-  }
-
-  .orbit-stage {
-    transform: scale(0.64);
-  }
-}
-
-@media (max-width: 419.98px) {
-  .orbit-viewport {
-    height: 314px;
+    height: 361px;
   }
 
   .orbit-stage {
@@ -2110,13 +2148,23 @@ body {
   }
 }
 
-@media (max-width: 359.98px) {
+@media (max-width: 419.98px) {
   .orbit-viewport {
-    height: 274px;
+    height: 316px;
   }
 
   .orbit-stage {
     transform: scale(0.49);
+  }
+}
+
+@media (max-width: 359.98px) {
+  .orbit-viewport {
+    height: 271px;
+  }
+
+  .orbit-stage {
+    transform: scale(0.42);
   }
 }
 
