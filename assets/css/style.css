@@ -958,7 +958,7 @@ body {
 }
 
 .portfolio-card-preview {
-  border-radius: 10px;
+  border-radius: 4px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -998,13 +998,6 @@ body {
   border-radius: 50%;
   background-color: var(--sky-blue);
   display: inline-block;
-}
-
-.portfolio-card-topbar .url-bar {
-  margin-left: 0.35rem;
-  color: var(--ice-white);
-  opacity: 0.88;
-  letter-spacing: 0.04em;
 }
 
 .portfolio-card-visual {
