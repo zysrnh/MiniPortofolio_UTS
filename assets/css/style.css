@@ -1,10 +1,10 @@
 /* ==========================================================================
    Modern Tech Editorial Portfolio Stylesheet
-   Monochrome 3-Color Palette:
-   - Black: #2B2B2B (structure, primary text, primary buttons)
-   - Dove Grey: #686B6C (secondary text, borders, CTA band)
-   - Casper: #ADBED1 (light sections, accents on dark)
-   - White: #FFFFFF (neutral paper base)
+   Monochrome Editorial 3-Color Palette (60-30-10):
+   - Black: #2B2B2B (dark anchor sections, primary typography, primary CTA)
+   - Dove Grey: #686B6C (secondary typography, muted metadata, hairlines)
+   - Casper: #ADBED1 (cool accents on dark & soft surface tints on light)
+   - White: #FFFFFF (dominant clean editorial canvas)
    ========================================================================== */
 
 :root {
@@ -14,10 +14,12 @@
   --casper: #adbed1;
   --white: #ffffff;
 
-  /* Solid derivatives (no gradients) */
+  /* Solid tints & derivatives derived from palette (no gradients) */
   --black-hover: #1a1a1a;
-  --line: #dadde0;
-  --line-on-dark: rgba(255, 255, 255, 0.18);
+  --casper-mist: #eef2f6;
+  --casper-soft: #dde5ee;
+  --line: #dde1e4;
+  --line-on-dark: rgba(173, 190, 209, 0.22);
 
   /* Neutral shadows only */
   --shadow-soft: 0 8px 24px rgba(0, 0, 0, 0.06);
@@ -94,8 +96,8 @@ body {
 
 .btn-solid-dark:hover,
 .btn-solid-dark:focus-visible {
-  background-color: var(--grey);
-  border-color: var(--grey);
+  background-color: var(--black-hover);
+  border-color: var(--black-hover);
   color: var(--white);
   transform: translateY(-2px);
   box-shadow: var(--shadow-hover);
@@ -156,8 +158,8 @@ body {
 }
 
 .btn-gold-solid:hover {
-  background-color: var(--grey);
-  border-color: var(--grey);
+  background-color: var(--black-hover);
+  border-color: var(--black-hover);
   color: var(--white);
   transform: translateY(-2px);
 }
@@ -333,7 +335,8 @@ body {
 
 /* ==================== ABOUT SECTION (Ramon 3-Panel + Video Slide/Expand) ==================== */
 .about-section {
-  background-color: var(--casper);
+  background-color: var(--casper-mist);
+  border-bottom: 1px solid var(--line);
   padding: 3rem 0;
 }
 
@@ -393,7 +396,7 @@ body {
 }
 
 .ramon-back-btn:hover {
-  color: var(--black);
+  color: var(--grey);
 }
 
 .ramon-card.is-expanded .ramon-brand-mark,
@@ -486,7 +489,7 @@ body {
 }
 
 .ramon-readmore-btn:hover {
-  color: var(--black);
+  color: var(--grey);
   transform: translateX(2px);
 }
 
@@ -678,9 +681,9 @@ body {
 }
 
 .detail-badge {
-  background-color: var(--casper);
-  border: 1px solid var(--casper);
-  color: var(--black);
+  background-color: rgba(173, 190, 209, 0.16);
+  border: 1px solid rgba(173, 190, 209, 0.45);
+  color: var(--white);
   font-size: 0.7rem;
   font-weight: 600;
   padding: 0.28rem 0.65rem;
@@ -884,7 +887,7 @@ body {
 }
 
 .exp-media-item:hover {
-  background-color: rgba(173, 190, 209, 0.25);
+  background-color: var(--casper-mist);
 }
 
 .exp-thumb-box {
@@ -892,7 +895,7 @@ body {
   height: 88px;
   flex-shrink: 0;
   border-radius: 6px;
-  background-color: rgba(173, 190, 209, 0.25);
+  background-color: var(--casper-mist);
   border: 1px solid var(--line);
   display: flex;
   flex-direction: column;
@@ -952,7 +955,9 @@ body {
 
 /* ==================== PORTFOLIO 3-CARD AUTO CAROUSEL ==================== */
 .work-section {
-  background-color: var(--casper);
+  background-color: var(--casper-mist);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
 }
 
 .work-section .skills-section-title {
@@ -964,7 +969,7 @@ body {
   height: 38px;
   border-radius: 6px;
   background-color: var(--white);
-  border: 1px solid var(--white);
+  border: 1px solid var(--line);
   color: var(--black);
   display: inline-flex;
   align-items: center;
@@ -1010,7 +1015,7 @@ body {
   flex-direction: column;
   margin-bottom: 0.85rem;
   background-color: var(--black);
-  border: 1px solid var(--black);
+  border: 1px solid var(--line);
   box-shadow: var(--shadow-soft);
   transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 }
@@ -1042,7 +1047,7 @@ body {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background-color: var(--white);
+  background-color: var(--casper);
   display: inline-block;
 }
 
@@ -1072,8 +1077,7 @@ body {
 .portfolio-card-desc {
   font-size: 0.84rem;
   line-height: 1.55;
-  color: var(--black);
-  opacity: 0.85;
+  color: var(--grey);
   margin: 0 0 0.9rem;
   flex: 1;
 }
@@ -1093,8 +1097,8 @@ body {
   padding: 0.24rem 0.55rem;
   border-radius: 2px;
   background-color: var(--white);
-  border: 1px solid var(--white);
-  color: var(--black);
+  border: 1px solid var(--line);
+  color: var(--grey);
 }
 
 .work-section .project-detail-btn {
@@ -1191,7 +1195,7 @@ body {
   height: 4px;
   border: none;
   border-radius: 0;
-  background-color: rgba(43, 43, 43, 0.25);
+  background-color: rgba(104, 107, 108, 0.3);
   padding: 0;
   cursor: pointer;
   transition: width 0.25s ease, background-color 0.25s ease;
@@ -1260,7 +1264,7 @@ body {
   width: 100%;
   background: transparent;
   border: none;
-  border-bottom: 1.5px solid var(--grey);
+  border-bottom: 1.5px solid rgba(104, 107, 108, 0.38);
   border-radius: 0;
   padding: 0.42rem 0;
   font-size: 0.86rem;
@@ -1350,11 +1354,11 @@ body {
 }
 
 .service-dropdown-item:hover {
-  background-color: rgba(173, 190, 209, 0.3);
+  background-color: var(--casper-mist);
 }
 
 .service-dropdown-item.is-selected {
-  background-color: var(--casper);
+  background-color: var(--casper-soft);
   font-weight: 700;
 }
 
@@ -1421,7 +1425,7 @@ body {
 
 /* ==================== INDEX CTA & 3-COLUMN FOOTER ==================== */
 .cta-typo-section {
-  background-color: var(--grey);
+  background-color: var(--white);
   flex: 1;
   display: flex;
   align-items: center;
@@ -1433,14 +1437,14 @@ body {
   font-weight: 800;
   letter-spacing: -0.025em;
   line-height: 1.1;
-  color: var(--white);
+  color: var(--black);
   max-width: 780px;
 }
 
 .cta-typo-desc {
   font-size: 0.95rem;
   line-height: 1.6;
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--grey);
   max-width: 520px;
 }
 
@@ -1509,11 +1513,11 @@ body {
 
 .flat-input:focus {
   border-color: var(--black);
-  box-shadow: 0 0 0 3px rgba(173, 190, 209, 0.35);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.12);
 }
 
 .modal-category-badge {
-  background-color: var(--casper);
+  background-color: var(--casper-soft);
   color: var(--black);
   border-radius: 2px;
   font-weight: 700;
@@ -1658,7 +1662,7 @@ body {
   }
 
   .ramon-readmore-btn:hover {
-    background-color: var(--grey);
+    background-color: var(--black-hover);
     color: var(--white);
   }
 
@@ -1791,31 +1795,4 @@ body {
   .portfolio-card-img {
     height: 160px;
   }
-}
-
-
-/* CTA band on Dove Grey */
-.cta-typo-section .btn-solid-dark {
-  background-color: var(--white);
-  border-color: var(--white);
-  color: var(--black);
-}
-
-.cta-typo-section .btn-solid-dark:hover,
-.cta-typo-section .btn-solid-dark:focus-visible {
-  background-color: var(--casper);
-  border-color: var(--casper);
-  color: var(--black);
-}
-
-.cta-typo-section .btn-outline-dark-custom {
-  color: var(--white);
-  border-color: var(--white);
-}
-
-.cta-typo-section .btn-outline-dark-custom:hover,
-.cta-typo-section .btn-outline-dark-custom:focus-visible {
-  background-color: var(--white);
-  border-color: var(--white);
-  color: var(--black);
 }
