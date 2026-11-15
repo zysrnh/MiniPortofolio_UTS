@@ -696,6 +696,8 @@ body {
 
 /* ==================== SKILLS SECTION (Full-Screen Constellation -> Galaxy Blue Scroll) ==================== */
 .skills-section {
+  --gx: 50%;
+  --gy: 54%;
   background-color: var(--dark-red);
   color: var(--stone);
   height: calc(100vh - 64px);
@@ -705,11 +707,6 @@ body {
   align-items: stretch;
   position: relative;
   overflow: hidden;
-  transition: background-color 1s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.skills-section.is-galaxy-active {
-  background-color: #040a1d;
 }
 
 .skills-galaxy-bg {
@@ -719,19 +716,47 @@ body {
   pointer-events: none;
   overflow: hidden;
   background-color: #040a1d;
-  clip-path: circle(0% at 50% 54%);
-  opacity: 0;
-  transform: scale(0.96);
-  transition:
-    clip-path 1.15s cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 0.85s ease,
-    transform 1.15s cubic-bezier(0.22, 1, 0.36, 1);
+  clip-path: circle(0px at var(--gx) var(--gy));
+  will-change: clip-path;
+  transition: clip-path 0.55s ease-out;
 }
 
 .skills-section.is-galaxy-active .skills-galaxy-bg {
-  clip-path: circle(155% at 50% 54%);
-  opacity: 1;
-  transform: scale(1);
+  clip-path: circle(155% at var(--gx) var(--gy));
+  transition: clip-path 2.8s cubic-bezier(0.28, 0.72, 0.22, 1);
+}
+
+.skills-galaxy-wave {
+  position: absolute;
+  left: var(--gx);
+  top: var(--gy);
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  border: 2px solid rgba(147, 197, 253, 0.56);
+  box-shadow: 0 0 28px rgba(59, 130, 246, 0.45);
+  transform: translate(-50%, -50%) scale(0.5);
+  opacity: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.skills-section.is-galaxy-active .skills-galaxy-wave {
+  animation: galaxyCenterRipple 2.4s cubic-bezier(0.2, 0.75, 0.25, 1) forwards;
+}
+
+@keyframes galaxyCenterRipple {
+  0% {
+    transform: translate(-50%, -50%) scale(0.55);
+    opacity: 0.9;
+  }
+  70% {
+    opacity: 0.36;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(15);
+    opacity: 0;
+  }
 }
 
 .skills-galaxy-aura {
@@ -740,18 +765,18 @@ body {
   pointer-events: none;
   filter: blur(88px);
   opacity: 0;
-  transition: opacity 1.3s ease 0.15s;
+  transition: opacity 2.2s ease 0.45s;
 }
 
 .skills-section.is-galaxy-active .skills-galaxy-aura {
-  opacity: 0.46;
+  opacity: 0.5;
 }
 
 .skills-galaxy-aura--core {
   width: min(66vw, 560px);
   height: min(66vw, 560px);
-  left: 50%;
-  top: 54%;
+  left: var(--gx);
+  top: var(--gy);
   transform: translate(-50%, -50%);
   background-color: #13409c;
 }
@@ -784,11 +809,11 @@ body {
   opacity: 0;
   animation: galaxyStarTwinkle 3.8s ease-in-out var(--sd, 0s) infinite;
   animation-play-state: paused;
-  transition: opacity 0.9s ease 0.35s;
+  transition: opacity 1.4s ease 1.1s;
 }
 
 .skills-section.is-galaxy-active .galaxy-star {
-  opacity: 0.82;
+  opacity: 0.86;
   animation-play-state: running;
 }
 
@@ -2526,68 +2551,102 @@ body {
   }
 }
 
-/* Skills Galaxy Scroll Theme Overrides */
+/* Skills Galaxy Scroll Theme Overrides (Staggered Center-Out Ripple) */
+.skills-section .orbit-core {
+  transition:
+    transform 0.22s ease,
+    background-color 0.85s ease,
+    border-color 0.85s ease,
+    box-shadow 0.85s ease;
+}
+
+.skills-section .orbit-track {
+  transition: border-color 0.9s ease;
+}
+
 .skills-section.is-galaxy-active .skills-backdrop-word {
   -webkit-text-stroke-color: rgba(147, 197, 253, 0.11);
-  transition: -webkit-text-stroke-color 0.9s ease;
+  transition: -webkit-text-stroke-color 1.2s ease 1.05s;
 }
 
 .skills-section.is-galaxy-active .constellation-dot {
   background-color: rgba(191, 219, 254, 0.72);
   box-shadow: 0 0 8px rgba(96, 165, 250, 0.6);
-  transition: background-color 0.9s ease, box-shadow 0.9s ease;
+  transition: background-color 1.1s ease 1.15s, box-shadow 1.1s ease 1.15s;
 }
 
 .skills-section.is-galaxy-active .orbit-track--ring1 {
   border-color: rgba(147, 197, 253, 0.44);
+  transition-delay: 0.42s;
 }
 
 .skills-section.is-galaxy-active .orbit-track--ring2 {
   border-color: rgba(147, 197, 253, 0.34);
+  transition-delay: 0.75s;
 }
 
 .skills-section.is-galaxy-active .orbit-track--ring3 {
   border-color: rgba(147, 197, 253, 0.25);
+  transition-delay: 1.08s;
 }
 
 .skills-section.is-galaxy-active .orbit-track--ring4 {
   border-color: rgba(147, 197, 253, 0.18);
-}
-
-.skills-section.is-galaxy-active .orbit-track {
-  transition: border-color 0.9s ease;
+  transition-delay: 1.4s;
 }
 
 .skills-section.is-galaxy-active .orbit-core {
   background-color: #0f2d73;
   border-color: #bfdbfe;
-  box-shadow: 0 0 28px rgba(59, 130, 246, 0.38), var(--shadow-btn);
+  box-shadow: 0 0 28px rgba(59, 130, 246, 0.42), var(--shadow-btn);
+  transition-delay: 0.12s;
 }
 
 .skills-section.is-galaxy-active .orbit-core-pulse,
 .skills-section.is-galaxy-active .orbit-switch-wave {
   border-color: rgba(147, 197, 253, 0.55);
+  transition: border-color 0.8s ease 0.12s;
 }
 
 .skills-section.is-galaxy-active .stack-filter-btn {
   background-color: rgba(147, 197, 253, 0.08);
   border-color: rgba(147, 197, 253, 0.26);
+  transition: background-color 0.85s ease 1.2s, border-color 0.85s ease 1.2s, color 0.2s ease;
 }
 
 .skills-section.is-galaxy-active .stack-filter-btn:hover {
   background-color: rgba(59, 130, 246, 0.2);
   border-color: #bfdbfe;
+  transition-delay: 0s;
 }
 
 .skills-section.is-galaxy-active .stack-filter-btn.is-active {
   background-color: #15429e;
   border-color: #bfdbfe;
+  transition-delay: 1.2s;
 }
 
 .skills-section.is-galaxy-active .orbit-chip {
   background-color: #081536;
   border-color: rgba(147, 197, 253, 0.32);
   box-shadow: 0 6px 16px rgba(2, 6, 23, 0.52);
+  transition-duration: 0.75s, 0.75s, 0.75s, 0.28s, 0.28s, 0.34s;
+}
+
+.skills-section.is-galaxy-active .orbit-rotator--ring1 .orbit-chip {
+  transition-delay: 0.42s, 0.42s, 0.42s, 0s, 0s, 0s;
+}
+
+.skills-section.is-galaxy-active .orbit-rotator--ring2 .orbit-chip {
+  transition-delay: 0.75s, 0.75s, 0.75s, 0s, 0s, 0s;
+}
+
+.skills-section.is-galaxy-active .orbit-rotator--ring3 .orbit-chip {
+  transition-delay: 1.08s, 1.08s, 1.08s, 0s, 0s, 0s;
+}
+
+.skills-section.is-galaxy-active .orbit-rotator--ring4 .orbit-chip {
+  transition-delay: 1.4s, 1.4s, 1.4s, 0s, 0s, 0s;
 }
 
 .skills-section.is-galaxy-active .orbit-chip:hover,
@@ -2599,11 +2658,21 @@ body {
   box-shadow: 0 0 0 3px rgba(147, 197, 253, 0.22), 0 10px 22px rgba(2, 6, 23, 0.66);
 }
 
+.skills-section.is-galaxy-active .orbit-chip:hover,
+.skills-section.is-galaxy-active .orbit-chip:focus-visible,
+.skills-section.is-galaxy-active .orbit-chip.is-selected {
+  transition-delay: 0s !important;
+  transition-duration: 0.24s !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .skills-section,
   .skills-galaxy-bg,
+  .skills-galaxy-wave,
   .skills-galaxy-aura,
-  .galaxy-star {
+  .galaxy-star,
+  .skills-section .orbit-core,
+  .skills-section .orbit-track {
     transition: none !important;
   }
 
@@ -2614,6 +2683,7 @@ body {
   .orbit-switch-wave,
   .orbit-core.is-morphing,
   .constellation-dot,
+  .skills-galaxy-wave,
   .galaxy-star {
     animation: none !important;
   }

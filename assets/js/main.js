@@ -602,22 +602,50 @@ function initSkillsSection() {
 
   const skillsSection = document.getElementById("skills");
   if (skillsSection) {
+    const syncGalaxyOrigin = () => {
+      if (!orbitCore) return;
+      const secRect = skillsSection.getBoundingClientRect();
+      const coreRect = orbitCore.getBoundingClientRect();
+      if (secRect.width > 0 && secRect.height > 0 && coreRect.width > 0) {
+        const gx = ((coreRect.left + coreRect.width / 2 - secRect.left) / secRect.width) * 100;
+        const gy = ((coreRect.top + coreRect.height / 2 - secRect.top) / secRect.height) * 100;
+        skillsSection.style.setProperty("--gx", `${gx.toFixed(2)}%`);
+        skillsSection.style.setProperty("--gy", `${gy.toFixed(2)}%`);
+      }
+    };
+
+    syncGalaxyOrigin();
+    window.addEventListener("resize", syncGalaxyOrigin, { passive: true });
+
+    let galaxyDelayTimer = null;
     const galaxyMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+
     if (galaxyMotionQuery.matches || typeof IntersectionObserver === "undefined") {
       skillsSection.classList.add("is-galaxy-active");
     } else {
       const galaxyObserver = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
-            if (entry.isIntersecting && entry.intersectionRatio >= 0.22) {
-              skillsSection.classList.add("is-galaxy-active");
+            if (entry.isIntersecting && entry.intersectionRatio >= 0.52) {
+              if (!skillsSection.classList.contains("is-galaxy-active") && !galaxyDelayTimer) {
+                syncGalaxyOrigin();
+                galaxyDelayTimer = setTimeout(() => {
+                  galaxyDelayTimer = null;
+                  syncGalaxyOrigin();
+                  skillsSection.classList.add("is-galaxy-active");
+                }, 180);
+              }
             } else if (!entry.isIntersecting) {
+              if (galaxyDelayTimer) {
+                clearTimeout(galaxyDelayTimer);
+                galaxyDelayTimer = null;
+              }
               skillsSection.classList.remove("is-galaxy-active");
             }
           });
         },
         {
-          threshold: [0, 0.22, 0.5],
+          threshold: [0, 0.35, 0.52],
         }
       );
       galaxyObserver.observe(skillsSection);
