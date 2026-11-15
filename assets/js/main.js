@@ -237,32 +237,43 @@ function initProjectModal() {
 }
 
 /**
- * Handle static contact form validation inside Hire Me modal.
+ * Handle static contact form validation inside Hire Me modal and inline contact section.
  */
 function initContactForm() {
-  const form = document.getElementById("contactForm");
-  const feedback = document.getElementById("formFeedback");
-  if (!form || !feedback) return;
+  const bindForm = (formId, nameId, emailId, msgId, feedbackId) => {
+    const form = document.getElementById(formId);
+    const feedback = document.getElementById(feedbackId);
+    if (!form || !feedback) return;
 
-  form.addEventListener("submit", (event) => {
-    event.preventDefault();
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
 
-    const name = document.getElementById("senderName").value.trim();
-    const email = document.getElementById("senderEmail").value.trim();
-    const message = document.getElementById("senderMessage").value.trim();
+      const name = document.getElementById(nameId).value.trim();
+      const email = document.getElementById(emailId).value.trim();
+      const message = document.getElementById(msgId).value.trim();
 
-    feedback.classList.remove("d-none", "text-danger", "text-success");
+      feedback.classList.remove("d-none", "text-danger", "text-success");
 
-    if (!name || !email || !message) {
-      feedback.textContent = "Please fill in your name, email, and message.";
-      feedback.classList.add("text-danger");
-      return;
-    }
+      if (!name || !email || !message) {
+        feedback.textContent = "Please fill in your name, email, and message.";
+        feedback.classList.add("text-danger");
+        return;
+      }
 
-    feedback.textContent = `Thanks, ${name}! Your message has been sent.`;
-    feedback.classList.add("text-success");
-    form.reset();
-  });
+      feedback.textContent = `Thanks, ${name}! Your message has been sent.`;
+      feedback.classList.add("text-success");
+      form.reset();
+    });
+  };
+
+  bindForm("contactForm", "senderName", "senderEmail", "senderMessage", "formFeedback");
+  bindForm(
+    "inlineContactForm",
+    "inlineSenderName",
+    "inlineSenderEmail",
+    "inlineSenderMessage",
+    "inlineFormFeedback"
+  );
 }
 
 /**
