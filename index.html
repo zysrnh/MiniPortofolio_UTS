@@ -1320,7 +1320,7 @@
           <div class="col-6 col-md-3">
             <div class="footer-col-title">Connect</div>
             <ul class="list-unstyled footer-col-links mb-0">
-              <li><a href="mailto:hello@alexpratama.dev">hello@alexpratama.dev</a></li>
+              <li><a href="mailto:naooolaf@gmail.com">naooolaf@gmail.com</a></li>
               <li>
                 <a href="https://github.com/zysrnh" target="_blank" rel="noopener noreferrer">GitHub</a>
               </li>
@@ -1381,26 +1381,74 @@
   >
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content flat-modal">
-        <div class="modal-header border-0 pb-1">
-          <h5 class="modal-title fw-bold" id="contactModalLabel">SEND A MESSAGE</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="modal-header flat-modal-header">
+          <div>
+            <span class="flat-modal-kicker" data-i18n="modal.kicker">KONTAK LANGSUNG</span>
+            <h5 class="modal-title fw-bold mb-0" id="contactModalLabel" data-i18n="modal.title">KIRIM PESAN</h5>
+          </div>
+          <button
+            type="button"
+            class="btn-close btn-close-white"
+            data-bs-dismiss="modal"
+            aria-label="Tutup"
+            data-i18n-aria="modal.closeAria"
+          ></button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body p-4">
+          <div class="contact-modal-target">
+            <a href="mailto:naooolaf@gmail.com" class="contact-modal-email">
+              <i class="bi bi-envelope-fill" aria-hidden="true"></i>
+              <span>naooolaf@gmail.com</span>
+            </a>
+            <button
+              type="button"
+              id="copyContactEmailBtn"
+              class="contact-copy-btn"
+              data-copy-email="naooolaf@gmail.com"
+              data-i18n="modal.copyEmail"
+            >
+              Salin Email
+            </button>
+          </div>
+
           <form id="contactForm" novalidate>
             <div class="mb-3">
-              <label for="senderName" class="form-label small fw-semibold">Name</label>
-              <input type="text" class="form-control flat-input" id="senderName" required />
+              <label for="senderName" class="form-label contact-field-label" data-i18n="modal.nameLabel">Nama Lengkap</label>
+              <input
+                type="text"
+                class="form-control flat-input"
+                id="senderName"
+                placeholder="Nama kamu"
+                data-i18n-placeholder="modal.namePlaceholder"
+                required
+              />
             </div>
             <div class="mb-3">
-              <label for="senderEmail" class="form-label small fw-semibold">Email</label>
-              <input type="email" class="form-control flat-input" id="senderEmail" required />
+              <label for="senderEmail" class="form-label contact-field-label" data-i18n="modal.emailLabel">Alamat Email</label>
+              <input
+                type="email"
+                class="form-control flat-input"
+                id="senderEmail"
+                placeholder="nama@email.com"
+                data-i18n-placeholder="modal.emailPlaceholder"
+                required
+              />
             </div>
             <div class="mb-3">
-              <label for="senderMessage" class="form-label small fw-semibold">Message</label>
-              <textarea class="form-control flat-input" id="senderMessage" rows="3" required></textarea>
+              <label for="senderMessage" class="form-label contact-field-label" data-i18n="modal.messageLabel">Pesan / Detail Proyek</label>
+              <textarea
+                class="form-control flat-input"
+                id="senderMessage"
+                rows="3"
+                placeholder="Tulis pesan atau kebutuhan proyek..."
+                data-i18n-placeholder="modal.messagePlaceholder"
+                required
+              ></textarea>
             </div>
-            <button type="submit" class="btn btn-solid-dark w-100">SEND MESSAGE</button>
-            <div id="formFeedback" class="mt-3 small d-none" role="status"></div>
+            <button type="submit" id="contactSubmitBtn" class="btn btn-solid-dark w-100" data-i18n="modal.submit">
+              KIRIM PESAN
+            </button>
+            <div id="formFeedback" class="mt-3 small d-none" role="status" aria-live="polite"></div>
           </form>
         </div>
       </div>

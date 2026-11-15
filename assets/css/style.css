@@ -3028,21 +3028,108 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
 .flat-modal {
   background-color: var(--white);
   color: var(--dark-red);
-  border-radius: 6px;
-  border: 1px solid var(--line);
-  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.22);
+  border-radius: 2px;
+  border: 1.5px solid var(--dark-red);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.28);
+  overflow: hidden;
+}
+
+.flat-modal-header {
+  background-color: var(--dark-red);
+  color: var(--stone);
+  border-bottom: 2px solid var(--deep-red);
+  padding: 1.1rem 1.5rem;
+}
+
+.flat-modal-kicker {
+  display: block;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  color: rgba(241, 235, 235, 0.72);
+  margin-bottom: 0.2rem;
+}
+
+.contact-modal-target {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  background-color: var(--stone);
+  border: 1px solid rgba(39, 7, 7, 0.15);
+  border-radius: 2px;
+  padding: 0.6rem 0.85rem;
+  margin-bottom: 1.15rem;
+}
+
+.contact-modal-email {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--dark-red);
+  text-decoration: none;
+  word-break: break-all;
+}
+
+.contact-modal-email i {
+  color: var(--deep-red);
+}
+
+.contact-modal-email:hover {
+  color: var(--deep-red);
+}
+
+.contact-copy-btn {
+  flex-shrink: 0;
+  border: 1px solid var(--dark-red);
+  background-color: var(--white);
+  color: var(--dark-red);
+  border-radius: 2px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.34rem 0.68rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.contact-copy-btn:hover {
+  background-color: var(--dark-red);
+  color: var(--stone);
+}
+
+.contact-field-label {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--dark-red);
+  margin-bottom: 0.35rem;
 }
 
 .flat-input {
   background-color: var(--white);
   color: var(--dark-red);
-  border-radius: 4px;
-  border: 1px solid var(--line);
+  border-radius: 2px;
+  border: 1.5px solid rgba(39, 7, 7, 0.22);
+  font-size: 0.9rem;
+  padding: 0.6rem 0.8rem;
 }
 
 .flat-input:focus {
+  background-color: var(--white);
+  color: var(--dark-red);
   border-color: var(--deep-red);
-  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 0 0 3px rgba(102, 8, 16, 0.12);
+}
+
+.contact-feedback-link {
+  color: var(--deep-red);
+  font-weight: 700;
+  text-decoration: underline;
 }
 
 .modal-category-badge {

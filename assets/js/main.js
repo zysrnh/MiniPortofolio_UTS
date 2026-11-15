@@ -360,43 +360,222 @@ function initProjectModal() {
 }
 
 /**
- * Handle static contact form validation inside Hire Me modal and inline contact section.
+ * Handle contact form submission (FormSubmit AJAX -> naooolaf@gmail.com with mailto fallback)
+ * and quick-copy email button inside the modal.
  */
 function initContactForm() {
-  const bindForm = (formId, nameId, emailId, msgId, feedbackId) => {
+  const TARGET_EMAIL = "naooolaf@gmail.com";
+  const FORMSUBMIT_ENDPOINT = `https://formsubmit.co/ajax/${TARGET_EMAIL}`;
+  const isEmailValid = (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+
+  const getLangCopy = () => {
+    const isEn = document.documentElement.lang === "en";
+    return isEn
+      ? {
+          missing: "Please fill in your name, email, and message.",
+          invalidEmail: "Please enter a valid email address.",
+          sending: "Sending...",
+          sent: `Thanks, {name}! Your message has been sent to ${TARGET_EMAIL}.`,
+          localOpened: `Local file mode detected: your mail app is opening to send to ${TARGET_EMAIL}. (Direct sending works automatically once live on GitHub Pages.)`,
+          failedPrefix: "Could not send directly. Open your mail app instead: ",
+          failedLink: `Send to ${TARGET_EMAIL}`,
+          copied: "Copied!",
+          copyIdle: "Copy Email",
+          submitIdle: "SEND MESSAGE",
+        }
+      : {
+          missing: "Harap isi nama, email, dan pesan terlebih dahulu.",
+          invalidEmail: "Format alamat email belum valid.",
+          sending: "Mengirim...",
+          sent: `Terima kasih, {name}! Pesan berhasil dikirim ke ${TARGET_EMAIL}.`,
+          localOpened: `Mode file lokal (file://): aplikasi email diarahkan ke ${TARGET_EMAIL}. Pengiriman langsung berjalan otomatis saat live di GitHub Pages.`,
+          failedPrefix: "Gagal mengirim otomatis. Kirim lewat aplikasi email: ",
+          failedLink: `Kirim ke ${TARGET_EMAIL}`,
+          copied: "Tersalin!",
+          copyIdle: "Salin Email",
+          submitIdle: "KIRIM PESAN",
+        };
+  };
+
+  const copyBtn = document.getElementById("copyContactEmailBtn");
+  if (copyBtn) {
+    let copyTimer = null;
+    copyBtn.addEventListener("click", async () => {
+      const email = copyBtn.dataset.copyEmail || TARGET_EMAIL;
+      const copyText = getLangCopy();
+      let ok = false;
+
+      if (navigator.clipboard && window.isSecureContext) {
+        try {
+          await navigator.clipboard.writeText(email);
+          ok = true;
+        } catch (_) {
+          ok = false;
+        }
+      }
+
+      if (!ok) {
+        const temp = document.createElement("textarea");
+        temp.value = email;
+        temp.setAttribute("readonly", "");
+        temp.style.position = "fixed";
+        temp.style.left = "-9999px";
+        document.body.appendChild(temp);
+        temp.select();
+        try {
+          ok = document.execCommand("copy");
+        } catch (_) {
+          ok = false;
+        }
+        temp.remove();
+      }
+
+      if (ok) {
+        copyBtn.textContent = copyText.copied;
+        if (copyTimer) window.clearTimeout(copyTimer);
+        copyTimer = window.setTimeout(() => {
+          copyBtn.textContent = getLangCopy().copyIdle;
+        }, 1800);
+      }
+    });
+  }
+
+  const buildMailtoUrl = (name, email, message, service) => {
+    const subject = service
+      ? `[Portfolio] ${service} - ${name}`
+      : `[Portfolio] Message from ${name}`;
+    const lines = [
+      `Name: ${name}`,
+      `Email: ${email}`,
+      ...(service ? [`Service: ${service}`] : []),
+      "",
+      message,
+    ];
+    return `mailto:${TARGET_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join("\n"))}`;
+  };
+
+  const showFallbackLink = (feedback, prefix, linkLabel, mailtoUrl) => {
+    feedback.textContent = prefix;
+    const anchor = document.createElement("a");
+    anchor.href = mailtoUrl;
+    anchor.className = "contact-feedback-link";
+    anchor.textContent = linkLabel;
+    feedback.appendChild(anchor);
+  };
+
+  const bindForm = ({ formId, nameId, lastNameId, serviceId, emailId, msgId, feedbackId }) => {
     const form = document.getElementById(formId);
     const feedback = document.getElementById(feedbackId);
     if (!form || !feedback) return;
 
-    form.addEventListener("submit", (event) => {
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const defaultSubmitText = submitBtn ? submitBtn.textContent : "";
+
+    form.addEventListener("submit", async (event) => {
       event.preventDefault();
 
-      const name = document.getElementById(nameId).value.trim();
-      const email = document.getElementById(emailId).value.trim();
-      const message = document.getElementById(msgId).value.trim();
+      const firstName = document.getElementById(nameId)?.value.trim() || "";
+      const lastName = lastNameId ? document.getElementById(lastNameId)?.value.trim() || "" : "";
+      const name = [firstName, lastName].filter(Boolean).join(" ");
+      const service = serviceId ? document.getElementById(serviceId)?.value.trim() || "" : "";
+      const email = document.getElementById(emailId)?.value.trim() || "";
+      const message = document.getElementById(msgId)?.value.trim() || "";
+      const copyText = getLangCopy();
 
       feedback.classList.remove("d-none", "text-danger", "text-success");
 
-      if (!name || !email || !message) {
-        feedback.textContent = "Please fill in your name, email, and message.";
+      if (!firstName || !email || !message) {
+        feedback.textContent = copyText.missing;
         feedback.classList.add("text-danger");
         return;
       }
 
-      feedback.textContent = `Thanks, ${name}! Your message has been sent.`;
-      feedback.classList.add("text-success");
-      form.reset();
+      if (!isEmailValid(email)) {
+        feedback.textContent = copyText.invalidEmail;
+        feedback.classList.add("text-danger");
+        return;
+      }
+
+      const mailtoUrl = buildMailtoUrl(name, email, message, service);
+      const isHttpOrigin =
+        window.location.protocol === "http:" || window.location.protocol === "https:";
+
+      if (!isHttpOrigin) {
+        feedback.textContent = copyText.localOpened;
+        feedback.classList.add("text-success");
+        window.location.href = mailtoUrl;
+        return;
+      }
+
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = copyText.sending;
+      }
+
+      try {
+        const payload = {
+          name,
+          email,
+          message,
+          _subject: service
+            ? `[Portfolio] ${service} — ${name}`
+            : `[Portfolio] Pesan Baru dari ${name}`,
+          _replyto: email,
+          _template: "table",
+        };
+        if (service) {
+          payload.service = service;
+        }
+
+        const response = await fetch(FORMSUBMIT_ENDPOINT, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify(payload),
+        });
+
+        const data = await response.json().catch(() => ({}));
+        const isOk = response.ok && (data.success === true || data.success === "true");
+
+        if (!isOk) {
+          throw new Error("FormSubmit rejected request");
+        }
+
+        feedback.textContent = copyText.sent.replace("{name}", name);
+        feedback.classList.add("text-success");
+        form.reset();
+      } catch (_) {
+        feedback.classList.add("text-danger");
+        showFallbackLink(feedback, copyText.failedPrefix, copyText.failedLink, mailtoUrl);
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          const isModalBtn = submitBtn.dataset.i18n === "modal.submit";
+          submitBtn.textContent = isModalBtn ? getLangCopy().submitIdle : defaultSubmitText;
+        }
+      }
     });
   };
 
-  bindForm("contactForm", "senderName", "senderEmail", "senderMessage", "formFeedback");
-  bindForm(
-    "editorialContactForm",
-    "edFirstName",
-    "edEmail",
-    "edProjectDesc",
-    "edFormFeedback"
-  );
+  bindForm({
+    formId: "contactForm",
+    nameId: "senderName",
+    emailId: "senderEmail",
+    msgId: "senderMessage",
+    feedbackId: "formFeedback",
+  });
+
+  bindForm({
+    formId: "editorialContactForm",
+    nameId: "edFirstName",
+    lastNameId: "edLastName",
+    serviceId: "edService",
+    emailId: "edEmail",
+    msgId: "edProjectDesc",
+    feedbackId: "edFormFeedback",
+  });
 }
 
 /**
@@ -1576,7 +1755,18 @@ const SITE_TRANSLATIONS = {
     "about.tabStack": "Stack Utama",
     "about.tabFocus": "Fokus",
     "about.hire": "HUBUNGI",
-    "about.contactAria": "Buka formulir kontak"
+    "about.contactAria": "Buka formulir kontak",
+    "modal.kicker": "KONTAK LANGSUNG",
+    "modal.title": "KIRIM PESAN",
+    "modal.closeAria": "Tutup",
+    "modal.copyEmail": "Salin Email",
+    "modal.nameLabel": "Nama Lengkap",
+    "modal.namePlaceholder": "Nama kamu",
+    "modal.emailLabel": "Alamat Email",
+    "modal.emailPlaceholder": "nama@email.com",
+    "modal.messageLabel": "Pesan / Detail Proyek",
+    "modal.messagePlaceholder": "Tulis pesan atau kebutuhan proyek...",
+    "modal.submit": "KIRIM PESAN"
   },
   en: {
     "title.home": "Portfolio — Zaki Yusron Hasyimmi",
@@ -1606,7 +1796,18 @@ const SITE_TRANSLATIONS = {
     "about.tabStack": "Core Stack",
     "about.tabFocus": "Focus",
     "about.hire": "HIRE ME",
-    "about.contactAria": "Open contact form"
+    "about.contactAria": "Open contact form",
+    "modal.kicker": "DIRECT CONTACT",
+    "modal.title": "SEND A MESSAGE",
+    "modal.closeAria": "Close",
+    "modal.copyEmail": "Copy Email",
+    "modal.nameLabel": "Full Name",
+    "modal.namePlaceholder": "Your name",
+    "modal.emailLabel": "Email Address",
+    "modal.emailPlaceholder": "you@example.com",
+    "modal.messageLabel": "Message / Project Details",
+    "modal.messagePlaceholder": "Tell me about your message or project...",
+    "modal.submit": "SEND MESSAGE"
   }
 };
 
@@ -1619,6 +1820,7 @@ function initLanguageSwitcher() {
   const textNodes = document.querySelectorAll("[data-i18n]");
   const ariaNodes = document.querySelectorAll("[data-i18n-aria]");
   const altNodes = document.querySelectorAll("[data-i18n-alt]");
+  const placeholderNodes = document.querySelectorAll("[data-i18n-placeholder]");
 
   function readSavedLang() {
     try {
@@ -1660,6 +1862,11 @@ function initLanguageSwitcher() {
     altNodes.forEach((node) => {
       const key = node.dataset.i18nAlt;
       if (dict[key]) node.setAttribute("alt", dict[key]);
+    });
+
+    placeholderNodes.forEach((node) => {
+      const key = node.dataset.i18nPlaceholder;
+      if (dict[key]) node.setAttribute("placeholder", dict[key]);
     });
 
     langButtons.forEach((btn) => {
