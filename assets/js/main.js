@@ -56,50 +56,51 @@ function initSectionEntrance(sectionId, readyClass, playClass, thresholdRatio, v
 }
 
 const STACK_ICON_MAP = {
-  "Laravel & Blade": { svgs: ["assets/img/icons/laravel.svg", "assets/img/icons/blade.svg"] },
-  "React + TypeScript": { svgs: ["assets/img/icons/react.svg", "assets/img/icons/typescript.svg"] },
-  "React & Inertia.js": { svgs: ["assets/img/icons/react.svg", "assets/img/icons/inertia.svg"] },
-  TypeScript: { svgs: ["assets/img/icons/typescript.svg"] },
-  "Tailwind CSS": { svgs: ["assets/img/icons/tailwind.svg"] },
+  Laravel: { svg: "assets/img/icons/laravel.svg" },
+  Blade: { svg: "assets/img/icons/blade.svg" },
+  React: { svg: "assets/img/icons/react.svg" },
+  "Inertia.js": { svg: "assets/img/icons/inertia.svg" },
+  TypeScript: { svg: "assets/img/icons/typescript.svg" },
+  "Tailwind CSS": { svg: "assets/img/icons/tailwind.svg" },
   "Clean Code": { bi: "bi bi-braces" },
   "Responsive UI": { bi: "bi bi-phone" },
-  "PHP & Laravel": { svgs: ["assets/img/icons/php.svg", "assets/img/icons/laravel.svg"] },
-  MySQL: { svgs: ["assets/img/icons/mysql.svg"] },
-  "REST API": { svgs: ["assets/img/icons/restapi.svg"] },
-  "Git & GitHub": { svgs: ["assets/img/icons/git.svg", "assets/img/icons/github.svg"] },
-  HTML5: { svgs: ["assets/img/icons/html5.svg"] },
-  CSS3: { svgs: ["assets/img/icons/css3.svg"] },
-  "Bootstrap 5": { svgs: ["assets/img/icons/bootstrap.svg"] },
-  JavaScript: { svgs: ["assets/img/icons/javascript.svg"] },
-  Laravel: { svgs: ["assets/img/icons/laravel.svg"] },
-  "Laravel API": { svgs: ["assets/img/icons/laravel.svg", "assets/img/icons/restapi.svg"] },
-  "Chart.js": { svgs: ["assets/img/icons/chartjs.svg"] },
-  Figma: { svgs: ["assets/img/icons/figma.svg"] },
+  PHP: { svg: "assets/img/icons/php.svg" },
+  MySQL: { svg: "assets/img/icons/mysql.svg" },
+  "REST API": { svg: "assets/img/icons/restapi.svg" },
+  Git: { svg: "assets/img/icons/git.svg" },
+  GitHub: { svg: "assets/img/icons/github.svg" },
+  HTML5: { svg: "assets/img/icons/html5.svg" },
+  CSS3: { svg: "assets/img/icons/css3.svg" },
+  "Bootstrap 5": { svg: "assets/img/icons/bootstrap.svg" },
+  JavaScript: { svg: "assets/img/icons/javascript.svg" },
+  "Chart.js": { svg: "assets/img/icons/chartjs.svg" },
+  Figma: { svg: "assets/img/icons/figma.svg" },
   "Design System": { bi: "bi bi-grid-1x2" },
   Wireframing: { bi: "bi bi-vector-pen" },
 };
 
 /**
- * Create a styled badge/chip containing local SVG or Bootstrap icons alongside a label.
+ * Create an icon-only badge tile with accessible label and hover/focus tooltip.
  *
- * @param {string} label Visible technology or capability label.
- * @param {string} chipClass CSS class for the badge element.
- * @returns {HTMLSpanElement} Populated span badge element.
+ * @param {string} label Technology or capability name displayed on hover.
+ * @param {string} chipClass CSS class for the tile element.
+ * @returns {HTMLSpanElement} Populated icon tile element.
  */
 function createStackChip(label, chipClass) {
   const span = document.createElement("span");
   span.className = chipClass;
+  span.setAttribute("data-tooltip", label);
+  span.setAttribute("aria-label", label);
+  span.tabIndex = 0;
 
   const entry = STACK_ICON_MAP[label];
-  if (entry && Array.isArray(entry.svgs)) {
-    entry.svgs.forEach((src) => {
-      const img = document.createElement("img");
-      img.src = src;
-      img.alt = "";
-      img.className = "tech-chip-icon";
-      img.setAttribute("aria-hidden", "true");
-      span.appendChild(img);
-    });
+  if (entry && entry.svg) {
+    const img = document.createElement("img");
+    img.src = entry.svg;
+    img.alt = "";
+    img.className = "tech-chip-icon";
+    img.setAttribute("aria-hidden", "true");
+    span.appendChild(img);
   } else {
     const icon = document.createElement("i");
     icon.className = `${entry?.bi || "bi bi-tag"} tech-chip-bi`;
@@ -107,9 +108,6 @@ function createStackChip(label, chipClass) {
     span.appendChild(icon);
   }
 
-  const text = document.createElement("span");
-  text.textContent = label;
-  span.appendChild(text);
   return span;
 }
 
@@ -167,7 +165,7 @@ function initAboutCarousel() {
           focus:
             "Mengutamakan struktur kode yang bersih, kecepatan akses tinggi, dan pengalaman pengguna yang konsisten di desktop maupun mobile.",
         },
-        badges: ["Laravel & Blade", "React + TypeScript", "Tailwind CSS", "Clean Code"],
+        badges: ["Laravel", "Blade", "React", "TypeScript", "Tailwind CSS", "Clean Code"],
       },
       {
         num: "02",
@@ -185,7 +183,7 @@ function initAboutCarousel() {
           focus:
             "Menjaga konsistensi tipografi, ruang bernapas layout, serta mikro-interaksi ringan yang mendukung fungsi utama produk.",
         },
-        badges: ["React & Inertia.js", "TypeScript", "Tailwind CSS", "Responsive UI"],
+        badges: ["React", "Inertia.js", "TypeScript", "Tailwind CSS", "Responsive UI"],
       },
       {
         num: "03",
@@ -203,7 +201,7 @@ function initAboutCarousel() {
           focus:
             "Menjembatani antarmuka frontend yang gesit dengan logika backend yang stabil, aman, dan mudah dikembangkan jangka panjang.",
         },
-        badges: ["PHP & Laravel", "MySQL", "REST API", "Git & GitHub"],
+        badges: ["PHP", "Laravel", "MySQL", "REST API", "Git", "GitHub"],
       },
     ],
     en: [
@@ -223,7 +221,7 @@ function initAboutCarousel() {
           focus:
             "Prioritizing maintainable code structure, snappy page speed, and reliable responsiveness across desktop and mobile screens.",
         },
-        badges: ["Laravel & Blade", "React + TypeScript", "Tailwind CSS", "Clean Code"],
+        badges: ["Laravel", "Blade", "React", "TypeScript", "Tailwind CSS", "Clean Code"],
       },
       {
         num: "02",
@@ -241,7 +239,7 @@ function initAboutCarousel() {
           focus:
             "Refining spacing discipline, typographic contrast, and lightweight motion that enhances clarity without slowing performance.",
         },
-        badges: ["React & Inertia.js", "TypeScript", "Tailwind CSS", "Responsive UI"],
+        badges: ["React", "Inertia.js", "TypeScript", "Tailwind CSS", "Responsive UI"],
       },
       {
         num: "03",
@@ -259,7 +257,7 @@ function initAboutCarousel() {
           focus:
             "Connecting responsive UI layers with dependable, secure, and easily maintainable backend logic.",
         },
-        badges: ["PHP & Laravel", "MySQL", "REST API", "Git & GitHub"],
+        badges: ["PHP", "Laravel", "MySQL", "REST API", "Git", "GitHub"],
       },
     ],
   };
@@ -417,8 +415,8 @@ function initProjectModal() {
   if (!modalElement || typeof bootstrap === "undefined") return;
 
   const projectModal = new bootstrap.Modal(modalElement);
+  const modalContentEl = modalElement.querySelector(".project-fullscreen-modal");
   const titleEl = document.getElementById("projectModalLabel");
-  const categoryEl = document.getElementById("modalCategory");
   const counterEl = document.getElementById("projectModalCounter");
   const prevBtn = document.getElementById("projectModalPrevBtn");
   const nextBtn = document.getElementById("projectModalNextBtn");
@@ -426,13 +424,22 @@ function initProjectModal() {
   const previewImgEl = document.getElementById("modalPreviewImg");
   const descEl = document.getElementById("modalDescription");
   const stackEl = document.getElementById("modalStack");
+  const githubBtnEl = document.getElementById("projectModalGithubBtn");
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
   const projectButtons = Array.from(document.querySelectorAll(".project-detail-btn"));
   if (!projectButtons.length) return;
 
   let activeIndex = 0;
 
-  function renderProjectByIndex(idx) {
+  function triggerStageAnimation() {
+    if (!modalContentEl || prefersReducedMotion.matches) return;
+    modalContentEl.classList.remove("is-project-animating");
+    void modalContentEl.offsetWidth;
+    modalContentEl.classList.add("is-project-animating");
+  }
+
+  function renderProjectByIndex(idx, animate = true) {
     const total = projectButtons.length;
     activeIndex = ((idx % total) + total) % total;
     const btn = projectButtons[activeIndex];
@@ -441,14 +448,9 @@ function initProjectModal() {
     const lang = document.documentElement.lang === "en" ? "en" : "id";
     const dict = SITE_TRANSLATIONS[lang] || SITE_TRANSLATIONS.id;
     const key = btn.dataset.projectKey || "";
-    const index = btn.dataset.projectIndex || String(activeIndex + 1).padStart(2, "0");
     const card = btn.closest(".portfolio-card");
     const cardImg = card ? card.querySelector(".portfolio-card-img") : null;
 
-    const category =
-      dict[`work.${key}.cat`] ||
-      card?.querySelector(".portfolio-card-category")?.textContent?.trim() ||
-      "";
     const title =
       dict[`work.${key}.title`] ||
       card?.querySelector(".portfolio-card-title")?.textContent?.trim() ||
@@ -459,9 +461,6 @@ function initProjectModal() {
       card?.querySelector(".portfolio-card-desc")?.textContent?.trim() ||
       "";
 
-    if (categoryEl) {
-      categoryEl.textContent = index ? `${index} // ${category}` : category;
-    }
     if (titleEl) {
       titleEl.textContent = title;
     }
@@ -470,6 +469,10 @@ function initProjectModal() {
     }
     if (counterEl) {
       counterEl.textContent = `${String(activeIndex + 1).padStart(2, "0")} / ${String(total).padStart(2, "0")}`;
+    }
+
+    if (githubBtnEl) {
+      githubBtnEl.setAttribute("href", btn.dataset.github || "https://github.com/zysrnh");
     }
 
     if (previewImgEl && previewWrap) {
@@ -491,28 +494,34 @@ function initProjectModal() {
         .map((item) => item.trim())
         .filter(Boolean);
 
-      stackItems.forEach((item) => {
-        stackEl.appendChild(createStackChip(item, "slide-stack-tag"));
+      stackItems.forEach((item, chipIdx) => {
+        const chip = createStackChip(item, "slide-stack-tag");
+        chip.style.setProperty("--chip-index", String(chipIdx));
+        stackEl.appendChild(chip);
       });
+    }
+
+    if (animate) {
+      triggerStageAnimation();
     }
   }
 
   projectButtons.forEach((btn, idx) => {
     btn.addEventListener("click", () => {
-      renderProjectByIndex(idx);
+      renderProjectByIndex(idx, true);
       projectModal.show();
     });
   });
 
   if (prevBtn) {
     prevBtn.addEventListener("click", () => {
-      renderProjectByIndex(activeIndex - 1);
+      renderProjectByIndex(activeIndex - 1, true);
     });
   }
 
   if (nextBtn) {
     nextBtn.addEventListener("click", () => {
-      renderProjectByIndex(activeIndex + 1);
+      renderProjectByIndex(activeIndex + 1, true);
     });
   }
 
@@ -520,16 +529,16 @@ function initProjectModal() {
     if (!modalElement.classList.contains("show")) return;
     if (event.key === "ArrowLeft") {
       event.preventDefault();
-      renderProjectByIndex(activeIndex - 1);
+      renderProjectByIndex(activeIndex - 1, true);
     } else if (event.key === "ArrowRight") {
       event.preventDefault();
-      renderProjectByIndex(activeIndex + 1);
+      renderProjectByIndex(activeIndex + 1, true);
     }
   });
 
   window.addEventListener("portfolio:langchange", () => {
     if (modalElement.classList.contains("show")) {
-      renderProjectByIndex(activeIndex);
+      renderProjectByIndex(activeIndex, false);
     }
   });
 }
@@ -1986,6 +1995,7 @@ const SITE_TRANSLATIONS = {
     "work.modalBack": "KEMBALI",
     "work.modalPrevAria": "Proyek sebelumnya",
     "work.modalNextAria": "Proyek berikutnya",
+    "work.modalGithub": "LIHAT DI GITHUB",
     "work.p1.cat": "Pengembangan Web",
     "work.p1.title": "Company Profile Website",
     "work.p1.desc": "Landing page profil perusahaan yang responsif dengan HTML5 semantik, CSS3, dan Bootstrap 5.",
@@ -2060,6 +2070,7 @@ const SITE_TRANSLATIONS = {
     "work.modalBack": "BACK",
     "work.modalPrevAria": "Previous project",
     "work.modalNextAria": "Next project",
+    "work.modalGithub": "VIEW ON GITHUB",
     "work.p1.cat": "Web Development",
     "work.p1.title": "Company Profile Website",
     "work.p1.desc": "Responsive corporate landing page built with semantic HTML5, CSS3, and Bootstrap 5.",

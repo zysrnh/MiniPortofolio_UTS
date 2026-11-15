@@ -1452,35 +1452,97 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
 }
 
 .detail-badge {
+  position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 0.42rem;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
   background-color: var(--dark-red);
-  border: 1px solid rgba(241, 235, 235, 0.25);
+  border: 1px solid rgba(241, 235, 235, 0.26);
   color: var(--stone);
-  font-size: 0.7rem;
-  font-weight: 600;
-  padding: 0.32rem 0.68rem;
-  border-radius: 4px;
+  border-radius: 2px;
+  cursor: default;
+  transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.detail-badge:hover,
+.detail-badge:focus-visible {
+  transform: translateY(-2px);
+  border-color: rgba(241, 235, 235, 0.58);
+  background-color: rgba(241, 235, 235, 0.12);
 }
 
 .tech-chip-icon {
-  width: 14px;
-  height: 14px;
+  width: 17px;
+  height: 17px;
   object-fit: contain;
   flex-shrink: 0;
   display: block;
 }
 
 .tech-chip-bi {
-  font-size: 0.8rem;
+  font-size: 0.94rem;
   line-height: 1;
   flex-shrink: 0;
 }
 
 .detail-badge .tech-chip-icon {
-  width: 15px;
-  height: 15px;
+  width: 19px;
+  height: 19px;
+}
+
+.detail-badge .tech-chip-bi {
+  font-size: 1.02rem;
+}
+
+.detail-badge[data-tooltip]::after,
+.slide-stack-tag[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 7px);
+  transform: translate(-50%, 4px);
+  background-color: var(--white);
+  color: var(--dark-red);
+  border: 1px solid rgba(39, 7, 7, 0.18);
+  border-radius: 2px;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1;
+  white-space: nowrap;
+  padding: 0.34rem 0.54rem;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  z-index: 20;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.22);
+  transition: opacity 0.16s ease, transform 0.16s ease, visibility 0.16s ease;
+}
+
+.detail-badge[data-tooltip]:first-child::after,
+.slide-stack-tag[data-tooltip]:first-child::after {
+  left: 0;
+  transform: translate(0, 4px);
+}
+
+.detail-badge[data-tooltip]:hover::after,
+.detail-badge[data-tooltip]:focus-visible::after,
+.slide-stack-tag[data-tooltip]:hover::after,
+.slide-stack-tag[data-tooltip]:focus-visible::after {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+}
+
+.detail-badge[data-tooltip]:first-child:hover::after,
+.detail-badge[data-tooltip]:first-child:focus-visible::after,
+.slide-stack-tag[data-tooltip]:first-child:hover::after,
+.slide-stack-tag[data-tooltip]:first-child:focus-visible::after {
+  transform: translate(0, 0);
 }
 
 .ramon-socials a,
@@ -2617,7 +2679,7 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
   background-color: var(--white);
   border: 1px solid rgba(39, 7, 7, 0.16);
   border-radius: 2px;
-  overflow: hidden;
+  overflow: visible;
   box-shadow: 0 10px 26px rgba(39, 7, 7, 0.05);
   display: flex;
   flex-direction: column;
@@ -2699,23 +2761,38 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
 .slide-stack-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.38rem;
+  gap: 0.42rem;
   margin-bottom: 1rem;
 }
 
 .slide-stack-tag {
+  position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 0.38rem;
-  font-size: 0.64rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  padding: 0.28rem 0.58rem;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
   border-radius: 2px;
   background-color: var(--stone);
-  border: 1px solid rgba(39, 7, 7, 0.14);
+  border: 1px solid rgba(39, 7, 7, 0.15);
   color: var(--dark-red);
+  cursor: default;
+  transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.slide-stack-tag:hover,
+.slide-stack-tag:focus-visible {
+  transform: translateY(-2px);
+  border-color: var(--deep-red);
+  background-color: var(--white);
+}
+
+.portfolio-card .slide-stack-tag[data-tooltip]::after {
+  background-color: var(--dark-red);
+  color: var(--stone);
+  border-color: var(--dark-red);
+  box-shadow: 0 6px 14px rgba(39, 7, 7, 0.18);
 }
 
 .portfolio-card-footer {
@@ -3346,26 +3423,6 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
   flex-direction: column;
 }
 
-.project-fullscreen-kicker {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: rgba(241, 235, 235, 0.72);
-  margin-bottom: 0.75rem;
-}
-
-.project-fullscreen-kicker-sq {
-  width: 8px;
-  height: 8px;
-  background-color: var(--deep-red);
-  display: inline-block;
-  flex-shrink: 0;
-}
-
 .project-fullscreen-title {
   font-size: clamp(1.85rem, 3.3vw, 2.75rem);
   font-weight: 800;
@@ -3379,6 +3436,7 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
   width: 52px;
   height: 2px;
   background-color: var(--deep-red);
+  transform-origin: left center;
   margin: 1.25rem 0;
 }
 
@@ -3386,7 +3444,7 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
   font-size: 0.96rem;
   line-height: 1.72;
   color: rgba(241, 235, 235, 0.8);
-  margin: 0 0 1.75rem;
+  margin: 0 0 1.65rem;
 }
 
 .project-fullscreen-stack-block {
@@ -3400,21 +3458,148 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: rgba(241, 235, 235, 0.65);
-  margin-bottom: 0.7rem;
+  margin-bottom: 0.75rem;
 }
 
 .project-fullscreen-stack-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.45rem;
+  gap: 0.55rem;
 }
 
 .project-fullscreen-stack-row .slide-stack-tag {
+  width: 44px;
+  height: 44px;
+  padding: 0;
   background-color: rgba(241, 235, 235, 0.08);
-  border-color: rgba(241, 235, 235, 0.22);
+  border-color: rgba(241, 235, 235, 0.24);
   color: var(--stone);
-  padding: 0.34rem 0.68rem;
-  font-size: 0.68rem;
+}
+
+.project-fullscreen-stack-row .slide-stack-tag:hover,
+.project-fullscreen-stack-row .slide-stack-tag:focus-visible {
+  background-color: rgba(241, 235, 235, 0.16);
+  border-color: var(--stone);
+}
+
+.project-fullscreen-stack-row .tech-chip-icon {
+  width: 21px;
+  height: 21px;
+}
+
+.project-fullscreen-stack-row .tech-chip-bi {
+  font-size: 1.08rem;
+}
+
+.project-fullscreen-actions {
+  margin-top: 1.6rem;
+}
+
+.project-fullscreen-github-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  border: 1px solid rgba(241, 235, 235, 0.34);
+  border-radius: 2px;
+  background-color: rgba(241, 235, 235, 0.06);
+  color: var(--stone);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 0.68rem 1.2rem;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.project-fullscreen-github-btn .project-github-ext {
+  font-size: 0.72rem;
+  opacity: 0.78;
+  transition: transform 0.2s ease;
+}
+
+.project-fullscreen-github-btn:hover,
+.project-fullscreen-github-btn:focus-visible {
+  background-color: var(--stone);
+  border-color: var(--stone);
+  color: var(--dark-red);
+}
+
+.project-fullscreen-github-btn:hover .project-github-ext {
+  transform: translate(2px, -2px);
+}
+
+/* Fullscreen detail open & project switch choreography */
+.project-fullscreen-modal.is-project-animating .project-fullscreen-preview {
+  animation: projectPreviewReveal 0.56s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.project-fullscreen-modal.is-project-animating .project-fullscreen-title {
+  animation: projectTextRise 0.48s cubic-bezier(0.16, 1, 0.3, 1) 0.07s backwards;
+}
+
+.project-fullscreen-modal.is-project-animating .project-fullscreen-rule {
+  animation: projectRuleGrow 0.46s cubic-bezier(0.16, 1, 0.3, 1) 0.15s backwards;
+}
+
+.project-fullscreen-modal.is-project-animating .project-fullscreen-desc {
+  animation: projectTextRise 0.48s cubic-bezier(0.16, 1, 0.3, 1) 0.17s backwards;
+}
+
+.project-fullscreen-modal.is-project-animating .project-fullscreen-stack-label {
+  animation: projectTextRise 0.42s cubic-bezier(0.16, 1, 0.3, 1) 0.22s backwards;
+}
+
+.project-fullscreen-modal.is-project-animating .project-fullscreen-stack-row .slide-stack-tag {
+  animation: projectChipRise 0.4s cubic-bezier(0.16, 1, 0.3, 1) calc(0.24s + var(--chip-index, 0) * 55ms) backwards;
+}
+
+.project-fullscreen-modal.is-project-animating .project-fullscreen-actions {
+  animation: projectTextRise 0.46s cubic-bezier(0.16, 1, 0.3, 1) 0.34s backwards;
+}
+
+@keyframes projectPreviewReveal {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 16px, 0);
+    clip-path: inset(0 0 14% 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes projectTextRise {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes projectRuleGrow {
+  0% {
+    transform: scaleX(0);
+  }
+  100% {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes projectChipRise {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0) scale(0.92);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
 }
 
 /* ==================== FULL-SCREEN SECTIONS (DESKTOP & MOBILE) ==================== */
@@ -4095,7 +4280,14 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
   .work-section.is-work-play .work-ambient-bg,
   .work-section.is-work-play .work-header,
   .work-section.is-work-play .portfolio-marquee-viewport,
-  .work-section.is-work-play .portfolio-dots {
+  .work-section.is-work-play .portfolio-dots,
+  .project-fullscreen-modal.is-project-animating .project-fullscreen-preview,
+  .project-fullscreen-modal.is-project-animating .project-fullscreen-title,
+  .project-fullscreen-modal.is-project-animating .project-fullscreen-rule,
+  .project-fullscreen-modal.is-project-animating .project-fullscreen-desc,
+  .project-fullscreen-modal.is-project-animating .project-fullscreen-stack-label,
+  .project-fullscreen-modal.is-project-animating .project-fullscreen-stack-row .slide-stack-tag,
+  .project-fullscreen-modal.is-project-animating .project-fullscreen-actions {
     animation: none !important;
   }
 
