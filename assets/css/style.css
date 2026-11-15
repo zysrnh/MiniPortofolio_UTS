@@ -1159,21 +1159,10 @@ body {
 }
 
 /* ==================== CONTACT & FOOTER (TYPOGRAPHIC CTA + 3-COL FOOTER) ==================== */
-.contact-page-shell {
-  min-height: calc(100vh - 64px);
-  min-height: calc(100svh - 64px);
-  display: flex;
-  flex-direction: column;
-  scroll-snap-align: start;
-  background-color: var(--ice-white);
-}
-
 .cta-section {
   background-color: var(--ice-white);
-  flex: 1;
-  display: flex;
-  align-items: center;
-  padding: 2.5rem 0;
+  padding: 4.5rem 0;
+  scroll-snap-align: start;
 }
 
 .cta-typo-heading {
@@ -1287,7 +1276,7 @@ body {
 
 @media (min-width: 992px) {
   html {
-    scroll-snap-type: y mandatory;
+    scroll-snap-type: y proximity;
   }
 
   .skills-section,
