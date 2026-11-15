@@ -146,23 +146,45 @@ function initAboutCarousel() {
     });
   });
 
+  let aboutTimerId = null;
+
+  function startAboutAuto() {
+    stopAboutAuto();
+    aboutTimerId = window.setInterval(() => {
+      if (card.classList.contains("is-expanded")) return;
+      currentIndex = (currentIndex + 1) % slides.length;
+      renderSlide(currentIndex, true);
+    }, 4200);
+  }
+
+  function stopAboutAuto() {
+    if (aboutTimerId !== null) {
+      window.clearInterval(aboutTimerId);
+      aboutTimerId = null;
+    }
+  }
+
   prevBtn.addEventListener("click", () => {
     currentIndex = (currentIndex - 1 + slides.length) % slides.length;
     renderSlide(currentIndex, true);
+    startAboutAuto();
   });
 
   nextBtn.addEventListener("click", () => {
     currentIndex = (currentIndex + 1) % slides.length;
     renderSlide(currentIndex, true);
+    startAboutAuto();
   });
 
   expandBtn.addEventListener("click", () => {
     renderSlide(currentIndex, false);
     card.classList.add("is-expanded");
+    stopAboutAuto();
   });
 
   backBtn.addEventListener("click", () => {
     card.classList.remove("is-expanded");
+    startAboutAuto();
   });
 
   itemRows.forEach((row) => {
@@ -172,11 +194,22 @@ function initAboutCarousel() {
         currentIndex = targetIndex;
         renderSlide(currentIndex, true);
         card.classList.add("is-expanded");
+        stopAboutAuto();
       }
     });
   });
 
+  card.addEventListener("mouseenter", stopAboutAuto);
+  card.addEventListener("mouseleave", () => {
+    if (!card.classList.contains("is-expanded")) startAboutAuto();
+  });
+  card.addEventListener("focusin", stopAboutAuto);
+  card.addEventListener("focusout", () => {
+    if (!card.classList.contains("is-expanded")) startAboutAuto();
+  });
+
   renderSlide(0, false);
+  startAboutAuto();
 }
 
 /**
