@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Detail Proyek — Zaki Yusron Hasyimmi</title>
+
+  <!-- Google Fonts: Bebas Neue (Display) & Plus Jakarta Sans (Clean Body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Bootstrap 5 CSS & Bootstrap Icons -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    rel="stylesheet"
+  />
+
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body data-page="project">
+  <!-- ==================== NAVBAR ==================== -->
+  <header class="site-header sticky-top">
+    <nav class="navbar navbar-expand-lg py-3">
+      <div class="container">
+        <a class="navbar-brand fw-extrabold tracking-wide" href="index.html#home">
+          Zaki Yusron Hasyimmi
+        </a>
+
+        <button
+          class="navbar-toggler border-0 shadow-none"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#mainNavbar"
+          aria-controls="mainNavbar"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="mainNavbar">
+          <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-4 mt-3 mt-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html#home" data-i18n="nav.home">BERANDA</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="index.html#about" data-i18n="nav.about">TENTANG</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="index.html#skills" data-i18n="nav.skills">TECH STACK</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="index.html#work" data-i18n="nav.work">KARYA</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="contact.html" data-i18n="nav.contact">KONTAK</a>
+            </li>
+            <li class="nav-item ms-lg-2 pt-2 pt-lg-0">
+              <div class="lang-switcher" role="group" aria-label="Pilih bahasa" data-i18n-aria="lang.groupAria">
+                <button type="button" class="lang-btn is-active" data-lang="id" aria-pressed="true">ID</button>
+                <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ==================== PROJECT DETAIL PAGE (1-Screen Dark Editorial) ==================== -->
+  <div class="project-page-shell">
+    <main class="project-fullscreen-modal" id="projectStage">
+      <div class="project-fullscreen-ambient" aria-hidden="true">
+        <svg class="project-fullscreen-reticle" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <pattern id="projectGridPattern" width="64" height="64" patternUnits="userSpaceOnUse">
+              <path d="M 64 0 L 0 0 0 64" fill="none" stroke="rgba(241, 235, 235, 0.045)" stroke-width="1" />
+              <path d="M 61 0 L 67 0 M 64 -3 L 64 3" fill="none" stroke="rgba(241, 235, 235, 0.09)" stroke-width="1" />
+            </pattern>
+          </defs>
+          <rect width="1200" height="700" fill="url(#projectGridPattern)" />
+          <path d="M24 58 L24 24 L58 24" fill="none" stroke="rgba(241, 235, 235, 0.22)" stroke-width="1.5" />
+          <path d="M1142 24 L1176 24 L1176 58" fill="none" stroke="rgba(241, 235, 235, 0.22)" stroke-width="1.5" />
+          <path d="M24 642 L24 676 L58 676" fill="none" stroke="rgba(241, 235, 235, 0.22)" stroke-width="1.5" />
+          <path d="M1142 676 L1176 676 L1176 642" fill="none" stroke="rgba(241, 235, 235, 0.22)" stroke-width="1.5" />
+        </svg>
+      </div>
+
+      <div class="project-fullscreen-topbar">
+        <div class="container d-flex align-items-center justify-content-between gap-3">
+          <a
+            href="index.html#work"
+            class="project-fullscreen-back"
+            id="projectBackBtn"
+          >
+            <i class="bi bi-arrow-left" aria-hidden="true"></i>
+            <span data-i18n="work.modalBack">KEMBALI</span>
+          </a>
+
+          <div class="d-flex align-items-center gap-2 gap-sm-3">
+            <span class="project-fullscreen-counter" id="projectDetailCounter" aria-live="polite">01 / 06</span>
+            <div class="d-flex align-items-center gap-1">
+              <button
+                type="button"
+                class="project-fullscreen-nav-btn"
+                id="projectPrevBtn"
+                aria-label="Proyek sebelumnya"
+                data-i18n-aria="work.modalPrevAria"
+              >
+                <i class="bi bi-chevron-left" aria-hidden="true"></i>
+              </button>
+              <button
+                type="button"
+                class="project-fullscreen-nav-btn"
+                id="projectNextBtn"
+                aria-label="Proyek berikutnya"
+                data-i18n-aria="work.modalNextAria"
+              >
+                <i class="bi bi-chevron-right" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-fullscreen-body">
+        <div class="container">
+          <div class="project-fullscreen-grid">
+            <div class="project-fullscreen-preview">
+              <img
+                id="projectPreviewImg"
+                src="ref/SMART%20MOVES%E2%84%A2%20_%20UI_UX%20Design%20for%20trading%20course%20-%20Diana%20Malook.jpg"
+                alt="Company Profile Website preview"
+                class="project-fullscreen-img"
+              />
+            </div>
+
+            <div class="project-fullscreen-info">
+              <h1 class="project-fullscreen-title" id="projectDetailTitle" data-i18n="work.p1.title">
+                Company Profile Website
+              </h1>
+              <div class="project-fullscreen-rule" aria-hidden="true"></div>
+              <p id="projectDetailDesc" class="project-fullscreen-desc" data-i18n="work.p1.detail">
+                Situs web profil perusahaan dengan tata letak terstruktur, tipografi rapi, seksi layanan yang jelas, dan performa muat cepat di desktop maupun seluler.
+              </p>
+
+              <div class="project-fullscreen-stack-block">
+                <div class="project-fullscreen-stack-label" data-i18n="work.modalStack">TECH STACK</div>
+                <div id="projectDetailStack" class="project-fullscreen-stack-row"></div>
+              </div>
+
+              <div class="project-fullscreen-actions">
+                <a
+                  id="projectGithubBtn"
+                  href="https://github.com/zysrnh"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="project-fullscreen-github-btn"
+                >
+                  <i class="bi bi-github" aria-hidden="true"></i>
+                  <span data-i18n="work.modalGithub">LIHAT DI GITHUB</span>
+                  <i class="bi bi-box-arrow-up-right project-github-ext" aria-hidden="true"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ==================== MOBILE APP BOTTOM TOOLBAR ==================== -->
+  <nav class="mobile-app-bar" id="mobileAppBar" aria-label="Navigasi Seluler" data-i18n-aria="nav.mobileAria">
+    <div class="mobile-app-bar-inner">
+      <a href="index.html#home" class="mobile-app-item">
+        <i class="bi bi-house" aria-hidden="true"></i>
+        <span class="mobile-app-label" data-i18n="mobile.home">Beranda</span>
+      </a>
+      <a href="index.html#about" class="mobile-app-item">
+        <i class="bi bi-person" aria-hidden="true"></i>
+        <span class="mobile-app-label" data-i18n="mobile.about">Tentang</span>
+      </a>
+      <a href="index.html#skills" class="mobile-app-item">
+        <i class="bi bi-layers" aria-hidden="true"></i>
+        <span class="mobile-app-label" data-i18n="mobile.stack">Stack</span>
+      </a>
+      <a href="index.html#work" class="mobile-app-item is-active" aria-current="page">
+        <i class="bi bi-grid" aria-hidden="true"></i>
+        <span class="mobile-app-label" data-i18n="mobile.work">Karya</span>
+      </a>
+      <a href="contact.html" class="mobile-app-item">
+        <i class="bi bi-envelope" aria-hidden="true"></i>
+        <span class="mobile-app-label" data-i18n="mobile.contact">Kontak</span>
+      </a>
+      <div class="mobile-app-lang" role="group" aria-label="Pilih bahasa" data-i18n-aria="lang.groupAria">
+        <button type="button" class="lang-btn is-active" data-lang="id" aria-pressed="true">ID</button>
+        <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Bootstrap 5 JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Custom Script -->
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

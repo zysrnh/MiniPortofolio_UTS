@@ -2816,11 +2816,12 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
   padding: 0.48rem 0.95rem;
   display: inline-flex;
   align-items: center;
-  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  text-decoration: none;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.14s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .work-section .project-detail-btn .bi {
-  transition: transform 0.2s ease;
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .work-section .project-detail-btn:hover,
@@ -2831,7 +2832,18 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
 }
 
 .work-section .project-detail-btn:hover .bi {
-  transform: translateX(3px);
+  transform: translateX(4px);
+}
+
+.work-section .project-detail-btn:active {
+  background-color: var(--dark-red);
+  border-color: var(--dark-red);
+  color: var(--stone);
+  transform: translateY(1px) scale(0.96);
+}
+
+.work-section .project-detail-btn:active .bi {
+  transform: translateX(6px);
 }
 
 .portfolio-dots {
@@ -3286,19 +3298,18 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
   text-decoration: underline;
 }
 
-/* ==================== PROJECT DETAIL FULLSCREEN OVERLAY ==================== */
-#projectModal.modal.fade {
-  transition: opacity 0.28s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-#projectModal.modal.fade .modal-dialog,
-#projectModal.modal.show .modal-dialog {
-  transform: none;
-  transition: none;
+/* ==================== PROJECT DETAIL PAGE (STANDALONE DARK EDITORIAL) ==================== */
+.project-page-shell {
+  min-height: calc(100vh - 58px);
+  min-height: calc(100svh - 58px);
+  display: flex;
+  flex-direction: column;
+  background-color: var(--dark-red);
 }
 
 .project-fullscreen-modal {
   position: relative;
+  flex: 1;
   min-height: 100%;
   background-color: var(--dark-red);
   color: var(--stone);
@@ -3326,7 +3337,7 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
   position: relative;
   z-index: 2;
   border-bottom: 1px solid rgba(241, 235, 235, 0.14);
-  padding: 1rem 0;
+  padding: 0.9rem 0;
   flex-shrink: 0;
 }
 
@@ -3342,9 +3353,14 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
   font-weight: 800;
   letter-spacing: 0.12em;
   text-transform: uppercase;
+  text-decoration: none;
   padding: 0.5rem 0.9rem;
   cursor: pointer;
-  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.14s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.project-fullscreen-back .bi {
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .project-fullscreen-back:hover,
@@ -3352,6 +3368,14 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
   background-color: var(--stone);
   border-color: var(--stone);
   color: var(--dark-red);
+}
+
+.project-fullscreen-back:hover .bi {
+  transform: translateX(-3px);
+}
+
+.project-fullscreen-back:active {
+  transform: translateY(1px) scale(0.96);
 }
 
 .project-fullscreen-counter {
@@ -3366,8 +3390,7 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
   background-color: rgba(241, 235, 235, 0.05);
 }
 
-.project-fullscreen-nav-btn,
-.project-fullscreen-close {
+.project-fullscreen-nav-btn {
   width: 38px;
   height: 38px;
   display: inline-flex;
@@ -3379,7 +3402,7 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
   color: var(--stone);
   font-size: 0.9rem;
   cursor: pointer;
-  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.14s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .project-fullscreen-nav-btn:hover,
@@ -3389,11 +3412,11 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
   color: var(--white);
 }
 
-.project-fullscreen-close:hover,
-.project-fullscreen-close:focus-visible {
+.project-fullscreen-nav-btn:active {
   background-color: var(--stone);
   border-color: var(--stone);
   color: var(--dark-red);
+  transform: translateY(1px) scale(0.94);
 }
 
 .project-fullscreen-body {
@@ -3402,8 +3425,7 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
   flex: 1;
   display: flex;
   align-items: center;
-  overflow-y: auto;
-  padding: 2rem 0;
+  padding: 1.75rem 0 2.25rem;
 }
 
 .project-fullscreen-grid {
@@ -3423,7 +3445,7 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
 
 .project-fullscreen-img {
   width: 100%;
-  height: clamp(270px, 54vh, 470px);
+  height: clamp(270px, 52vh, 455px);
   object-fit: cover;
   object-position: top center;
   display: block;
@@ -3448,14 +3470,14 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
   height: 2px;
   background-color: var(--deep-red);
   transform-origin: left center;
-  margin: 1.25rem 0;
+  margin: 1.2rem 0;
 }
 
 .project-fullscreen-desc {
   font-size: 0.96rem;
   line-height: 1.72;
   color: rgba(241, 235, 235, 0.8);
-  margin: 0 0 1.65rem;
+  margin: 0 0 1.55rem;
 }
 
 .project-fullscreen-stack-block {
@@ -3503,7 +3525,7 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
 }
 
 .project-fullscreen-actions {
-  margin-top: 1.6rem;
+  margin-top: 1.55rem;
 }
 
 .project-fullscreen-github-btn {
@@ -3520,13 +3542,13 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
   text-transform: uppercase;
   text-decoration: none;
   padding: 0.68rem 1.2rem;
-  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.14s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .project-fullscreen-github-btn .project-github-ext {
   font-size: 0.72rem;
   opacity: 0.78;
-  transition: transform 0.2s ease;
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .project-fullscreen-github-btn:hover,
@@ -3540,33 +3562,37 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
   transform: translate(2px, -2px);
 }
 
-/* Fullscreen modal initial open choreography */
+.project-fullscreen-github-btn:active {
+  transform: translateY(1px) scale(0.97);
+}
+
+/* Page initial load choreography */
 .project-fullscreen-modal.is-project-enter .project-fullscreen-topbar {
-  animation: projectFadeIn 0.28s ease both;
+  animation: projectFadeIn 0.32s ease both;
 }
 
 .project-fullscreen-modal.is-project-enter .project-fullscreen-preview {
-  animation: projectEnterRise 0.44s cubic-bezier(0.22, 1, 0.36, 1) 0.04s backwards;
+  animation: projectEnterRise 0.52s cubic-bezier(0.22, 1, 0.36, 1) 0.04s backwards;
 }
 
 .project-fullscreen-modal.is-project-enter .project-fullscreen-title {
-  animation: projectEnterRise 0.4s cubic-bezier(0.22, 1, 0.36, 1) 0.08s backwards;
+  animation: projectEnterRise 0.46s cubic-bezier(0.22, 1, 0.36, 1) 0.1s backwards;
 }
 
 .project-fullscreen-modal.is-project-enter .project-fullscreen-rule {
-  animation: projectRuleGrow 0.38s cubic-bezier(0.22, 1, 0.36, 1) 0.14s backwards;
+  animation: projectRuleGrow 0.42s cubic-bezier(0.22, 1, 0.36, 1) 0.16s backwards;
 }
 
 .project-fullscreen-modal.is-project-enter .project-fullscreen-desc {
-  animation: projectEnterRise 0.4s cubic-bezier(0.22, 1, 0.36, 1) 0.16s backwards;
+  animation: projectEnterRise 0.44s cubic-bezier(0.22, 1, 0.36, 1) 0.2s backwards;
 }
 
 .project-fullscreen-modal.is-project-enter .project-fullscreen-stack-row .slide-stack-tag {
-  animation: projectChipEnter 0.32s cubic-bezier(0.22, 1, 0.36, 1) calc(0.2s + var(--chip-index, 0) * 40ms) backwards;
+  animation: projectChipEnter 0.36s cubic-bezier(0.22, 1, 0.36, 1) calc(0.24s + var(--chip-index, 0) * 45ms) backwards;
 }
 
 .project-fullscreen-modal.is-project-enter .project-fullscreen-actions {
-  animation: projectEnterRise 0.38s cubic-bezier(0.22, 1, 0.36, 1) 0.24s backwards;
+  animation: projectEnterRise 0.42s cubic-bezier(0.22, 1, 0.36, 1) 0.3s backwards;
 }
 
 /* Directional project switch choreography (only active media, copy & chips animate) */
@@ -3707,7 +3733,8 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
     padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px));
   }
 
-  .contact-page-shell {
+  .contact-page-shell,
+  .project-page-shell {
     min-height: calc(100vh - 64px);
     min-height: calc(100svh - 64px);
   }
@@ -4350,10 +4377,6 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
   .project-fullscreen-modal.is-project-switch .project-fullscreen-desc,
   .project-fullscreen-modal.is-project-switch .project-fullscreen-stack-row .slide-stack-tag {
     animation: none !important;
-  }
-
-  #projectModal.modal.fade {
-    transition: none !important;
   }
 
   .galaxy-meteor,

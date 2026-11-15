@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initSectionEntrance("work", "is-work-ready", "is-work-play", 0.12, 0.86);
   initWorkStackIcons();
   initPortfolioAutoCarousel();
-  initProjectModal();
+  initProjectPage();
   initContactForm();
   initServiceDropdown();
   initMobileNavClose();
@@ -407,67 +407,109 @@ function initAboutCarousel() {
   startAboutAuto();
 }
 
-/**
- * Populate and open full-screen dark project detail overlay with directional project transitions.
- */
-function initProjectModal() {
-  const modalElement = document.getElementById("projectModal");
-  if (!modalElement || typeof bootstrap === "undefined") return;
+const PROJECTS_CATALOG = [
+  {
+    key: "p1",
+    index: "01",
+    image: "ref/SMART%20MOVES%E2%84%A2%20_%20UI_UX%20Design%20for%20trading%20course%20-%20Diana%20Malook.jpg",
+    stack: ["HTML5", "CSS3", "Bootstrap 5"],
+    github: "https://github.com/zysrnh",
+  },
+  {
+    key: "p2",
+    index: "02",
+    image: "ref/SMART%20MOVES%E2%84%A2%20_%20UI_UX%20Design%20for%20trading%20course%20-%20Diana%20Malook.jpg",
+    stack: ["Bootstrap 5", "JavaScript", "CSS3"],
+    github: "https://github.com/zysrnh",
+  },
+  {
+    key: "p3",
+    index: "03",
+    image: "ref/SMART%20MOVES%E2%84%A2%20_%20UI_UX%20Design%20for%20trading%20course%20-%20Diana%20Malook.jpg",
+    stack: ["Laravel", "Bootstrap 5", "Chart.js"],
+    github: "https://github.com/zysrnh",
+  },
+  {
+    key: "p4",
+    index: "04",
+    image: "ref/SMART%20MOVES%E2%84%A2%20_%20UI_UX%20Design%20for%20trading%20course%20-%20Diana%20Malook.jpg",
+    stack: ["Figma", "Design System", "Wireframing"],
+    github: "https://github.com/zysrnh",
+  },
+  {
+    key: "p5",
+    index: "05",
+    image: "ref/SMART%20MOVES%E2%84%A2%20_%20UI_UX%20Design%20for%20trading%20course%20-%20Diana%20Malook.jpg",
+    stack: ["HTML5", "JavaScript", "Bootstrap 5"],
+    github: "https://github.com/zysrnh",
+  },
+  {
+    key: "p6",
+    index: "06",
+    image: "ref/SMART%20MOVES%E2%84%A2%20_%20UI_UX%20Design%20for%20trading%20course%20-%20Diana%20Malook.jpg",
+    stack: ["Laravel", "REST API", "Bootstrap 5", "Chart.js"],
+    github: "https://github.com/zysrnh",
+  },
+];
 
-  const projectModal = new bootstrap.Modal(modalElement);
-  const modalContentEl = modalElement.querySelector(".project-fullscreen-modal");
-  const titleEl = document.getElementById("projectModalLabel");
-  const counterEl = document.getElementById("projectModalCounter");
-  const prevBtn = document.getElementById("projectModalPrevBtn");
-  const nextBtn = document.getElementById("projectModalNextBtn");
-  const previewWrap = modalElement.querySelector(".project-fullscreen-preview");
-  const previewImgEl = document.getElementById("modalPreviewImg");
-  const descEl = document.getElementById("modalDescription");
-  const stackEl = document.getElementById("modalStack");
-  const githubBtnEl = document.getElementById("projectModalGithubBtn");
+/**
+ * Populate and control the standalone 1-screen dark editorial project detail page.
+ */
+function initProjectPage() {
+  const stageEl = document.getElementById("projectStage");
+  if (!stageEl || !PROJECTS_CATALOG.length) return;
+
+  const titleEl = document.getElementById("projectDetailTitle");
+  const counterEl = document.getElementById("projectDetailCounter");
+  const prevBtn = document.getElementById("projectPrevBtn");
+  const nextBtn = document.getElementById("projectNextBtn");
+  const previewWrap = stageEl.querySelector(".project-fullscreen-preview");
+  const previewImgEl = document.getElementById("projectPreviewImg");
+  const descEl = document.getElementById("projectDetailDesc");
+  const stackEl = document.getElementById("projectDetailStack");
+  const githubBtnEl = document.getElementById("projectGithubBtn");
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-  const projectButtons = Array.from(document.querySelectorAll(".project-detail-btn"));
-  if (!projectButtons.length) return;
+  const urlParams = new URLSearchParams(window.location.search);
+  const requestedKey = (urlParams.get("project") || window.location.hash.replace(/^#/, "")).trim().toLowerCase();
+  const initialIndex = PROJECTS_CATALOG.findIndex((item) => item.key === requestedKey);
+  let activeIndex = initialIndex >= 0 ? initialIndex : 0;
 
-  let activeIndex = 0;
+  function syncUrlParam(projectKey) {
+    try {
+      const nextUrl = new URL(window.location.href);
+      nextUrl.searchParams.set("project", projectKey);
+      nextUrl.hash = "";
+      window.history.replaceState(null, "", nextUrl.toString());
+    } catch (_) {
+      // Ignore history errors in restricted browser contexts.
+    }
+  }
 
   function triggerStageAnimation(mode) {
-    if (!modalContentEl) return;
-    modalContentEl.classList.remove("is-project-enter", "is-project-switch");
+    stageEl.classList.remove("is-project-enter", "is-project-switch");
     if (prefersReducedMotion.matches || mode === "static") return;
 
-    void modalContentEl.offsetWidth;
+    void stageEl.offsetWidth;
     if (mode === "enter") {
-      modalContentEl.classList.add("is-project-enter");
+      stageEl.classList.add("is-project-enter");
       return;
     }
 
-    modalContentEl.style.setProperty("--slide-dir", mode === "prev" ? "-1" : "1");
-    modalContentEl.classList.add("is-project-switch");
+    stageEl.style.setProperty("--slide-dir", mode === "prev" ? "-1" : "1");
+    stageEl.classList.add("is-project-switch");
   }
 
-  function renderProjectByIndex(idx, mode = "enter") {
-    const total = projectButtons.length;
+  function renderProject(idx, mode = "enter", shouldSyncUrl = true) {
+    const total = PROJECTS_CATALOG.length;
     activeIndex = ((idx % total) + total) % total;
-    const btn = projectButtons[activeIndex];
-    if (!btn) return;
+    const project = PROJECTS_CATALOG[activeIndex];
+    if (!project) return;
 
     const lang = document.documentElement.lang === "en" ? "en" : "id";
     const dict = SITE_TRANSLATIONS[lang] || SITE_TRANSLATIONS.id;
-    const key = btn.dataset.projectKey || "";
-    const card = btn.closest(".portfolio-card");
-    const cardImg = card ? card.querySelector(".portfolio-card-img") : null;
-
-    const title =
-      dict[`work.${key}.title`] ||
-      card?.querySelector(".portfolio-card-title")?.textContent?.trim() ||
-      "";
-    const desc =
-      dict[`work.${key}.detail`] ||
-      dict[`work.${key}.desc`] ||
-      card?.querySelector(".portfolio-card-desc")?.textContent?.trim() ||
-      "";
+    const title = dict[`work.${project.key}.title`] || "";
+    const desc = dict[`work.${project.key}.detail`] || dict[`work.${project.key}.desc`] || "";
 
     if (titleEl) {
       titleEl.textContent = title;
@@ -475,18 +517,19 @@ function initProjectModal() {
     if (descEl) {
       descEl.textContent = desc;
     }
-    if (counterEl) {
-      counterEl.textContent = `${String(activeIndex + 1).padStart(2, "0")} / ${String(total).padStart(2, "0")}`;
+    if (title) {
+      document.title = `${title} — Zaki Yusron Hasyimmi`;
     }
-
+    if (counterEl) {
+      counterEl.textContent = `${project.index} / ${String(total).padStart(2, "0")}`;
+    }
     if (githubBtnEl) {
-      githubBtnEl.setAttribute("href", btn.dataset.github || "https://github.com/zysrnh");
+      githubBtnEl.setAttribute("href", project.github || "https://github.com/zysrnh");
     }
 
     if (previewImgEl && previewWrap) {
-      const imgSrc = cardImg ? cardImg.getAttribute("src") || "" : "";
-      if (imgSrc) {
-        previewImgEl.setAttribute("src", imgSrc);
+      if (project.image) {
+        previewImgEl.setAttribute("src", project.image);
         previewImgEl.setAttribute("alt", `${title} preview`);
         previewWrap.hidden = false;
       } else {
@@ -497,62 +540,49 @@ function initProjectModal() {
 
     if (stackEl) {
       stackEl.innerHTML = "";
-      const stackItems = (btn.dataset.stack || "")
-        .split(",")
-        .map((item) => item.trim())
-        .filter(Boolean);
-
-      stackItems.forEach((item, chipIdx) => {
+      project.stack.forEach((item, chipIdx) => {
         const chip = createStackChip(item, "slide-stack-tag");
         chip.style.setProperty("--chip-index", String(chipIdx));
         stackEl.appendChild(chip);
       });
     }
 
+    if (shouldSyncUrl) {
+      syncUrlParam(project.key);
+    }
+
     triggerStageAnimation(mode);
   }
 
-  projectButtons.forEach((btn, idx) => {
-    btn.addEventListener("click", () => {
-      renderProjectByIndex(idx, "enter");
-      projectModal.show();
-    });
-  });
-
   if (prevBtn) {
     prevBtn.addEventListener("click", () => {
-      renderProjectByIndex(activeIndex - 1, "prev");
+      renderProject(activeIndex - 1, "prev", true);
     });
   }
 
   if (nextBtn) {
     nextBtn.addEventListener("click", () => {
-      renderProjectByIndex(activeIndex + 1, "next");
+      renderProject(activeIndex + 1, "next", true);
     });
   }
 
-  modalElement.addEventListener("hidden.bs.modal", () => {
-    if (modalContentEl) {
-      modalContentEl.classList.remove("is-project-enter", "is-project-switch");
-    }
-  });
-
   document.addEventListener("keydown", (event) => {
-    if (!modalElement.classList.contains("show")) return;
+    const tag = event.target && event.target.tagName ? event.target.tagName.toLowerCase() : "";
+    if (tag === "input" || tag === "textarea" || tag === "select") return;
     if (event.key === "ArrowLeft") {
       event.preventDefault();
-      renderProjectByIndex(activeIndex - 1, "prev");
+      renderProject(activeIndex - 1, "prev", true);
     } else if (event.key === "ArrowRight") {
       event.preventDefault();
-      renderProjectByIndex(activeIndex + 1, "next");
+      renderProject(activeIndex + 1, "next", true);
     }
   });
 
   window.addEventListener("portfolio:langchange", () => {
-    if (modalElement.classList.contains("show")) {
-      renderProjectByIndex(activeIndex, "static");
-    }
+    renderProject(activeIndex, "static", false);
   });
+
+  renderProject(activeIndex, "enter", Boolean(requestedKey));
 }
 
 /**
@@ -1723,7 +1753,6 @@ function initPortfolioAutoCarousel() {
   const nextBtn = document.getElementById("portfolioNextBtn");
   const dotsWrap = document.getElementById("portfolioDots");
   const counterEl = document.getElementById("portfolioCounter");
-  const projectModalEl = document.getElementById("projectModal");
 
   if (!viewport || !track) return;
 
@@ -1799,7 +1828,7 @@ function initPortfolioAutoCarousel() {
 
   function startAuto() {
     stopAuto();
-    if (document.hidden || (projectModalEl && projectModalEl.classList.contains("show"))) return;
+    if (document.hidden) return;
     timerId = window.setInterval(() => {
       goTo(currentIndex + 1);
     }, 3400);
@@ -1834,11 +1863,6 @@ function initPortfolioAutoCarousel() {
   viewport.addEventListener("mouseleave", startAuto);
   viewport.addEventListener("focusin", stopAuto);
   viewport.addEventListener("focusout", startAuto);
-
-  if (projectModalEl) {
-    projectModalEl.addEventListener("show.bs.modal", stopAuto);
-    projectModalEl.addEventListener("hidden.bs.modal", startAuto);
-  }
 
   document.addEventListener("visibilitychange", () => {
     if (document.hidden) {
@@ -1961,6 +1985,7 @@ const SITE_TRANSLATIONS = {
   id: {
     "title.home": "Portofolio — Zaki Yusron Hasyimmi",
     "title.contact": "Kontak — Zaki Yusron Hasyimmi",
+    "title.project": "Detail Proyek — Zaki Yusron Hasyimmi",
     "nav.home": "BERANDA",
     "nav.about": "TENTANG",
     "nav.skills": "TECH STACK",
@@ -2036,6 +2061,7 @@ const SITE_TRANSLATIONS = {
   en: {
     "title.home": "Portfolio — Zaki Yusron Hasyimmi",
     "title.contact": "Contact — Zaki Yusron Hasyimmi",
+    "title.project": "Project Detail — Zaki Yusron Hasyimmi",
     "nav.home": "HOME",
     "nav.about": "ABOUT ME",
     "nav.skills": "TECH STACK",
@@ -2138,10 +2164,15 @@ function initLanguageSwitcher() {
     }
   }
 
+  const PAGE_TITLE_KEYS = {
+    contact: "title.contact",
+    project: "title.project",
+  };
+
   function applyLanguage(lang, persist = true) {
     const activeLang = SITE_TRANSLATIONS[lang] ? lang : "id";
     const dict = SITE_TRANSLATIONS[activeLang];
-    const pageKey = document.body.dataset.page === "contact" ? "title.contact" : "title.home";
+    const pageKey = PAGE_TITLE_KEYS[document.body.dataset.page] || "title.home";
 
     document.documentElement.lang = activeLang;
     if (dict[pageKey]) {
