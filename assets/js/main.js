@@ -387,6 +387,18 @@ function initAppBottomBar() {
   );
 
   sections.forEach((section) => observer.observe(section));
+
+  if (sections.some((section) => section.id === "contact")) {
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 40) {
+          setActive("contact");
+        }
+      },
+      { passive: true }
+    );
+  }
 }
 
 /**
