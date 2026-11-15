@@ -1160,12 +1160,11 @@ body {
 
 /* ==================== CONTACT & FOOTER (SWISS EDITORIAL CONTACT) ==================== */
 .contact-page-shell {
-  min-height: calc(100vh - 64px);
-  min-height: calc(100svh - 64px);
+  min-height: calc(100vh - 58px);
   display: flex;
   flex-direction: column;
   scroll-snap-align: start;
-  background-color: var(--surface-white);
+  background-color: var(--midnight-navy);
 }
 
 .cta-section {
