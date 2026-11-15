@@ -3287,6 +3287,16 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
 }
 
 /* ==================== PROJECT DETAIL FULLSCREEN OVERLAY ==================== */
+#projectModal.modal.fade {
+  transition: opacity 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+#projectModal.modal.fade .modal-dialog,
+#projectModal.modal.show .modal-dialog {
+  transform: none;
+  transition: none;
+}
+
 .project-fullscreen-modal {
   position: relative;
   min-height: 100%;
@@ -3408,6 +3418,7 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
   border: 1px solid rgba(241, 235, 235, 0.2);
   border-radius: 2px;
   padding: 0.7rem;
+  overflow: hidden;
 }
 
 .project-fullscreen-img {
@@ -3529,52 +3540,65 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
   transform: translate(2px, -2px);
 }
 
-/* Fullscreen detail open & project switch choreography */
-.project-fullscreen-modal.is-project-animating .project-fullscreen-preview {
-  animation: projectPreviewReveal 0.56s cubic-bezier(0.16, 1, 0.3, 1) both;
+/* Fullscreen modal initial open choreography */
+.project-fullscreen-modal.is-project-enter .project-fullscreen-topbar {
+  animation: projectFadeIn 0.28s ease both;
 }
 
-.project-fullscreen-modal.is-project-animating .project-fullscreen-title {
-  animation: projectTextRise 0.48s cubic-bezier(0.16, 1, 0.3, 1) 0.07s backwards;
+.project-fullscreen-modal.is-project-enter .project-fullscreen-preview {
+  animation: projectEnterRise 0.44s cubic-bezier(0.22, 1, 0.36, 1) 0.04s backwards;
 }
 
-.project-fullscreen-modal.is-project-animating .project-fullscreen-rule {
-  animation: projectRuleGrow 0.46s cubic-bezier(0.16, 1, 0.3, 1) 0.15s backwards;
+.project-fullscreen-modal.is-project-enter .project-fullscreen-title {
+  animation: projectEnterRise 0.4s cubic-bezier(0.22, 1, 0.36, 1) 0.08s backwards;
 }
 
-.project-fullscreen-modal.is-project-animating .project-fullscreen-desc {
-  animation: projectTextRise 0.48s cubic-bezier(0.16, 1, 0.3, 1) 0.17s backwards;
+.project-fullscreen-modal.is-project-enter .project-fullscreen-rule {
+  animation: projectRuleGrow 0.38s cubic-bezier(0.22, 1, 0.36, 1) 0.14s backwards;
 }
 
-.project-fullscreen-modal.is-project-animating .project-fullscreen-stack-label {
-  animation: projectTextRise 0.42s cubic-bezier(0.16, 1, 0.3, 1) 0.22s backwards;
+.project-fullscreen-modal.is-project-enter .project-fullscreen-desc {
+  animation: projectEnterRise 0.4s cubic-bezier(0.22, 1, 0.36, 1) 0.16s backwards;
 }
 
-.project-fullscreen-modal.is-project-animating .project-fullscreen-stack-row .slide-stack-tag {
-  animation: projectChipRise 0.4s cubic-bezier(0.16, 1, 0.3, 1) calc(0.24s + var(--chip-index, 0) * 55ms) backwards;
+.project-fullscreen-modal.is-project-enter .project-fullscreen-stack-row .slide-stack-tag {
+  animation: projectChipEnter 0.32s cubic-bezier(0.22, 1, 0.36, 1) calc(0.2s + var(--chip-index, 0) * 40ms) backwards;
 }
 
-.project-fullscreen-modal.is-project-animating .project-fullscreen-actions {
-  animation: projectTextRise 0.46s cubic-bezier(0.16, 1, 0.3, 1) 0.34s backwards;
+.project-fullscreen-modal.is-project-enter .project-fullscreen-actions {
+  animation: projectEnterRise 0.38s cubic-bezier(0.22, 1, 0.36, 1) 0.24s backwards;
 }
 
-@keyframes projectPreviewReveal {
+/* Directional project switch choreography (only active media, copy & chips animate) */
+.project-fullscreen-modal.is-project-switch .project-fullscreen-img {
+  animation: projectMediaSlide 0.36s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.project-fullscreen-modal.is-project-switch .project-fullscreen-title {
+  animation: projectCopySlide 0.32s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.project-fullscreen-modal.is-project-switch .project-fullscreen-desc {
+  animation: projectCopySlide 0.34s cubic-bezier(0.22, 1, 0.36, 1) 0.04s backwards;
+}
+
+.project-fullscreen-modal.is-project-switch .project-fullscreen-stack-row .slide-stack-tag {
+  animation: projectChipSlide 0.28s cubic-bezier(0.22, 1, 0.36, 1) calc(var(--chip-index, 0) * 35ms) backwards;
+}
+
+@keyframes projectFadeIn {
   0% {
     opacity: 0;
-    transform: translate3d(0, 16px, 0);
-    clip-path: inset(0 0 14% 0);
   }
   100% {
     opacity: 1;
-    transform: translate3d(0, 0, 0);
-    clip-path: inset(0 0 0 0);
   }
 }
 
-@keyframes projectTextRise {
+@keyframes projectEnterRise {
   0% {
     opacity: 0;
-    transform: translate3d(0, 14px, 0);
+    transform: translate3d(0, 12px, 0);
   }
   100% {
     opacity: 1;
@@ -3591,14 +3615,47 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
   }
 }
 
-@keyframes projectChipRise {
+@keyframes projectChipEnter {
   0% {
     opacity: 0;
-    transform: translate3d(0, 10px, 0) scale(0.92);
+    transform: translate3d(0, 6px, 0);
   }
   100% {
     opacity: 1;
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes projectMediaSlide {
+  0% {
+    opacity: 0.25;
+    transform: translate3d(calc(var(--slide-dir, 1) * 28px), 0, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes projectCopySlide {
+  0% {
+    opacity: 0.18;
+    transform: translate3d(calc(var(--slide-dir, 1) * 20px), 0, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes projectChipSlide {
+  0% {
+    opacity: 0;
+    transform: translate3d(calc(var(--slide-dir, 1) * 10px), 0, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
   }
 }
 
@@ -4281,14 +4338,22 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
   .work-section.is-work-play .work-header,
   .work-section.is-work-play .portfolio-marquee-viewport,
   .work-section.is-work-play .portfolio-dots,
-  .project-fullscreen-modal.is-project-animating .project-fullscreen-preview,
-  .project-fullscreen-modal.is-project-animating .project-fullscreen-title,
-  .project-fullscreen-modal.is-project-animating .project-fullscreen-rule,
-  .project-fullscreen-modal.is-project-animating .project-fullscreen-desc,
-  .project-fullscreen-modal.is-project-animating .project-fullscreen-stack-label,
-  .project-fullscreen-modal.is-project-animating .project-fullscreen-stack-row .slide-stack-tag,
-  .project-fullscreen-modal.is-project-animating .project-fullscreen-actions {
+  .project-fullscreen-modal.is-project-enter .project-fullscreen-topbar,
+  .project-fullscreen-modal.is-project-enter .project-fullscreen-preview,
+  .project-fullscreen-modal.is-project-enter .project-fullscreen-title,
+  .project-fullscreen-modal.is-project-enter .project-fullscreen-rule,
+  .project-fullscreen-modal.is-project-enter .project-fullscreen-desc,
+  .project-fullscreen-modal.is-project-enter .project-fullscreen-stack-row .slide-stack-tag,
+  .project-fullscreen-modal.is-project-enter .project-fullscreen-actions,
+  .project-fullscreen-modal.is-project-switch .project-fullscreen-img,
+  .project-fullscreen-modal.is-project-switch .project-fullscreen-title,
+  .project-fullscreen-modal.is-project-switch .project-fullscreen-desc,
+  .project-fullscreen-modal.is-project-switch .project-fullscreen-stack-row .slide-stack-tag {
     animation: none !important;
+  }
+
+  #projectModal.modal.fade {
+    transition: none !important;
   }
 
   .galaxy-meteor,

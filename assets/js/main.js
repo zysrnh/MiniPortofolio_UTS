@@ -408,7 +408,7 @@ function initAboutCarousel() {
 }
 
 /**
- * Populate and open full-screen dark project detail overlay with prev/next project switching.
+ * Populate and open full-screen dark project detail overlay with directional project transitions.
  */
 function initProjectModal() {
   const modalElement = document.getElementById("projectModal");
@@ -432,14 +432,22 @@ function initProjectModal() {
 
   let activeIndex = 0;
 
-  function triggerStageAnimation() {
-    if (!modalContentEl || prefersReducedMotion.matches) return;
-    modalContentEl.classList.remove("is-project-animating");
+  function triggerStageAnimation(mode) {
+    if (!modalContentEl) return;
+    modalContentEl.classList.remove("is-project-enter", "is-project-switch");
+    if (prefersReducedMotion.matches || mode === "static") return;
+
     void modalContentEl.offsetWidth;
-    modalContentEl.classList.add("is-project-animating");
+    if (mode === "enter") {
+      modalContentEl.classList.add("is-project-enter");
+      return;
+    }
+
+    modalContentEl.style.setProperty("--slide-dir", mode === "prev" ? "-1" : "1");
+    modalContentEl.classList.add("is-project-switch");
   }
 
-  function renderProjectByIndex(idx, animate = true) {
+  function renderProjectByIndex(idx, mode = "enter") {
     const total = projectButtons.length;
     activeIndex = ((idx % total) + total) % total;
     const btn = projectButtons[activeIndex];
@@ -501,44 +509,48 @@ function initProjectModal() {
       });
     }
 
-    if (animate) {
-      triggerStageAnimation();
-    }
+    triggerStageAnimation(mode);
   }
 
   projectButtons.forEach((btn, idx) => {
     btn.addEventListener("click", () => {
-      renderProjectByIndex(idx, true);
+      renderProjectByIndex(idx, "enter");
       projectModal.show();
     });
   });
 
   if (prevBtn) {
     prevBtn.addEventListener("click", () => {
-      renderProjectByIndex(activeIndex - 1, true);
+      renderProjectByIndex(activeIndex - 1, "prev");
     });
   }
 
   if (nextBtn) {
     nextBtn.addEventListener("click", () => {
-      renderProjectByIndex(activeIndex + 1, true);
+      renderProjectByIndex(activeIndex + 1, "next");
     });
   }
+
+  modalElement.addEventListener("hidden.bs.modal", () => {
+    if (modalContentEl) {
+      modalContentEl.classList.remove("is-project-enter", "is-project-switch");
+    }
+  });
 
   document.addEventListener("keydown", (event) => {
     if (!modalElement.classList.contains("show")) return;
     if (event.key === "ArrowLeft") {
       event.preventDefault();
-      renderProjectByIndex(activeIndex - 1, true);
+      renderProjectByIndex(activeIndex - 1, "prev");
     } else if (event.key === "ArrowRight") {
       event.preventDefault();
-      renderProjectByIndex(activeIndex + 1, true);
+      renderProjectByIndex(activeIndex + 1, "next");
     }
   });
 
   window.addEventListener("portfolio:langchange", () => {
     if (modalElement.classList.contains("show")) {
-      renderProjectByIndex(activeIndex, false);
+      renderProjectByIndex(activeIndex, "static");
     }
   });
 }
