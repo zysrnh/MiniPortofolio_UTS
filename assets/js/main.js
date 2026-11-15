@@ -1431,8 +1431,8 @@ function initTopOnRefresh() {
 
 const SITE_TRANSLATIONS = {
   id: {
-    "title.home": "Portofolio — Z.yrsnh",
-    "title.contact": "Kontak — Z.yrsnh",
+    "title.home": "Portofolio — Zaki Yusron Hasyimmi",
+    "title.contact": "Kontak — Zaki Yusron Hasyimmi",
     "nav.home": "BERANDA",
     "nav.about": "TENTANG",
     "nav.work": "KARYA",
@@ -1444,12 +1444,13 @@ const SITE_TRANSLATIONS = {
     "mobile.work": "Karya",
     "mobile.contact": "Kontak",
     "lang.groupAria": "Pilih bahasa",
-    "hero.portraitAlt": "Potret Z.yrsnh",
-    "hero.arrowAria": "Gulir ke bagian Tentang"
+    "hero.portraitAlt": "Potret Zaki Yusron Hasyimmi",
+    "hero.arrowAria": "Gulir ke bagian Tentang",
+    "hero.githubAria": "Profil GitHub Zaki Yusron Hasyimmi"
   },
   en: {
-    "title.home": "Portfolio — Z.yrsnh",
-    "title.contact": "Contact — Z.yrsnh",
+    "title.home": "Portfolio — Zaki Yusron Hasyimmi",
+    "title.contact": "Contact — Zaki Yusron Hasyimmi",
     "nav.home": "HOME",
     "nav.about": "ABOUT ME",
     "nav.work": "WORK",
@@ -1461,8 +1462,9 @@ const SITE_TRANSLATIONS = {
     "mobile.work": "Work",
     "mobile.contact": "Contact",
     "lang.groupAria": "Choose language",
-    "hero.portraitAlt": "Portrait of Z.yrsnh",
-    "hero.arrowAria": "Scroll to About section"
+    "hero.portraitAlt": "Portrait of Zaki Yusron Hasyimmi",
+    "hero.arrowAria": "Scroll to About section",
+    "hero.githubAria": "GitHub profile of Zaki Yusron Hasyimmi"
   }
 };
 

@@ -297,16 +297,19 @@ body {
 }
 
 .hero-meta-link {
-  color: inherit;
+  display: inline-flex;
+  align-items: center;
+  color: var(--stone);
+  font-size: 1.28rem;
+  line-height: 1;
   text-decoration: none;
-  transition: color 0.2s ease;
+  transition: color 0.2s ease, transform 0.2s ease;
 }
 
 .hero-meta-link:hover,
 .hero-meta-link:focus-visible {
   color: var(--white);
-  text-decoration: underline;
-  text-underline-offset: 4px;
+  transform: translateY(-1px);
   outline: none;
 }
 
