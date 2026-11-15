@@ -409,6 +409,134 @@ body {
   }
 }
 
+.hero-ambient-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.hero-section.is-hero-play .hero-ambient-bg {
+  animation: heroBgFadeIn 1.4s ease 0.08s both;
+}
+
+.hero-bg-glow {
+  position: absolute;
+  left: 50%;
+  top: 52%;
+  width: min(56vw, 500px);
+  height: min(56vw, 500px);
+  border-radius: 50%;
+  background-color: #6b1116;
+  filter: blur(92px);
+  transform: translate(-50%, -50%);
+  opacity: 0.4;
+  will-change: transform, opacity;
+  animation: heroBacklightBreath 9.5s ease-in-out infinite alternate;
+}
+
+.hero-bg-rings {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-section.is-hero-play .hero-bg-rings {
+  animation: heroRingsReveal 1.45s cubic-bezier(0.16, 1, 0.3, 1) 0.14s both;
+}
+
+.hero-bg-ring {
+  transform-origin: 600px 365px;
+}
+
+.hero-bg-ring--cw {
+  animation: heroBgSpinCW 72s linear infinite;
+}
+
+.hero-bg-ring--ccw {
+  animation: heroBgSpinCCW 108s linear infinite;
+}
+
+.hero-dust {
+  position: absolute;
+  left: var(--dx, 20%);
+  top: var(--dy, 60%);
+  width: var(--dsz, 2.5px);
+  height: var(--dsz, 2.5px);
+  border-radius: 50%;
+  background-color: rgba(241, 235, 235, 0.36);
+  box-shadow: 0 0 8px rgba(241, 235, 235, 0.28);
+  opacity: 0;
+  will-change: transform, opacity;
+  animation: heroDustFloat var(--ddur, 15s) ease-in-out var(--ddel, 0s) infinite;
+}
+
+@keyframes heroBgFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes heroRingsReveal {
+  0% {
+    opacity: 0;
+    transform: scale(0.88);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes heroBacklightBreath {
+  0% {
+    opacity: 0.34;
+    transform: translate(-50%, -50%) scale(0.92);
+  }
+  100% {
+    opacity: 0.52;
+    transform: translate(-50%, -50%) scale(1.08);
+  }
+}
+
+@keyframes heroBgSpinCW {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes heroBgSpinCCW {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes heroDustFloat {
+  0%,
+  100% {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0);
+  }
+  35%,
+  70% {
+    opacity: 0.42;
+  }
+  50% {
+    transform: translate3d(7px, -22px, 0);
+  }
+}
+
 /* ==================== ABOUT SECTION (Ramon 3-Panel + Video Slide/Expand) ==================== */
 .about-section {
   background-color: var(--stone);
@@ -2891,7 +3019,13 @@ body {
   .hero-section.is-hero-play .hero-word-outline,
   .hero-section.is-hero-play .hero-portrait-img,
   .hero-section.is-hero-play .hero-inner > .hero-meta,
-  .hero-section.is-hero-play .hero-arrow-link {
+  .hero-section.is-hero-play .hero-arrow-link,
+  .hero-section.is-hero-play .hero-ambient-bg,
+  .hero-bg-glow,
+  .hero-section.is-hero-play .hero-bg-rings,
+  .hero-bg-ring--cw,
+  .hero-bg-ring--ccw,
+  .hero-dust {
     animation: none !important;
   }
 

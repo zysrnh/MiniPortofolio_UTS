@@ -70,6 +70,34 @@
   <main>
     <!-- ==================== HERO SECTION (ref1.png style) ==================== -->
     <section id="home" class="hero-section is-hero-play">
+      <div class="hero-ambient-bg" aria-hidden="true">
+        <div class="hero-bg-glow"></div>
+
+        <svg class="hero-bg-rings" viewBox="0 0 1200 720" preserveAspectRatio="xMidYMid slice">
+          <!-- Faint Architectural Axis Crosshairs -->
+          <line x1="0" y1="360" x2="1200" y2="360" stroke="rgba(241, 235, 235, 0.04)" stroke-width="1" stroke-dasharray="4 12" />
+          <line x1="600" y1="0" x2="600" y2="720" stroke="rgba(241, 235, 235, 0.04)" stroke-width="1" stroke-dasharray="4 12" />
+
+          <!-- Subtle Concentric Focus Rings Behind Portrait -->
+          <g class="hero-bg-ring hero-bg-ring--cw">
+            <circle cx="600" cy="365" r="215" fill="none" stroke="rgba(241, 235, 235, 0.075)" stroke-width="1" stroke-dasharray="3 11" />
+          </g>
+          <g class="hero-bg-ring hero-bg-ring--ccw">
+            <circle cx="600" cy="365" r="335" fill="none" stroke="rgba(241, 235, 235, 0.05)" stroke-width="1" stroke-dasharray="96 34 18 34" />
+          </g>
+
+          <!-- Faint Outer Edge Framing Crosses -->
+          <path d="M52 140 L68 140 M60 132 L60 148 M1132 140 L1148 140 M1140 132 L1140 148 M52 580 L68 580 M60 572 L60 588 M1132 580 L1148 580 M1140 572 L1140 588" stroke="rgba(241, 235, 235, 0.14)" stroke-width="1" />
+        </svg>
+
+        <span class="hero-dust" style="--dx: 10%; --dy: 68%; --dsz: 2.5px; --ddur: 13s; --ddel: -2s;"></span>
+        <span class="hero-dust" style="--dx: 18%; --dy: 34%; --dsz: 2px; --ddur: 17s; --ddel: -6s;"></span>
+        <span class="hero-dust" style="--dx: 25%; --dy: 78%; --dsz: 3px; --ddur: 15s; --ddel: -9s;"></span>
+        <span class="hero-dust" style="--dx: 75%; --dy: 74%; --dsz: 2.5px; --ddur: 14s; --ddel: -4s;"></span>
+        <span class="hero-dust" style="--dx: 83%; --dy: 36%; --dsz: 2px; --ddur: 18s; --ddel: -11s;"></span>
+        <span class="hero-dust" style="--dx: 90%; --dy: 64%; --dsz: 3px; --ddur: 16s; --ddel: -7s;"></span>
+      </div>
+
       <div class="hero-portrait-wrap">
         <img
           src="assets/img/hero-portrait.png"
