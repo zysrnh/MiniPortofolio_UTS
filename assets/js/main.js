@@ -42,7 +42,7 @@ function initAboutCarousel() {
     {
       num: "01",
       titleHtml: "Crafting<br />Clean Code<br /><strong>Always.</strong>",
-      sub: "design a simple web / by alexpratama.dev",
+      sub: "design & build web / by z.ysrnh",
       label: "ABSTRACT",
       text: "I'm a web developer and UI designer focused on turning complex ideas into fast, responsive, and clean digital products.",
       tabs: {
@@ -1448,7 +1448,13 @@ const SITE_TRANSLATIONS = {
     "lang.groupAria": "Pilih bahasa",
     "hero.portraitAlt": "Potret Zaki Yusron Hasyimmi",
     "hero.arrowAria": "Gulir ke bagian Tentang",
-    "hero.githubAria": "Profil GitHub Zaki Yusron Hasyimmi"
+    "hero.githubAria": "Profil GitHub Zaki Yusron Hasyimmi",
+    "about.kicker": "02 // TENTANG",
+    "about.back": "Kembali",
+    "about.backAria": "Kembali ke ringkasan",
+    "about.readMore": "SELENGKAPNYA",
+    "about.hire": "HUBUNGI",
+    "about.contactAria": "Buka formulir kontak"
   },
   en: {
     "title.home": "Portfolio — Zaki Yusron Hasyimmi",
@@ -1467,7 +1473,13 @@ const SITE_TRANSLATIONS = {
     "lang.groupAria": "Choose language",
     "hero.portraitAlt": "Portrait of Zaki Yusron Hasyimmi",
     "hero.arrowAria": "Scroll to About section",
-    "hero.githubAria": "GitHub profile of Zaki Yusron Hasyimmi"
+    "hero.githubAria": "GitHub profile of Zaki Yusron Hasyimmi",
+    "about.kicker": "02 // PROFILE",
+    "about.back": "Back",
+    "about.backAria": "Back to overview",
+    "about.readMore": "READ MORE",
+    "about.hire": "HIRE ME",
+    "about.contactAria": "Open contact form"
   }
 };
 
