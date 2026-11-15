@@ -25,6 +25,24 @@
 
   <!-- Custom Stylesheet -->
   <link rel="stylesheet" href="assets/css/style.css" />
+  <script>
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+    (function () {
+      var nav = window.performance && window.performance.getEntriesByType
+        ? window.performance.getEntriesByType("navigation")[0]
+        : null;
+      var isReload = (nav && nav.type === "reload") ||
+        (window.performance && window.performance.navigation && window.performance.navigation.type === 1);
+      if (isReload && window.location.hash && window.location.hash !== "#home") {
+        window.history.replaceState(null, "", window.location.pathname + window.location.search + "#home");
+      }
+      if (isReload || !window.location.hash || window.location.hash === "#home") {
+        window.scrollTo(0, 0);
+      }
+    })();
+  </script>
 </head>
 <body>
   <!-- ==================== NAVBAR ==================== -->

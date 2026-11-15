@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
+  initTopOnRefresh();
   initHeroEntrance();
   initAboutCarousel();
   initSkillsSection();
@@ -1295,5 +1296,37 @@ function initHeroEntrance() {
       };
       scrollWaitRaf = window.requestAnimationFrame(waitForTop);
     });
+  });
+}
+
+/**
+ * Reset scroll position back to the Hero top when refreshing or loading without a sub-section hash.
+ */
+function initTopOnRefresh() {
+  if ("scrollRestoration" in window.history) {
+    window.history.scrollRestoration = "manual";
+  }
+
+  const nav =
+    window.performance && window.performance.getEntriesByType
+      ? window.performance.getEntriesByType("navigation")[0]
+      : null;
+  const isReload =
+    (nav && nav.type === "reload") ||
+    (window.performance && window.performance.navigation && window.performance.navigation.type === 1);
+
+  const shouldResetToTop = isReload || !window.location.hash || window.location.hash === "#home";
+  if (!shouldResetToTop) return;
+
+  const snapTop = () => {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  };
+
+  snapTop();
+  window.addEventListener("load", () => {
+    window.requestAnimationFrame(snapTop);
+  });
+  window.addEventListener("pageshow", (event) => {
+    if (event.persisted) snapTop();
   });
 }
