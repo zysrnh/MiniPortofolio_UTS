@@ -277,12 +277,12 @@
 
               <div class="ramon-headline-box my-auto" id="aboutLeftContent">
                 <h2 class="ramon-title" id="aboutSlideTitle">
-                  Crafting<br />
-                  Clean Code<br />
-                  <strong>Always.</strong>
+                  Merancang<br />
+                  Kode Rapi<br />
+                  <strong>Selalu.</strong>
                 </h2>
                 <p class="ramon-sub mb-0" id="aboutSlideSub">
-                  design &amp; build web / by z.ysrnh
+                  ide ke aplikasi web / oleh z.ysrnh
                 </p>
                 <p class="ramon-mobile-desc d-lg-none mb-0" id="aboutMobileDesc"></p>
               </div>
@@ -293,7 +293,8 @@
                     type="button"
                     id="aboutPrevBtn"
                     class="ramon-arrow-btn"
-                    aria-label="Previous slide"
+                    aria-label="Slide sebelumnya"
+                    data-i18n-aria="about.prevAria"
                   >
                     <i class="bi bi-arrow-left"></i>
                   </button>
@@ -304,7 +305,8 @@
                     type="button"
                     id="aboutNextBtn"
                     class="ramon-arrow-btn"
-                    aria-label="Next slide"
+                    aria-label="Slide berikutnya"
+                    data-i18n-aria="about.nextAria"
                   >
                     <i class="bi bi-arrow-right"></i>
                   </button>
@@ -345,48 +347,53 @@
                   class="btn btn-link p-0 text-white-50"
                   data-bs-toggle="modal"
                   data-bs-target="#contactModal"
-                  aria-label="Open contact form"
+                  aria-label="Buka formulir kontak"
+                  data-i18n-aria="about.contactAria"
                 >
                   <i class="bi bi-envelope"></i>
                 </button>
-                <a href="#work" class="text-white-50" aria-label="Jump to work">
+                <a
+                  href="#work"
+                  class="text-white-50"
+                  aria-label="Lihat bagian Karya"
+                  data-i18n-aria="about.workAria"
+                >
                   <i class="bi bi-grid"></i>
                 </a>
               </div>
 
               <div class="my-auto ramon-right-body" id="aboutRightContent">
-                <div class="ramon-abstract-label" id="aboutRightLabel">ABSTRACT</div>
+                <div class="ramon-abstract-label" id="aboutRightLabel">RINGKASAN</div>
                 <p class="ramon-abstract-text" id="aboutRightText">
-                  I&rsquo;m a web developer and UI designer focused on turning complex ideas into
-                  fast, responsive, and clean digital products.
+                  Mahasiswa Teknik Informatika &amp; Fullstack Web Developer berpengalaman 2+ tahun mengubah kebutuhan kompleks menjadi aplikasi web cepat, rapi, dan responsif.
                 </p>
 
                 <ul class="list-unstyled ramon-item-list mb-0" id="aboutItemList">
                   <li class="active" data-slide-target="0">
                     <div class="ramon-item-thumb thumb-icon">
-                      <i class="bi bi-layers"></i>
+                      <i class="bi bi-code-slash"></i>
                     </div>
                     <div>
-                      <div class="ramon-item-title">FRONTEND DEV</div>
-                      <div class="ramon-item-sub">3+ Years Experience</div>
+                      <div class="ramon-item-title">WEB DEVELOPER</div>
+                      <div class="ramon-item-sub">2+ Tahun Pengalaman</div>
                     </div>
                   </li>
                   <li data-slide-target="1">
                     <div class="ramon-item-thumb thumb-icon">
-                      <i class="bi bi-bootstrap"></i>
+                      <i class="bi bi-layers"></i>
                     </div>
                     <div>
-                      <div class="ramon-item-title">UI ENGINEERING</div>
-                      <div class="ramon-item-sub">HTML5, CSS3, Bootstrap 5</div>
+                      <div class="ramon-item-title">INTERFACE CRAFT</div>
+                      <div class="ramon-item-sub">Flat UI &amp; Mikro-Interaksi</div>
                     </div>
                   </li>
                   <li data-slide-target="2">
                     <div class="ramon-item-thumb thumb-icon">
-                      <i class="bi bi-code-square"></i>
+                      <i class="bi bi-database"></i>
                     </div>
                     <div>
-                      <div class="ramon-item-title">FULLSTACK &amp; EDU</div>
-                      <div class="ramon-item-sub">Informatics &amp; Laravel</div>
+                      <div class="ramon-item-title">BACKEND &amp; DATABASE</div>
+                      <div class="ramon-item-sub">Laravel, REST API, MySQL</div>
                     </div>
                   </li>
                 </ul>
@@ -394,14 +401,14 @@
                 <!-- Expanded Detail View (Shown when READ MORE / item clicked) -->
                 <div class="ramon-detail-panel" id="aboutDetailPanel">
                   <div class="ramon-detail-tabs mb-3" role="tablist">
-                    <button type="button" class="detail-tab active" data-tab="overview">
-                      Overview
+                    <button type="button" class="detail-tab active" data-tab="overview" data-i18n="about.tabOverview">
+                      Ringkasan
                     </button>
-                    <button type="button" class="detail-tab" data-tab="stack">
-                      Core Stack
+                    <button type="button" class="detail-tab" data-tab="stack" data-i18n="about.tabStack">
+                      Stack Utama
                     </button>
-                    <button type="button" class="detail-tab" data-tab="focus">
-                      Focus
+                    <button type="button" class="detail-tab" data-tab="focus" data-i18n="about.tabFocus">
+                      Fokus
                     </button>
                   </div>
                   <p class="ramon-detail-copy mb-3" id="aboutDetailCopy"></p>

@@ -72,68 +72,138 @@ function initAboutCarousel() {
 
   if (!card || !prevBtn || !nextBtn) return;
 
-  const slides = [
-    {
-      num: "01",
-      titleHtml: "Crafting<br />Clean Code<br /><strong>Always.</strong>",
-      sub: "design & build web / by z.ysrnh",
-      label: "ABSTRACT",
-      text: "I'm a web developer and UI designer focused on turning complex ideas into fast, responsive, and clean digital products.",
-      tabs: {
-        overview:
-          "Over 3 years of hands-on experience crafting responsive landing pages, company profiles, and modern web interfaces with clean visual hierarchy.",
-        stack:
-          "Primary stack includes semantic HTML5, modern CSS3 Flexbox/Grid, Bootstrap 5, and vanilla JavaScript ES6+.",
-        focus:
-          "Focused on accessible markup, fast loading speed, and pixel-accurate responsive layouts across desktop and mobile.",
+  const ABOUT_SLIDES = {
+    id: [
+      {
+        num: "01",
+        titleHtml: "Merancang<br />Kode Rapi<br /><strong>Selalu.</strong>",
+        sub: "ide ke aplikasi web / oleh z.ysrnh",
+        label: "RINGKASAN",
+        text: "Mahasiswa Teknik Informatika & Fullstack Web Developer berpengalaman 2+ tahun mengubah kebutuhan kompleks menjadi aplikasi web cepat, rapi, dan responsif.",
+        rowTitle: "WEB DEVELOPER",
+        rowSub: "2+ Tahun Pengalaman",
+        tabs: {
+          overview:
+            "Aktif kuliah Teknik Informatika sambil membangun beragam aplikasi web mulai dari landing page, portal sistem, hingga web app end-to-end selama 2+ tahun.",
+          stack:
+            "Menguasai PHP & Laravel/Blade untuk fullstack server-rendered serta React, TypeScript, dan Inertia.js untuk antarmuka modern.",
+          focus:
+            "Mengutamakan struktur kode yang bersih, kecepatan akses tinggi, dan pengalaman pengguna yang konsisten di desktop maupun mobile.",
+        },
+        badges: ["Laravel & Blade", "React + TypeScript", "Tailwind CSS", "Clean Code"],
       },
-      badges: ["HTML5 & CSS3", "Bootstrap 5", "Responsive UI", "Clean Code"],
-    },
-    {
-      num: "02",
-      titleHtml: "Building<br />Interfaces<br /><strong>That Scale.</strong>",
-      sub: "frontend & ui engineering / 3+ years",
-      label: "EXPERIENCE",
-      text: "From Figma wireframes to production-ready Bootstrap layouts, I bridge visual design with structured, maintainable code.",
-      tabs: {
-        overview:
-          "Collaborated on 15+ web projects including e-commerce catalogs, interactive dashboards, and campus event portals.",
-        stack:
-          "Comfortable converting Figma design systems into modular Bootstrap components and clean interactive JavaScript.",
-        focus:
-          "Prioritizing consistent spacing, smooth micro-interactions, and maintainable frontend structure.",
+      {
+        num: "02",
+        titleHtml: "Antarmuka<br />Flat &amp; Presisi<br /><strong>Responsif.</strong>",
+        sub: "desain & interaksi ui / 2+ tahun",
+        label: "INTERFACE CRAFT",
+        text: "Merancang antarmuka flat yang bersih tanpa dekorasi berlebihan, mengutamakan hierarki visual yang jelas serta responsivitas presisi di desktop dan seluler.",
+        rowTitle: "INTERFACE CRAFT",
+        rowSub: "Flat UI & Mikro-Interaksi",
+        tabs: {
+          overview:
+            "Menerjemahkan kebutuhan desain menjadi komponen UI modern yang rapi, terstruktur, dan nyaman dipakai pada berbagai ukuran layar.",
+          stack:
+            "Terbiasa bekerja dengan React, TypeScript, Inertia.js, Tailwind CSS, Bootstrap 5, MUI, serta integrasi library UI interaktif.",
+          focus:
+            "Menjaga konsistensi tipografi, ruang bernapas layout, serta mikro-interaksi ringan yang mendukung fungsi utama produk.",
+        },
+        badges: ["React & Inertia.js", "TypeScript", "Tailwind CSS", "Responsive UI"],
       },
-      badges: ["JavaScript ES6+", "Figma to Code", "Dashboard UI", "Performance"],
-    },
-    {
-      num: "03",
-      titleHtml: "Always<br />Learning<br /><strong>New Tech.</strong>",
-      sub: "informatics & fullstack web / indonesia",
-      label: "EDUCATION & STACK",
-      text: "Combining Informatics fundamentals with practical fullstack development using PHP, Laravel, and relational databases.",
-      tabs: {
-        overview:
-          "Pursuing Informatics engineering while building fullstack web applications and exploring modern UI/UX design patterns.",
-        stack:
-          "Experienced with PHP, Laravel MVC, MySQL database modeling, and Git/GitHub version control.",
-        focus:
-          "Bridging clean frontend presentation with reliable, structured backend logic.",
+      {
+        num: "03",
+        titleHtml: "Sistem<br />Backend &amp; Data<br /><strong>Terukur.</strong>",
+        sub: "laravel, rest api & mysql / teknik informatika",
+        label: "BACKEND & DATABASE",
+        text: "Menggabungkan dasar keilmuan Teknik Informatika dengan pengembangan backend PHP/Laravel, perancangan database MySQL, dan integrasi REST API yang stabil.",
+        rowTitle: "BACKEND & DATABASE",
+        rowSub: "Laravel, REST API, MySQL",
+        tabs: {
+          overview:
+            "Berpengalaman merancang alur data sistem admin dan aplikasi layanan dengan pemodelan relasional MySQL serta pola arsitektur MVC yang rapi.",
+          stack:
+            "Menggunakan PHP, Laravel MVC, MySQL, perancangan REST API, serta pengelolaan versi proyek memakai Git & GitHub.",
+          focus:
+            "Menjembatani antarmuka frontend yang gesit dengan logika backend yang stabil, aman, dan mudah dikembangkan jangka panjang.",
+        },
+        badges: ["PHP & Laravel", "MySQL", "REST API", "Git & GitHub"],
       },
-      badges: ["PHP & Laravel", "MySQL", "Git & GitHub", "UI/UX Design"],
-    },
-  ];
+    ],
+    en: [
+      {
+        num: "01",
+        titleHtml: "Crafting<br />Clean Code<br /><strong>Always.</strong>",
+        sub: "idea to fast web product / by z.ysrnh",
+        label: "ABSTRACT",
+        text: "Informatics student & Fullstack Web Developer with 2+ years of experience turning complex requirements into fast, clean, and responsive web applications.",
+        rowTitle: "WEB DEVELOPER",
+        rowSub: "2+ Years Experience",
+        tabs: {
+          overview:
+            "Pursuing an Informatics degree while building end-to-end web products ranging from editorial landing pages to structured web systems over 2+ years.",
+          stack:
+            "Proficient in PHP & Laravel/Blade for server-rendered systems alongside React, TypeScript, and Inertia.js for modern web interfaces.",
+          focus:
+            "Prioritizing maintainable code structure, snappy page speed, and reliable responsiveness across desktop and mobile screens.",
+        },
+        badges: ["Laravel & Blade", "React + TypeScript", "Tailwind CSS", "Clean Code"],
+      },
+      {
+        num: "02",
+        titleHtml: "Interfaces<br />Built Flat<br /><strong>Responsive.</strong>",
+        sub: "flat ui & micro-interactions / 2+ years",
+        label: "INTERFACE CRAFT",
+        text: "Designing crisp flat interfaces free of visual clutter, prioritizing clear hierarchy, intentional contrast, and smooth micro-interactions.",
+        rowTitle: "INTERFACE CRAFT",
+        rowSub: "Flat UI & Micro-Interactions",
+        tabs: {
+          overview:
+            "Translating design briefs and wireframes into structured, accessible frontend components tailored for real-world usability.",
+          stack:
+            "Comfortable shipping interfaces with React, TypeScript, Inertia.js, Tailwind CSS, Bootstrap 5, and Material UI.",
+          focus:
+            "Refining spacing discipline, typographic contrast, and lightweight motion that enhances clarity without slowing performance.",
+        },
+        badges: ["React & Inertia.js", "TypeScript", "Tailwind CSS", "Responsive UI"],
+      },
+      {
+        num: "03",
+        titleHtml: "Reliable<br />Backend &amp;<br /><strong>Database.</strong>",
+        sub: "laravel, rest api & mysql / informatics",
+        label: "BACKEND & DATABASE",
+        text: "Pairing Informatics engineering fundamentals with practical PHP/Laravel architecture, MySQL schema design, and structured REST APIs.",
+        rowTitle: "BACKEND & DATABASE",
+        rowSub: "Laravel, REST API, MySQL",
+        tabs: {
+          overview:
+            "Building structured admin systems and web services grounded in relational MySQL modeling and clean MVC separation.",
+          stack:
+            "Experienced with PHP, Laravel, MySQL query & schema design, REST API development, and Git/GitHub workflow.",
+          focus:
+            "Connecting responsive UI layers with dependable, secure, and easily maintainable backend logic.",
+        },
+        badges: ["PHP & Laravel", "MySQL", "REST API", "Git & GitHub"],
+      },
+    ],
+  };
 
   let currentIndex = 0;
   let currentTab = "overview";
 
+  function getActiveSlides() {
+    const lang = document.documentElement.lang === "en" ? "en" : "id";
+    return ABOUT_SLIDES[lang] || ABOUT_SLIDES.id;
+  }
+
   function updateDetailTabContent() {
-    const slide = slides[currentIndex];
+    const slide = getActiveSlides()[currentIndex];
     if (!slide || !detailCopyEl) return;
     detailCopyEl.textContent = slide.tabs[currentTab] || slide.tabs.overview;
   }
 
   function renderSlide(index, animate = true) {
-    const slide = slides[index];
+    const activeSlides = getActiveSlides();
+    const slide = activeSlides[index];
     if (!slide) return;
 
     if (photoTrack) {
@@ -159,6 +229,12 @@ function initAboutCarousel() {
 
       itemRows.forEach((row, idx) => {
         row.classList.toggle("active", idx === index);
+        const rowData = activeSlides[idx];
+        if (!rowData) return;
+        const rowTitleEl = row.querySelector(".ramon-item-title");
+        const rowSubEl = row.querySelector(".ramon-item-sub");
+        if (rowTitleEl) rowTitleEl.textContent = rowData.rowTitle;
+        if (rowSubEl) rowSubEl.textContent = rowData.rowSub;
       });
     };
 
@@ -192,7 +268,8 @@ function initAboutCarousel() {
     stopAboutAuto();
     aboutTimerId = window.setInterval(() => {
       if (card.classList.contains("is-expanded")) return;
-      currentIndex = (currentIndex + 1) % slides.length;
+      const slideCount = getActiveSlides().length;
+      currentIndex = (currentIndex + 1) % slideCount;
       renderSlide(currentIndex, true);
     }, 2000);
   }
@@ -205,13 +282,15 @@ function initAboutCarousel() {
   }
 
   prevBtn.addEventListener("click", () => {
-    currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+    const slideCount = getActiveSlides().length;
+    currentIndex = (currentIndex - 1 + slideCount) % slideCount;
     renderSlide(currentIndex, true);
     startAboutAuto();
   });
 
   nextBtn.addEventListener("click", () => {
-    currentIndex = (currentIndex + 1) % slides.length;
+    const slideCount = getActiveSlides().length;
+    currentIndex = (currentIndex + 1) % slideCount;
     renderSlide(currentIndex, true);
     startAboutAuto();
   });
@@ -246,6 +325,10 @@ function initAboutCarousel() {
   card.addEventListener("focusin", stopAboutAuto);
   card.addEventListener("focusout", () => {
     if (!card.classList.contains("is-expanded")) startAboutAuto();
+  });
+
+  window.addEventListener("portfolio:langchange", () => {
+    renderSlide(currentIndex, false);
   });
 
   renderSlide(0, false);
@@ -1485,7 +1568,13 @@ const SITE_TRANSLATIONS = {
     "hero.githubAria": "Profil GitHub Zaki Yusron Hasyimmi",
     "about.back": "Kembali",
     "about.backAria": "Kembali ke ringkasan",
+    "about.prevAria": "Slide sebelumnya",
+    "about.nextAria": "Slide berikutnya",
+    "about.workAria": "Lihat bagian Karya",
     "about.readMore": "SELENGKAPNYA",
+    "about.tabOverview": "Ringkasan",
+    "about.tabStack": "Stack Utama",
+    "about.tabFocus": "Fokus",
     "about.hire": "HUBUNGI",
     "about.contactAria": "Buka formulir kontak"
   },
@@ -1509,7 +1598,13 @@ const SITE_TRANSLATIONS = {
     "hero.githubAria": "GitHub profile of Zaki Yusron Hasyimmi",
     "about.back": "Back",
     "about.backAria": "Back to overview",
+    "about.prevAria": "Previous slide",
+    "about.nextAria": "Next slide",
+    "about.workAria": "Jump to work",
     "about.readMore": "READ MORE",
+    "about.tabOverview": "Overview",
+    "about.tabStack": "Core Stack",
+    "about.tabFocus": "Focus",
     "about.hire": "HIRE ME",
     "about.contactAria": "Open contact form"
   }
@@ -1574,6 +1669,8 @@ function initLanguageSwitcher() {
     });
 
     if (persist) saveLang(activeLang);
+
+    window.dispatchEvent(new CustomEvent("portfolio:langchange", { detail: { lang: activeLang } }));
   }
 
   applyLanguage(readSavedLang(), false);
