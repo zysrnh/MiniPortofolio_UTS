@@ -154,7 +154,7 @@ function initAboutCarousel() {
       if (card.classList.contains("is-expanded")) return;
       currentIndex = (currentIndex + 1) % slides.length;
       renderSlide(currentIndex, true);
-    }, 4200);
+    }, 2000);
   }
 
   function stopAboutAuto() {
