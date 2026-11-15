@@ -424,15 +424,28 @@ body {
 .hero-bg-glow {
   position: absolute;
   left: 50%;
-  top: 52%;
-  width: min(18vw, 160px);
-  height: min(18vw, 160px);
+  top: 50%;
+  width: clamp(115px, 16vw, 175px);
+  height: clamp(115px, 16vw, 175px);
   border-radius: 50%;
-  background-color: #6b1116;
-  filter: blur(30px);
-  transform: translate(-50%, -50%) scale(2.9);
-  opacity: 0.4;
+  background-color: #9e1b24;
+  filter: blur(32px);
+  transform: translate(-50%, -50%) scale(2.95);
+  opacity: 0.62;
   animation: heroBacklightBreath 9.5s ease-in-out infinite alternate;
+}
+
+.hero-bg-glow::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 48%;
+  width: 56%;
+  height: 56%;
+  border-radius: 50%;
+  background-color: #d93843;
+  opacity: 0.72;
+  transform: translate(-50%, -50%);
 }
 
 .hero-section.is-hero-offscreen .hero-bg-glow,
@@ -548,12 +561,12 @@ body {
 
 @keyframes heroBacklightBreath {
   0% {
-    opacity: 0.34;
-    transform: translate(-50%, -50%) scale(2.9);
+    opacity: 0.54;
+    transform: translate(-50%, -50%) scale(2.95);
   }
   100% {
-    opacity: 0.52;
-    transform: translate(-50%, -50%) scale(3.4);
+    opacity: 0.78;
+    transform: translate(-50%, -50%) scale(3.45);
   }
 }
 
