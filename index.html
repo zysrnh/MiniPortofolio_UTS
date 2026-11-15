@@ -288,6 +288,21 @@
     <!-- ==================== SKILLS & EXPERIENCE SECTION ==================== -->
     <section id="skills" class="skills-section">
       <div class="container">
+        <!-- Section Header Bar (Editorial Style) -->
+        <div class="skills-header-bar d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4">
+          <div>
+            <span class="about-kicker d-block mb-1">03 / CAPABILITIES</span>
+            <h2 class="skills-section-title mb-0">Skills &amp; Experience.</h2>
+          </div>
+
+          <div class="stack-filter-group" role="group" aria-label="Filter stack">
+            <button type="button" class="stack-filter-btn is-active" data-stack="all">All</button>
+            <button type="button" class="stack-filter-btn" data-stack="fe">FE</button>
+            <button type="button" class="stack-filter-btn" data-stack="be">BE</button>
+            <button type="button" class="stack-filter-btn" data-stack="tools">Tools</button>
+          </div>
+        </div>
+
         <!-- Mobile Switch Tabs (Shown <= 991px to keep 1-screen fit) -->
         <div class="skills-mobile-tabs d-lg-none mb-3" role="tablist">
           <button
@@ -306,101 +321,149 @@
           </button>
         </div>
 
-        <div class="row g-4 align-items-stretch">
-          <!-- Left Card: Toolkit & Tech Stack (Warm White) -->
+        <div class="row g-4 g-lg-5 align-items-start">
+          <!-- Left Column: Featured Showcase + Editorial Text -->
           <div class="col-lg-6 skills-panel-col is-active" id="skillsToolkitPanel">
-            <div class="skills-card skills-card-light h-100">
-              <div class="d-flex justify-content-between align-items-center mb-3 gap-2 flex-wrap">
-                <span class="about-kicker">03 / TOOLKIT &amp; STACK</span>
-                <div class="stack-filter-group" role="group" aria-label="Filter stack">
-                  <button type="button" class="stack-filter-btn is-active" data-stack="all">All</button>
-                  <button type="button" class="stack-filter-btn" data-stack="fe">FE</button>
-                  <button type="button" class="stack-filter-btn" data-stack="be">BE</button>
-                  <button type="button" class="stack-filter-btn" data-stack="tools">Tools</button>
-                </div>
-              </div>
-
-              <h2 class="skills-heading">Tech Stack &amp; Tools.</h2>
-              <p class="skills-lead">
-                Core technologies and design tools I use to build clean, responsive web
-                applications.
-              </p>
-
-              <div class="stack-groups">
-                <div class="stack-group-row stack-subcard" data-stack-cat="fe">
-                  <span class="stack-group-label">FRONTEND</span>
-                  <div class="stack-pills">
-                    <span class="stack-pill"><i class="bi bi-filetype-html"></i> HTML5</span>
-                    <span class="stack-pill"><i class="bi bi-filetype-css"></i> CSS3</span>
-                    <span class="stack-pill"><i class="bi bi-bootstrap"></i> Bootstrap 5</span>
-                    <span class="stack-pill"><i class="bi bi-filetype-js"></i> JavaScript</span>
+            <div class="skills-showcase-box">
+              <div class="showcase-stack-grid" id="showcaseStackGrid">
+                <div class="showcase-stack-item" data-stack-cat="fe">
+                  <i class="bi bi-filetype-html"></i>
+                  <div>
+                    <span class="stack-item-name">HTML5</span>
+                    <span class="stack-item-cat">Frontend</span>
                   </div>
                 </div>
-
-                <div class="stack-group-row stack-subcard" data-stack-cat="be">
-                  <span class="stack-group-label">BACKEND &amp; DATA</span>
-                  <div class="stack-pills">
-                    <span class="stack-pill"><i class="bi bi-filetype-php"></i> PHP</span>
-                    <span class="stack-pill"><i class="bi bi-layers"></i> Laravel</span>
-                    <span class="stack-pill"><i class="bi bi-database"></i> MySQL</span>
-                    <span class="stack-pill"><i class="bi bi-plug"></i> REST API</span>
+                <div class="showcase-stack-item" data-stack-cat="fe">
+                  <i class="bi bi-filetype-css"></i>
+                  <div>
+                    <span class="stack-item-name">CSS3</span>
+                    <span class="stack-item-cat">Frontend</span>
                   </div>
                 </div>
-
-                <div class="stack-group-row stack-subcard" data-stack-cat="tools">
-                  <span class="stack-group-label">UI/UX &amp; WORKFLOW</span>
-                  <div class="stack-pills">
-                    <span class="stack-pill"><i class="bi bi-vector-pen"></i> Figma</span>
-                    <span class="stack-pill"><i class="bi bi-git"></i> Git &amp; GitHub</span>
-                    <span class="stack-pill"><i class="bi bi-code-slash"></i> VS Code</span>
+                <div class="showcase-stack-item" data-stack-cat="fe">
+                  <i class="bi bi-bootstrap"></i>
+                  <div>
+                    <span class="stack-item-name">Bootstrap 5</span>
+                    <span class="stack-item-cat">Frontend</span>
+                  </div>
+                </div>
+                <div class="showcase-stack-item" data-stack-cat="fe">
+                  <i class="bi bi-filetype-js"></i>
+                  <div>
+                    <span class="stack-item-name">JavaScript</span>
+                    <span class="stack-item-cat">Frontend</span>
+                  </div>
+                </div>
+                <div class="showcase-stack-item" data-stack-cat="be">
+                  <i class="bi bi-filetype-php"></i>
+                  <div>
+                    <span class="stack-item-name">PHP</span>
+                    <span class="stack-item-cat">Backend</span>
+                  </div>
+                </div>
+                <div class="showcase-stack-item" data-stack-cat="be">
+                  <i class="bi bi-layers"></i>
+                  <div>
+                    <span class="stack-item-name">Laravel</span>
+                    <span class="stack-item-cat">Backend</span>
+                  </div>
+                </div>
+                <div class="showcase-stack-item" data-stack-cat="be">
+                  <i class="bi bi-database"></i>
+                  <div>
+                    <span class="stack-item-name">MySQL</span>
+                    <span class="stack-item-cat">Database</span>
+                  </div>
+                </div>
+                <div class="showcase-stack-item" data-stack-cat="be">
+                  <i class="bi bi-plug"></i>
+                  <div>
+                    <span class="stack-item-name">REST API</span>
+                    <span class="stack-item-cat">Backend</span>
+                  </div>
+                </div>
+                <div class="showcase-stack-item" data-stack-cat="tools">
+                  <i class="bi bi-vector-pen"></i>
+                  <div>
+                    <span class="stack-item-name">Figma</span>
+                    <span class="stack-item-cat">UI/UX</span>
+                  </div>
+                </div>
+                <div class="showcase-stack-item" data-stack-cat="tools">
+                  <i class="bi bi-git"></i>
+                  <div>
+                    <span class="stack-item-name">Git &amp; GitHub</span>
+                    <span class="stack-item-cat">Workflow</span>
+                  </div>
+                </div>
+                <div class="showcase-stack-item" data-stack-cat="tools">
+                  <i class="bi bi-code-slash"></i>
+                  <div>
+                    <span class="stack-item-name">VS Code</span>
+                    <span class="stack-item-cat">Editor</span>
                   </div>
                 </div>
               </div>
             </div>
+
+            <div class="skills-editorial-meta">
+              <span class="skills-meta-kicker">FRONTEND &bull; BACKEND &bull; UI WORKFLOW</span>
+              <h3 class="skills-editorial-title">Fullstack Web &amp; UI Engineering</h3>
+              <p class="skills-meta-sub">3+ Years Hands-on &bull; Clean Code &amp; Responsive Design</p>
+              <p class="skills-editorial-desc">
+                Core technologies and design tools I use to turn wireframes into fast,
+                structured, and responsive web applications.
+              </p>
+            </div>
           </div>
 
-          <!-- Right Card: Experience Timeline (Midnight Navy) -->
+          <!-- Right Column: 3 Horizontal Media-List Items (Experience) -->
           <div class="col-lg-6 skills-panel-col" id="skillsExpPanel">
-            <div class="skills-card skills-card-dark h-100">
-              <div class="ramon-abstract-label">EXPERIENCE</div>
-              <h3 class="skills-exp-heading">Where I&rsquo;ve Built &amp; Contributed</h3>
+            <div class="exp-media-list" id="expTimelineList">
+              <article class="exp-media-item is-active">
+                <div class="exp-thumb-box">
+                  <i class="bi bi-laptop"></i>
+                  <span>&rsquo;24+</span>
+                </div>
+                <div class="exp-media-body">
+                  <span class="exp-media-kicker">2024 &mdash; NOW &bull; INTERNSHIP</span>
+                  <h4 class="exp-media-title">Frontend Web Intern &mdash; Digital Studio</h4>
+                  <p class="exp-media-desc">
+                    Jakarta &bull; Built responsive landing pages, modular Bootstrap 5 UI
+                    components, and interactive client-side flows.
+                  </p>
+                </div>
+              </article>
 
-              <div class="exp-list" id="expTimelineList">
-                <article class="exp-item active">
-                  <div class="exp-year">2024 &mdash; NOW</div>
-                  <div class="exp-info">
-                    <h4>Frontend Web Intern</h4>
-                    <p class="exp-place">Digital Studio &bull; Jakarta</p>
-                    <p class="exp-desc">
-                      Built responsive landing pages, modular Bootstrap 5 UI components, and
-                      interactive client-side flows.
-                    </p>
-                  </div>
-                </article>
+              <article class="exp-media-item">
+                <div class="exp-thumb-box">
+                  <i class="bi bi-vector-pen"></i>
+                  <span>&rsquo;23</span>
+                </div>
+                <div class="exp-media-body">
+                  <span class="exp-media-kicker">2023 &bull; FREELANCE</span>
+                  <h4 class="exp-media-title">Freelance Web &amp; UI Designer</h4>
+                  <p class="exp-media-desc">
+                    Remote Projects &bull; Designed wireframes in Figma and converted them into
+                    clean static &amp; Laravel-based websites.
+                  </p>
+                </div>
+              </article>
 
-                <article class="exp-item">
-                  <div class="exp-year">2023</div>
-                  <div class="exp-info">
-                    <h4>Freelance Web &amp; UI Designer</h4>
-                    <p class="exp-place">Remote Projects</p>
-                    <p class="exp-desc">
-                      Designed wireframes in Figma and converted them into clean static &amp;
-                      Laravel-based websites.
-                    </p>
-                  </div>
-                </article>
-
-                <article class="exp-item">
-                  <div class="exp-year">2022</div>
-                  <div class="exp-info">
-                    <h4>Campus Tech &amp; Event Designer</h4>
-                    <p class="exp-place">Informatics Organization</p>
-                    <p class="exp-desc">
-                      Created event microsites, visual identity assets, and coordinated web updates.
-                    </p>
-                  </div>
-                </article>
-              </div>
+              <article class="exp-media-item">
+                <div class="exp-thumb-box">
+                  <i class="bi bi-diagram-3"></i>
+                  <span>&rsquo;22</span>
+                </div>
+                <div class="exp-media-body">
+                  <span class="exp-media-kicker">2022 &bull; ORGANIZATION</span>
+                  <h4 class="exp-media-title">Campus Tech &amp; Event Designer</h4>
+                  <p class="exp-media-desc">
+                    Informatics Organization &bull; Created event microsites, visual identity
+                    assets, and coordinated web updates.
+                  </p>
+                </div>
+              </article>
             </div>
           </div>
         </div>

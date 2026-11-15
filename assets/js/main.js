@@ -253,22 +253,22 @@ function initMobileNavClose() {
  */
 function initSkillsSection() {
   const filterBtns = document.querySelectorAll(".stack-filter-btn");
-  const stackRows = document.querySelectorAll(".stack-group-row");
-  const expItems = document.querySelectorAll("#expTimelineList .exp-item");
+  const stackItems = document.querySelectorAll(".showcase-stack-item");
+  const expItems = document.querySelectorAll("#expTimelineList .exp-media-item");
   const mobileTabBtns = document.querySelectorAll(".skills-tab-btn");
   const toolkitPanel = document.getElementById("skillsToolkitPanel");
   const expPanel = document.getElementById("skillsExpPanel");
 
-  if (filterBtns.length && stackRows.length) {
+  if (filterBtns.length && stackItems.length) {
     filterBtns.forEach((btn) => {
       btn.addEventListener("click", () => {
         const selected = btn.dataset.stack;
         filterBtns.forEach((b) => b.classList.remove("is-active"));
         btn.classList.add("is-active");
 
-        stackRows.forEach((row) => {
-          const match = selected === "all" || row.dataset.stackCat === selected;
-          row.classList.toggle("is-hidden", !match);
+        stackItems.forEach((item) => {
+          const match = selected === "all" || item.dataset.stackCat === selected;
+          item.classList.toggle("is-hidden", !match);
         });
       });
     });
@@ -277,8 +277,8 @@ function initSkillsSection() {
   if (expItems.length) {
     expItems.forEach((item) => {
       item.addEventListener("click", () => {
-        expItems.forEach((el) => el.classList.remove("active"));
-        item.classList.add("active");
+        expItems.forEach((el) => el.classList.remove("is-active"));
+        item.classList.add("is-active");
       });
     });
   }
