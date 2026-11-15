@@ -361,6 +361,7 @@ function initSkillsSection() {
   };
   let activeCategory = "all";
   let pinnedChip = null;
+  let hoveredInteractive = false;
 
   function applyCoreFilterState() {
     const state = coreFilterStates[activeCategory] || coreFilterStates.all;
@@ -391,13 +392,24 @@ function initSkillsSection() {
 
   applyCoreFilterState();
 
+  if (orbitCore) {
+    orbitCore.addEventListener("mouseenter", () => {
+      hoveredInteractive = true;
+    });
+    orbitCore.addEventListener("mouseleave", () => {
+      hoveredInteractive = false;
+    });
+  }
+
   if (orbitChips.length) {
     orbitChips.forEach((chip) => {
       chip.addEventListener("mouseenter", () => {
+        hoveredInteractive = true;
         showCorePreview(chip);
       });
 
       chip.addEventListener("mouseleave", () => {
+        hoveredInteractive = false;
         if (pinnedChip) {
           showCorePreview(pinnedChip);
         } else {
@@ -422,6 +434,7 @@ function initSkillsSection() {
         orbitChips.forEach((c) => c.classList.remove("is-selected"));
         if (isSame) {
           pinnedChip = null;
+          chip.blur();
           if (orbitBox) orbitBox.classList.remove("is-paused");
           resetCorePreview();
         } else {
@@ -464,6 +477,178 @@ function initSkillsSection() {
         resetCorePreview();
       });
     });
+  }
+
+  setupEllipticalOrbitController(orbitBox, () => {
+    const hasKeyboardFocus = Boolean(orbitBox && orbitBox.querySelector(".orbit-chip:focus-visible"));
+    return Boolean(pinnedChip || hoveredInteractive || hasKeyboardFocus);
+  });
+}
+
+/**
+ * Dynamically fits the 4-ring constellation across the full container as an ellipse
+ * (wide on desktop, balanced circle/oval on mobile) while keeping all 50 circular orbs upright.
+ */
+function setupEllipticalOrbitController(orbitBox, isInteractionPaused) {
+  if (!orbitBox) return;
+  const orbitStage = orbitBox.querySelector(".orbit-stage");
+  if (!orbitStage) return;
+
+  const ringConfigs = [
+    { key: "ring1", speedDegPerSec: 360 / 28 },
+    { key: "ring2", speedDegPerSec: -360 / 40 },
+    { key: "ring3", speedDegPerSec: 360 / 54 },
+    { key: "ring4", speedDegPerSec: -360 / 72 },
+  ];
+
+  const rings = ringConfigs
+    .map((cfg) => {
+      const rotator = orbitStage.querySelector(`.orbit-rotator--${cfg.key}`);
+      const track = orbitStage.querySelector(`.orbit-track--${cfg.key}`);
+      if (!rotator) return null;
+
+      const anchors = Array.from(rotator.querySelectorAll(".orbit-anchor")).map((el) => {
+        const angleMatch = (el.getAttribute("style") || "").match(/--angle:\s*([-\d.]+)deg/);
+        const deg = angleMatch ? parseFloat(angleMatch[1]) : 0;
+        return { el, baseRad: (deg * Math.PI) / 180 };
+      });
+
+      return {
+        ...cfg,
+        track,
+        anchors,
+        rx: 120,
+        ry: 90,
+        offsetRad: 0,
+      };
+    })
+    .filter(Boolean);
+
+  if (!rings.length) return;
+  orbitBox.classList.add("is-elliptical");
+
+  const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+  let isInViewport = true;
+  let lastFrameTime = performance.now();
+
+  function renderRingPositions() {
+    for (let r = 0; r < rings.length; r += 1) {
+      const ring = rings[r];
+      const anchors = ring.anchors;
+      for (let i = 0; i < anchors.length; i += 1) {
+        const item = anchors[i];
+        const theta = item.baseRad + ring.offsetRad;
+        const x = ring.rx * Math.cos(theta);
+        const y = ring.ry * Math.sin(theta);
+        item.el.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0)`;
+      }
+    }
+  }
+
+  function computeEllipseLayout() {
+    const stageW = orbitStage.clientWidth;
+    const stageH = orbitStage.clientHeight;
+    if (stageW < 80 || stageH < 80) return;
+
+    const minDim = Math.min(stageW, stageH);
+    const isNarrow = stageW < 560;
+
+    let coreSize = isNarrow
+      ? Math.round(Math.max(60, Math.min(82, minDim * 0.19)))
+      : Math.round(Math.max(82, Math.min(116, stageH * 0.165)));
+
+    let baseOrb = isNarrow
+      ? Math.round(Math.max(25, Math.min(34, minDim * 0.08)))
+      : Math.round(Math.max(36, Math.min(50, stageH * 0.072)));
+
+    const approxCoreR = coreSize / 2;
+    const availMinorHalf = Math.min(stageH / 2 - 26, isNarrow ? stageW / 2 - 20 : stageH / 2 - 26);
+    const safeOrbCap = Math.max(24, Math.floor((availMinorHalf - approxCoreR - 22) / 4.25));
+    baseOrb = Math.min(baseOrb, safeOrbCap);
+
+    if (coreSize > minDim * 0.24) {
+      coreSize = Math.max(58, Math.round(minDim * 0.21));
+    }
+
+    const orbSizes = [baseOrb, baseOrb + 1, baseOrb + 3, baseOrb + 6];
+    const coreRadius = coreSize / 2;
+    const outerMargin = orbSizes[3] / 2 + 8;
+
+    const ryAvail = Math.max(120, stageH / 2 - outerMargin);
+    const rxAvail = Math.max(120, stageW / 2 - outerMargin);
+
+    let rx4;
+    let ry4;
+    if (stageW >= stageH) {
+      ry4 = ryAvail;
+      rx4 = Math.min(rxAvail, ry4 * 2.3);
+    } else {
+      rx4 = rxAvail;
+      ry4 = Math.min(ryAvail, rx4 * 1.42);
+    }
+
+    const ryMin = coreRadius + orbSizes[0] / 2 + Math.max(8, (ry4 - coreRadius) * 0.08);
+    const rxMin = coreRadius + orbSizes[0] / 2 + Math.max(10, (rx4 - coreRadius) * 0.13);
+    const safeRyMin = Math.min(ryMin, ry4 - 66);
+    const safeRxMin = Math.min(rxMin, rx4 - 66);
+
+    const fractions = [0, 0.33, 0.67, 1];
+    rings.forEach((ring, idx) => {
+      const t = fractions[idx] ?? idx / 3;
+      ring.rx = safeRxMin + (rx4 - safeRxMin) * t;
+      ring.ry = safeRyMin + (ry4 - safeRyMin) * t;
+      if (ring.track) {
+        ring.track.style.width = `${(ring.rx * 2).toFixed(1)}px`;
+        ring.track.style.height = `${(ring.ry * 2).toFixed(1)}px`;
+      }
+    });
+
+    orbitBox.style.setProperty("--core-size", `${coreSize}px`);
+    orbSizes.forEach((size, idx) => {
+      orbitBox.style.setProperty(`--orb-${idx + 1}`, `${size}px`);
+    });
+
+    renderRingPositions();
+  }
+
+  function animateFrame(now) {
+    const dtSec = Math.min(0.05, Math.max(0, (now - lastFrameTime) / 1000));
+    lastFrameTime = now;
+
+    if (isInViewport && !reducedMotionQuery.matches && !isInteractionPaused()) {
+      for (let r = 0; r < rings.length; r += 1) {
+        const ring = rings[r];
+        ring.offsetRad = (ring.offsetRad + ((ring.speedDegPerSec * dtSec) * Math.PI) / 180) % (Math.PI * 2);
+      }
+      renderRingPositions();
+    }
+
+    requestAnimationFrame(animateFrame);
+  }
+
+  computeEllipseLayout();
+  requestAnimationFrame(() => {
+    computeEllipseLayout();
+    lastFrameTime = performance.now();
+    requestAnimationFrame(animateFrame);
+  });
+
+  if (typeof ResizeObserver !== "undefined") {
+    const ro = new ResizeObserver(computeEllipseLayout);
+    ro.observe(orbitStage);
+  } else {
+    window.addEventListener("resize", computeEllipseLayout, { passive: true });
+  }
+
+  const skillsSection = document.getElementById("skills");
+  if (skillsSection && typeof IntersectionObserver !== "undefined") {
+    const io = new IntersectionObserver(
+      (entries) => {
+        isInViewport = entries[0]?.isIntersecting ?? true;
+      },
+      { threshold: 0.05 }
+    );
+    io.observe(skillsSection);
   }
 }
 
