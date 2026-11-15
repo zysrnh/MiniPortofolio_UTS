@@ -327,6 +327,88 @@ body {
   pointer-events: none;
 }
 
+.hero-section.is-hero-play .hero-word-solid {
+  will-change: clip-path, transform, opacity;
+  animation: heroWordCurtain 1.05s cubic-bezier(0.16, 1, 0.3, 1) 0.08s both;
+}
+
+.hero-section.is-hero-play .hero-word-outline {
+  will-change: clip-path, transform, opacity;
+  animation: heroWordCurtain 1.15s cubic-bezier(0.16, 1, 0.3, 1) 0.16s both;
+}
+
+.hero-section.is-hero-play .hero-portrait-img {
+  will-change: clip-path, transform, opacity;
+  animation: heroPortraitRise 1.1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+}
+
+.hero-section.is-hero-play .hero-inner > .hero-meta:first-child {
+  --meta-enter-y: -12px;
+  animation: heroMetaSlideIn 0.72s cubic-bezier(0.22, 1, 0.36, 1) 0.68s both;
+}
+
+.hero-section.is-hero-play .hero-inner > .hero-meta:last-child {
+  --meta-enter-y: 12px;
+  animation: heroMetaSlideIn 0.72s cubic-bezier(0.22, 1, 0.36, 1) 0.8s both;
+}
+
+.hero-section.is-hero-play .hero-arrow-link {
+  animation: heroArrowNudge 0.85s ease-in-out 1.45s 1;
+}
+
+@keyframes heroWordCurtain {
+  0% {
+    opacity: 0.2;
+    clip-path: inset(-12% 50% -12% 50%);
+    transform: scale(1.06);
+  }
+  22% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    clip-path: inset(-12% -4% -12% -4%);
+    transform: scale(1);
+  }
+}
+
+@keyframes heroPortraitRise {
+  0% {
+    opacity: 0;
+    clip-path: inset(100% -8% -8% -8%);
+    transform: translate3d(0, 42px, 0) scale(1.035);
+  }
+  28% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    clip-path: inset(0% -8% -8% -8%);
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes heroMetaSlideIn {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, var(--meta-enter-y, 12px), 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes heroArrowNudge {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  45% {
+    transform: translateX(6px);
+  }
+}
+
 /* ==================== ABOUT SECTION (Ramon 3-Panel + Video Slide/Expand) ==================== */
 .about-section {
   background-color: var(--stone);
@@ -2804,7 +2886,12 @@ body {
   .skills-galaxy-wave--secondary,
   .skills-galaxy-aura,
   .galaxy-star,
-  .galaxy-meteor {
+  .galaxy-meteor,
+  .hero-section.is-hero-play .hero-word-solid,
+  .hero-section.is-hero-play .hero-word-outline,
+  .hero-section.is-hero-play .hero-portrait-img,
+  .hero-section.is-hero-play .hero-inner > .hero-meta,
+  .hero-section.is-hero-play .hero-arrow-link {
     animation: none !important;
   }
 

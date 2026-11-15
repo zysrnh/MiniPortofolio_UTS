@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
+  initHeroEntrance();
   initAboutCarousel();
   initSkillsSection();
   initPortfolioAutoCarousel();
@@ -1247,4 +1248,52 @@ function initPortfolioAutoCarousel() {
   buildDots();
   updatePosition();
   startAuto();
+}
+
+/**
+ * Allow replaying the Hero editorial curtain reveal when returning via Home links.
+ */
+function initHeroEntrance() {
+  const heroSection = document.getElementById("home");
+  if (!heroSection) return;
+
+  const homeLinks = document.querySelectorAll('a[href="#home"]');
+  if (!homeLinks.length) return;
+
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  let scrollWaitRaf = null;
+
+  function triggerReplay() {
+    if (prefersReducedMotion.matches) return;
+    heroSection.classList.remove("is-hero-play");
+    void heroSection.offsetWidth;
+    heroSection.classList.add("is-hero-play");
+  }
+
+  homeLinks.forEach((link) => {
+    link.addEventListener("click", () => {
+      if (prefersReducedMotion.matches) return;
+
+      if (scrollWaitRaf !== null) {
+        window.cancelAnimationFrame(scrollWaitRaf);
+        scrollWaitRaf = null;
+      }
+
+      if (window.scrollY <= 120) {
+        triggerReplay();
+        return;
+      }
+
+      const startAt = window.performance.now();
+      const waitForTop = () => {
+        if (window.scrollY <= 120 || window.performance.now() - startAt > 950) {
+          scrollWaitRaf = null;
+          triggerReplay();
+          return;
+        }
+        scrollWaitRaf = window.requestAnimationFrame(waitForTop);
+      };
+      scrollWaitRaf = window.requestAnimationFrame(waitForTop);
+    });
+  });
 }
