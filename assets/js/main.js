@@ -615,6 +615,22 @@ function setupEllipticalOrbitController(orbitBox, isInteractionPaused) {
   }
 
   function computeEllipseLayout() {
+    const isMobileGrid = window.innerWidth < 768;
+    orbitBox.classList.toggle("is-mobile-grid", isMobileGrid);
+    if (isMobileGrid) {
+      orbitBox.style.removeProperty("--core-size");
+      for (let i = 1; i <= 4; i += 1) {
+        orbitBox.style.removeProperty(`--orb-${i}`);
+      }
+      for (let r = 0; r < rings.length; r += 1) {
+        if (rings[r].track) {
+          rings[r].track.style.removeProperty("width");
+          rings[r].track.style.removeProperty("height");
+        }
+      }
+      return;
+    }
+
     const rawW = orbitStage.clientWidth;
     const rawH = orbitStage.clientHeight;
     const viewportSafeW = Math.max(240, document.documentElement.clientWidth - 20);
@@ -683,7 +699,12 @@ function setupEllipticalOrbitController(orbitBox, isInteractionPaused) {
     const dtSec = Math.min(0.05, Math.max(0, (now - lastFrameTime) / 1000));
     lastFrameTime = now;
 
-    if (isInViewport && !reducedMotionQuery.matches && (!isInteractionPaused() || impulseEnergy > 0.02)) {
+    if (
+      window.innerWidth >= 768 &&
+      isInViewport &&
+      !reducedMotionQuery.matches &&
+      (!isInteractionPaused() || impulseEnergy > 0.02)
+    ) {
       const boost = 1 + impulseEnergy * 4.5;
       impulseEnergy *= Math.pow(0.012, dtSec);
       if (impulseEnergy < 0.01) impulseEnergy = 0;
@@ -710,6 +731,11 @@ function setupEllipticalOrbitController(orbitBox, isInteractionPaused) {
     ro.observe(orbitStage);
   } else {
     window.addEventListener("resize", computeEllipseLayout, { passive: true });
+  }
+
+  const mobileBreakpointQuery = window.matchMedia("(max-width: 767.98px)");
+  if (typeof mobileBreakpointQuery.addEventListener === "function") {
+    mobileBreakpointQuery.addEventListener("change", computeEllipseLayout);
   }
 
   const skillsSection = document.getElementById("skills");
