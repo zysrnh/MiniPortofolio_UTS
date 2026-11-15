@@ -1022,15 +1022,6 @@ body {
   flex: 1;
 }
 
-.slide-index {
-  display: inline-block;
-  font-size: 0.66rem;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  color: var(--bright-blue);
-  margin-bottom: 0.35rem;
-}
-
 .portfolio-card-title {
   font-size: 1.25rem;
   font-weight: 800;
