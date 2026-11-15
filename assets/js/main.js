@@ -318,7 +318,6 @@ function initPortfolioAutoCarousel() {
   let timerId = null;
 
   function getVisibleCount() {
-    if (window.innerWidth >= 992) return 3;
     if (window.innerWidth >= 768) return 2;
     return 1;
   }

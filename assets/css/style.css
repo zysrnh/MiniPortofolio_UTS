@@ -937,54 +937,56 @@ body {
 .portfolio-marquee-viewport {
   width: 100%;
   overflow: hidden;
+  padding: 6px 2px 10px;
 }
 
 .portfolio-track {
   display: flex;
-  gap: 1.5rem;
+  gap: 2rem;
   transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
   will-change: transform;
 }
 
 .portfolio-card {
-  flex: 0 0 calc((100% - 3rem) / 3);
-  background-color: var(--surface-white);
-  border: 1px solid var(--border-ice);
-  border-radius: 12px;
-  padding: 0.85rem;
-  box-shadow: var(--shadow-soft);
+  flex: 0 0 calc((100% - 2rem) / 2);
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  box-shadow: none;
   display: flex;
   flex-direction: column;
-  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.portfolio-card:hover {
-  border-color: var(--slate-blue);
-  box-shadow: var(--shadow-hover);
-  transform: translateY(-3px);
 }
 
 .portfolio-card-preview {
-  border-radius: 6px;
+  border-radius: 10px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  margin-bottom: 0.95rem;
+  margin-bottom: 1.1rem;
   background-color: var(--midnight-navy);
+  border: 1px solid rgba(26, 63, 117, 0.16);
+  box-shadow: var(--shadow-soft);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.portfolio-card:hover .portfolio-card-preview {
+  border-color: var(--slate-blue);
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-4px);
 }
 
 .portfolio-card-topbar {
   background-color: var(--midnight-navy);
-  padding: 0.4rem 0.7rem;
+  padding: 0.45rem 0.85rem;
   display: flex;
   align-items: center;
   gap: 0.35rem;
-  font-size: 0.66rem;
+  font-size: 0.68rem;
 }
 
 .portfolio-card-img {
   width: 100%;
-  height: 155px;
+  height: 240px;
   object-fit: cover;
   object-position: top center;
   display: block;
@@ -1030,18 +1032,18 @@ body {
 }
 
 .portfolio-card-title {
-  font-size: 1.05rem;
+  font-size: 1.25rem;
   font-weight: 800;
   color: var(--midnight-navy);
-  letter-spacing: -0.01em;
-  margin: 0 0 0.4rem;
+  letter-spacing: -0.015em;
+  margin: 0 0 0.45rem;
 }
 
 .portfolio-card-desc {
-  font-size: 0.78rem;
-  line-height: 1.5;
+  font-size: 0.84rem;
+  line-height: 1.55;
   color: var(--ink-muted);
-  margin: 0 0 0.85rem;
+  margin: 0 0 0.9rem;
   flex: 1;
 }
 
@@ -1328,10 +1330,6 @@ body {
     gap: 0.8rem;
   }
 
-  .portfolio-card {
-    flex: 0 0 calc((100% - 1.5rem) / 2);
-  }
-
   .about-section {
     min-height: calc(100vh - 64px);
     min-height: calc(100svh - 64px);
@@ -1549,6 +1547,6 @@ body {
   }
 
   .portfolio-card-img {
-    height: 135px;
+    height: 160px;
   }
 }
