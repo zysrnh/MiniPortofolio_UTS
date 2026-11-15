@@ -3,9 +3,10 @@ document.addEventListener("DOMContentLoaded", () => {
   initSitePreloader();
   initLanguageSwitcher();
   initHeroEntrance();
-  initAboutEntrance();
+  initSectionEntrance("about", "is-about-ready", "is-about-play", 0.16, 0.82);
   initAboutCarousel();
   initSkillsSection();
+  initSectionEntrance("work", "is-work-ready", "is-work-play", 0.12, 0.86);
   initPortfolioAutoCarousel();
   initProjectModal();
   initContactForm();
@@ -15,36 +16,42 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /**
- * Trigger editorial scroll-entrance choreography when #about enters viewport.
+ * Trigger editorial scroll-entrance choreography when a target section enters viewport.
+ *
+ * @param {string} sectionId Target section element ID.
+ * @param {string} readyClass Class added prior to reveal to hide animated children.
+ * @param {string} playClass Class toggled when section becomes visible.
+ * @param {number} thresholdRatio Intersection ratio required to trigger reveal.
+ * @param {number} viewportCutoff Fraction of viewport height for top-edge reveal.
  */
-function initAboutEntrance() {
-  const aboutSection = document.getElementById("about");
-  if (!aboutSection) return;
+function initSectionEntrance(sectionId, readyClass, playClass, thresholdRatio, viewportCutoff) {
+  const sectionEl = document.getElementById(sectionId);
+  if (!sectionEl) return;
 
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   if (prefersReducedMotion.matches || typeof IntersectionObserver === "undefined") {
     return;
   }
 
-  aboutSection.classList.add("is-about-ready");
+  sectionEl.classList.add(readyClass);
 
   const observer = new IntersectionObserver(
     (entries) => {
       const entry = entries[0];
       if (!entry) return;
       if (!entry.isIntersecting) {
-        aboutSection.classList.remove("is-about-play");
+        sectionEl.classList.remove(playClass);
       } else if (
-        entry.intersectionRatio >= 0.16 ||
-        entry.boundingClientRect.top < window.innerHeight * 0.82
+        entry.intersectionRatio >= thresholdRatio ||
+        entry.boundingClientRect.top < window.innerHeight * viewportCutoff
       ) {
-        aboutSection.classList.add("is-about-play");
+        sectionEl.classList.add(playClass);
       }
     },
-    { threshold: [0.01, 0.16] }
+    { threshold: [0.01, thresholdRatio] }
   );
 
-  observer.observe(aboutSection);
+  observer.observe(sectionEl);
 }
 
 /**
@@ -345,17 +352,80 @@ function initProjectModal() {
   const projectModal = new bootstrap.Modal(modalElement);
   const titleEl = document.getElementById("projectModalLabel");
   const categoryEl = document.getElementById("modalCategory");
+  const previewWrap = modalElement.querySelector(".project-modal-preview");
+  const previewImgEl = document.getElementById("modalPreviewImg");
   const descEl = document.getElementById("modalDescription");
   const stackEl = document.getElementById("modalStack");
 
+  let activeBtn = null;
+
+  function renderProjectDetails(btn) {
+    if (!btn) return;
+    const lang = document.documentElement.lang === "en" ? "en" : "id";
+    const dict = SITE_TRANSLATIONS[lang] || SITE_TRANSLATIONS.id;
+    const key = btn.dataset.projectKey || "";
+    const index = btn.dataset.projectIndex || "";
+    const card = btn.closest(".portfolio-card");
+    const cardImg = card ? card.querySelector(".portfolio-card-img") : null;
+
+    const category =
+      dict[`work.${key}.cat`] ||
+      card?.querySelector(".portfolio-card-category")?.textContent?.trim() ||
+      "";
+    const title =
+      dict[`work.${key}.title`] ||
+      card?.querySelector(".portfolio-card-title")?.textContent?.trim() ||
+      "";
+    const desc =
+      dict[`work.${key}.detail`] ||
+      dict[`work.${key}.desc`] ||
+      card?.querySelector(".portfolio-card-desc")?.textContent?.trim() ||
+      "";
+
+    categoryEl.textContent = index ? `${index} // ${category}` : category;
+    titleEl.textContent = title;
+    descEl.textContent = desc;
+
+    if (previewImgEl && previewWrap) {
+      const imgSrc = cardImg ? cardImg.getAttribute("src") || "" : "";
+      if (imgSrc) {
+        previewImgEl.setAttribute("src", imgSrc);
+        previewImgEl.setAttribute("alt", `${title} preview`);
+        previewWrap.hidden = false;
+      } else {
+        previewImgEl.removeAttribute("src");
+        previewWrap.hidden = true;
+      }
+    }
+
+    if (stackEl) {
+      stackEl.innerHTML = "";
+      const stackItems = (btn.dataset.stack || "")
+        .split(",")
+        .map((item) => item.trim())
+        .filter(Boolean);
+
+      stackItems.forEach((item) => {
+        const tag = document.createElement("span");
+        tag.className = "slide-stack-tag";
+        tag.textContent = item;
+        stackEl.appendChild(tag);
+      });
+    }
+  }
+
   document.querySelectorAll(".project-detail-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
-      titleEl.textContent = btn.dataset.title || "";
-      categoryEl.textContent = btn.dataset.category || "";
-      descEl.textContent = btn.dataset.desc || "";
-      stackEl.textContent = btn.dataset.stack || "";
+      activeBtn = btn;
+      renderProjectDetails(btn);
       projectModal.show();
     });
+  });
+
+  window.addEventListener("portfolio:langchange", () => {
+    if (activeBtn && modalElement.classList.contains("show")) {
+      renderProjectDetails(activeBtn);
+    }
   });
 }
 
@@ -1526,6 +1596,8 @@ function initPortfolioAutoCarousel() {
   const prevBtn = document.getElementById("portfolioPrevBtn");
   const nextBtn = document.getElementById("portfolioNextBtn");
   const dotsWrap = document.getElementById("portfolioDots");
+  const counterEl = document.getElementById("portfolioCounter");
+  const projectModalEl = document.getElementById("projectModal");
 
   if (!viewport || !track) return;
 
@@ -1536,12 +1608,17 @@ function initPortfolioAutoCarousel() {
   let timerId = null;
 
   function getVisibleCount() {
-    if (window.innerWidth >= 768) return 2;
+    if (window.innerWidth >= 992) return 2;
     return 1;
   }
 
   function getMaxIndex() {
     return Math.max(0, cards.length - getVisibleCount());
+  }
+
+  function getDotAriaLabel(index) {
+    const isEn = document.documentElement.lang === "en";
+    return isEn ? `Show portfolio slide ${index + 1}` : `Tampilkan slide portofolio ${index + 1}`;
   }
 
   function buildDots() {
@@ -1552,7 +1629,7 @@ function initPortfolioAutoCarousel() {
       const dot = document.createElement("button");
       dot.type = "button";
       dot.className = `portfolio-dot${i === currentIndex ? " is-active" : ""}`;
-      dot.setAttribute("aria-label", `Show portfolio slide ${i + 1}`);
+      dot.setAttribute("aria-label", getDotAriaLabel(i));
       dot.addEventListener("click", () => {
         goTo(i);
         restartAuto();
@@ -1565,8 +1642,15 @@ function initPortfolioAutoCarousel() {
     const maxIndex = getMaxIndex();
     if (currentIndex > maxIndex) currentIndex = 0;
     const targetCard = cards[currentIndex];
-    const offset = targetCard ? targetCard.offsetLeft : 0;
+    const originOffset = cards[0] ? cards[0].offsetLeft : 0;
+    const offset = targetCard ? Math.max(0, targetCard.offsetLeft - originOffset) : 0;
     track.style.transform = `translateX(-${offset}px)`;
+
+    if (counterEl) {
+      const currentLabel = String(currentIndex + 1).padStart(2, "0");
+      const totalLabel = String(maxIndex + 1).padStart(2, "0");
+      counterEl.textContent = `${currentLabel} / ${totalLabel}`;
+    }
 
     if (dotsWrap) {
       dotsWrap.querySelectorAll(".portfolio-dot").forEach((dot, idx) => {
@@ -1589,9 +1673,10 @@ function initPortfolioAutoCarousel() {
 
   function startAuto() {
     stopAuto();
+    if (document.hidden || (projectModalEl && projectModalEl.classList.contains("show"))) return;
     timerId = window.setInterval(() => {
       goTo(currentIndex + 1);
-    }, 3200);
+    }, 3400);
   }
 
   function stopAuto() {
@@ -1623,6 +1708,26 @@ function initPortfolioAutoCarousel() {
   viewport.addEventListener("mouseleave", startAuto);
   viewport.addEventListener("focusin", stopAuto);
   viewport.addEventListener("focusout", startAuto);
+
+  if (projectModalEl) {
+    projectModalEl.addEventListener("show.bs.modal", stopAuto);
+    projectModalEl.addEventListener("hidden.bs.modal", startAuto);
+  }
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      stopAuto();
+    } else {
+      startAuto();
+    }
+  });
+
+  window.addEventListener("portfolio:langchange", () => {
+    if (!dotsWrap) return;
+    dotsWrap.querySelectorAll(".portfolio-dot").forEach((dot, idx) => {
+      dot.setAttribute("aria-label", getDotAriaLabel(idx));
+    });
+  });
 
   window.addEventListener("resize", () => {
     buildDots();
@@ -1766,7 +1871,39 @@ const SITE_TRANSLATIONS = {
     "modal.emailPlaceholder": "nama@email.com",
     "modal.messageLabel": "Pesan / Detail Proyek",
     "modal.messagePlaceholder": "Tulis pesan atau kebutuhan proyek...",
-    "modal.submit": "KIRIM PESAN"
+    "modal.submit": "KIRIM PESAN",
+    "work.kicker": "04 // KARYA PILIHAN",
+    "work.title": "PORTFOLIO.",
+    "work.prevAria": "Proyek sebelumnya",
+    "work.nextAria": "Proyek berikutnya",
+    "work.dotsAria": "Navigasi halaman portofolio",
+    "work.viewDetails": "SELENGKAPNYA",
+    "work.modalStack": "TECH STACK",
+    "work.modalClose": "TUTUP",
+    "work.p1.cat": "Pengembangan Web",
+    "work.p1.title": "Company Profile Website",
+    "work.p1.desc": "Landing page profil perusahaan yang responsif dengan HTML5 semantik, CSS3, dan Bootstrap 5.",
+    "work.p1.detail": "Situs web profil perusahaan dengan tata letak terstruktur, tipografi rapi, seksi layanan yang jelas, dan performa muat cepat di desktop maupun seluler.",
+    "work.p2.cat": "Pengembangan Web",
+    "work.p2.title": "E-Commerce Catalog UI",
+    "work.p2.desc": "Antarmuka katalog produk dengan filter kategori dinamis dan pratinjau modal detail cepat.",
+    "work.p2.detail": "Etalase katalog produk dengan kartu grid presisi, penyaringan kategori interaktif, serta modal pratinjau cepat yang ringan.",
+    "work.p3.cat": "Fullstack / UI",
+    "work.p3.title": "Admin Dashboard System",
+    "work.p3.desc": "Dashboard manajemen internal dengan tabel data terstruktur, ringkasan metrik, dan navigasi peran.",
+    "work.p3.detail": "Dashboard manajemen internal berbasis Laravel yang menyajikan tabel data rapi, kartu ringkasan metrik, grafik statistik, dan kontrol akses peran.",
+    "work.p4.cat": "Desain UI/UX",
+    "work.p4.title": "Website UI Mockups",
+    "work.p4.desc": "Koleksi wireframe minimalis dan UI kit presisi tinggi untuk startup maupun situs personal.",
+    "work.p4.detail": "Sistem wireframe minimalis dan UI kit modular di Figma untuk mempercepat perancangan landing page dan antarmuka produk digital.",
+    "work.p5.cat": "Landing Page",
+    "work.p5.title": "Event Booking Microsite",
+    "work.p5.desc": "Halaman pendaftaran acara interaktif dengan tab jadwal sesi dan ringkasan pemesanan tiket.",
+    "work.p5.detail": "Microsite pendaftaran acara kampus dan teknologi yang dilengkapi tab jadwal sesi serta ringkasan tiket yang responsif.",
+    "work.p6.cat": "Aplikasi Web",
+    "work.p6.title": "SaaS Analytics Portal",
+    "work.p6.desc": "Portal laporan aktivitas dengan kartu ringkasan KPI, grafik terfilter, dan tabel log yang rapi.",
+    "work.p6.detail": "Portal pelaporan terintegrasi API untuk memantau metrik KPI, grafik yang dapat difilter, serta tabel log aktivitas yang siap diekspor."
   },
   en: {
     "title.home": "Portfolio — Zaki Yusron Hasyimmi",
@@ -1807,7 +1944,39 @@ const SITE_TRANSLATIONS = {
     "modal.emailPlaceholder": "you@example.com",
     "modal.messageLabel": "Message / Project Details",
     "modal.messagePlaceholder": "Tell me about your message or project...",
-    "modal.submit": "SEND MESSAGE"
+    "modal.submit": "SEND MESSAGE",
+    "work.kicker": "04 // SELECTED WORKS",
+    "work.title": "PORTFOLIO.",
+    "work.prevAria": "Previous projects",
+    "work.nextAria": "Next projects",
+    "work.dotsAria": "Portfolio slide pagination",
+    "work.viewDetails": "VIEW DETAILS",
+    "work.modalStack": "TECH STACK",
+    "work.modalClose": "CLOSE",
+    "work.p1.cat": "Web Development",
+    "work.p1.title": "Company Profile Website",
+    "work.p1.desc": "Responsive corporate landing page built with semantic HTML5, CSS3, and Bootstrap 5.",
+    "work.p1.detail": "Responsive corporate website featuring structured service sections, crisp typography, and fast page load performance across devices.",
+    "work.p2.cat": "Web Development",
+    "work.p2.title": "E-Commerce Catalog UI",
+    "work.p2.desc": "Clean product catalog storefront with category filtering and quick-view modal preview.",
+    "work.p2.detail": "Product catalog storefront featuring sharp grid cards, dynamic category filtering, and lightweight quick-view modal previews.",
+    "work.p3.cat": "Fullstack / UI",
+    "work.p3.title": "Admin Dashboard System",
+    "work.p3.desc": "Internal management dashboard with clean data tables, metric widgets, and role navigation.",
+    "work.p3.detail": "Laravel-backed internal management dashboard with structured data tables, summary metric cards, charts, and role-based navigation.",
+    "work.p4.cat": "UI/UX Design",
+    "work.p4.title": "Website UI Mockups",
+    "work.p4.desc": "Minimalist wireframe and high-fidelity UI kit crafted for startups and personal sites.",
+    "work.p4.detail": "Minimalist wireframe framework and modular Figma UI kit tailored for startups and personal portfolio websites.",
+    "work.p5.cat": "Landing Page",
+    "work.p5.title": "Event Booking Microsite",
+    "work.p5.desc": "Interactive event registration landing page with schedule tabs and ticket summary.",
+    "work.p5.detail": "Interactive campus and tech event registration microsite equipped with session schedule tabs and a responsive ticket summary.",
+    "work.p6.cat": "Web Application",
+    "work.p6.title": "SaaS Analytics Portal",
+    "work.p6.desc": "Clean reporting portal with KPI summary cards, filterable charts, and exportable logs.",
+    "work.p6.detail": "API-driven analytics portal delivering KPI summary cards, filterable charts, and clean exportable activity tables."
   }
 };
 
