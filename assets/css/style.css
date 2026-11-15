@@ -914,7 +914,7 @@ body {
 }
 
 .portfolio-carousel-shell {
-  max-width: 780px;
+  max-width: 100%;
 }
 
 .desktop-screen-frame {
@@ -922,6 +922,9 @@ body {
   border: 2px solid var(--slate-blue);
   border-radius: 12px;
   overflow: hidden;
+  min-height: 410px;
+  display: flex;
+  flex-direction: column;
   box-shadow: 0 20px 45px rgba(0, 0, 42, 0.14);
 }
 
@@ -982,13 +985,32 @@ body {
 .slide-desc {
   font-size: clamp(0.86rem, 1.2vw, 0.98rem);
   color: var(--ink-muted);
+  margin-bottom: 1rem;
+}
+
+.slide-stack-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
   margin-bottom: 1.5rem;
 }
 
-/* Mini Visual Mockup Cards inside 16:9 Screen */
+.slide-stack-tag {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.28rem 0.65rem;
+  border-radius: 4px;
+  background-color: var(--ice-white);
+  border: 1px solid var(--border-ice);
+  color: var(--slate-blue);
+}
+
+/* Mini Visual Mockup Cards inside Wide Screen */
 .slide-visual-card {
-  height: 220px;
-  padding: 1.5rem;
+  height: 270px;
+  padding: 1.75rem;
   border-radius: 8px;
   box-shadow: var(--shadow-soft);
   display: flex;
@@ -1491,13 +1513,12 @@ body {
     border-radius: 4px;
   }
 
-  .desktop-screen-frame.ratio::before {
-    display: none;
+  .desktop-screen-frame {
+    min-height: 290px;
   }
 
   .desktop-screen-frame > .desktop-slide-content {
-    position: relative;
-    min-height: 290px;
+    flex: 1;
   }
 
   .custom-carousel-btn {
