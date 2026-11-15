@@ -599,6 +599,30 @@ function initSkillsSection() {
       });
     });
   }
+
+  const skillsSection = document.getElementById("skills");
+  if (skillsSection) {
+    const galaxyMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (galaxyMotionQuery.matches || typeof IntersectionObserver === "undefined") {
+      skillsSection.classList.add("is-galaxy-active");
+    } else {
+      const galaxyObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting && entry.intersectionRatio >= 0.22) {
+              skillsSection.classList.add("is-galaxy-active");
+            } else if (!entry.isIntersecting) {
+              skillsSection.classList.remove("is-galaxy-active");
+            }
+          });
+        },
+        {
+          threshold: [0, 0.22, 0.5],
+        }
+      );
+      galaxyObserver.observe(skillsSection);
+    }
+  }
 }
 
 /**

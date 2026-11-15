@@ -694,7 +694,7 @@ body {
   color: var(--white);
 }
 
-/* ==================== SKILLS SECTION (Full-Screen Dark Red Constellation) ==================== */
+/* ==================== SKILLS SECTION (Full-Screen Constellation -> Galaxy Blue Scroll) ==================== */
 .skills-section {
   background-color: var(--dark-red);
   color: var(--stone);
@@ -705,10 +705,108 @@ body {
   align-items: stretch;
   position: relative;
   overflow: hidden;
+  transition: background-color 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.skills-section.is-galaxy-active {
+  background-color: #040a1d;
+}
+
+.skills-galaxy-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  background-color: #040a1d;
+  clip-path: circle(0% at 50% 54%);
+  opacity: 0;
+  transform: scale(0.96);
+  transition:
+    clip-path 1.15s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.85s ease,
+    transform 1.15s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.skills-section.is-galaxy-active .skills-galaxy-bg {
+  clip-path: circle(155% at 50% 54%);
+  opacity: 1;
+  transform: scale(1);
+}
+
+.skills-galaxy-aura {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(88px);
+  opacity: 0;
+  transition: opacity 1.3s ease 0.15s;
+}
+
+.skills-section.is-galaxy-active .skills-galaxy-aura {
+  opacity: 0.46;
+}
+
+.skills-galaxy-aura--core {
+  width: min(66vw, 560px);
+  height: min(66vw, 560px);
+  left: 50%;
+  top: 54%;
+  transform: translate(-50%, -50%);
+  background-color: #13409c;
+}
+
+.skills-galaxy-aura--left {
+  width: min(52vw, 420px);
+  height: min(52vw, 420px);
+  left: -8%;
+  top: 12%;
+  background-color: #0b2663;
+}
+
+.skills-galaxy-aura--right {
+  width: min(54vw, 440px);
+  height: min(54vw, 440px);
+  right: -10%;
+  bottom: 4%;
+  background-color: #1a3a8f;
+}
+
+.galaxy-star {
+  position: absolute;
+  left: var(--sx, 50%);
+  top: var(--sy, 50%);
+  width: var(--sz, 2.5px);
+  height: var(--sz, 2.5px);
+  border-radius: 50%;
+  background-color: #dbeafe;
+  box-shadow: 0 0 8px rgba(147, 197, 253, 0.8);
+  opacity: 0;
+  animation: galaxyStarTwinkle 3.8s ease-in-out var(--sd, 0s) infinite;
+  animation-play-state: paused;
+  transition: opacity 0.9s ease 0.35s;
+}
+
+.skills-section.is-galaxy-active .galaxy-star {
+  opacity: 0.82;
+  animation-play-state: running;
+}
+
+@keyframes galaxyStarTwinkle {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(0.85);
+  }
+  50% {
+    opacity: 0.95;
+    transform: scale(1.3);
+  }
 }
 
 .skills-inner {
   position: relative;
+  z-index: 2;
   width: 100%;
   height: 100%;
 }
@@ -2428,14 +2526,95 @@ body {
   }
 }
 
+/* Skills Galaxy Scroll Theme Overrides */
+.skills-section.is-galaxy-active .skills-backdrop-word {
+  -webkit-text-stroke-color: rgba(147, 197, 253, 0.11);
+  transition: -webkit-text-stroke-color 0.9s ease;
+}
+
+.skills-section.is-galaxy-active .constellation-dot {
+  background-color: rgba(191, 219, 254, 0.72);
+  box-shadow: 0 0 8px rgba(96, 165, 250, 0.6);
+  transition: background-color 0.9s ease, box-shadow 0.9s ease;
+}
+
+.skills-section.is-galaxy-active .orbit-track--ring1 {
+  border-color: rgba(147, 197, 253, 0.44);
+}
+
+.skills-section.is-galaxy-active .orbit-track--ring2 {
+  border-color: rgba(147, 197, 253, 0.34);
+}
+
+.skills-section.is-galaxy-active .orbit-track--ring3 {
+  border-color: rgba(147, 197, 253, 0.25);
+}
+
+.skills-section.is-galaxy-active .orbit-track--ring4 {
+  border-color: rgba(147, 197, 253, 0.18);
+}
+
+.skills-section.is-galaxy-active .orbit-track {
+  transition: border-color 0.9s ease;
+}
+
+.skills-section.is-galaxy-active .orbit-core {
+  background-color: #0f2d73;
+  border-color: #bfdbfe;
+  box-shadow: 0 0 28px rgba(59, 130, 246, 0.38), var(--shadow-btn);
+}
+
+.skills-section.is-galaxy-active .orbit-core-pulse,
+.skills-section.is-galaxy-active .orbit-switch-wave {
+  border-color: rgba(147, 197, 253, 0.55);
+}
+
+.skills-section.is-galaxy-active .stack-filter-btn {
+  background-color: rgba(147, 197, 253, 0.08);
+  border-color: rgba(147, 197, 253, 0.26);
+}
+
+.skills-section.is-galaxy-active .stack-filter-btn:hover {
+  background-color: rgba(59, 130, 246, 0.2);
+  border-color: #bfdbfe;
+}
+
+.skills-section.is-galaxy-active .stack-filter-btn.is-active {
+  background-color: #15429e;
+  border-color: #bfdbfe;
+}
+
+.skills-section.is-galaxy-active .orbit-chip {
+  background-color: #081536;
+  border-color: rgba(147, 197, 253, 0.32);
+  box-shadow: 0 6px 16px rgba(2, 6, 23, 0.52);
+}
+
+.skills-section.is-galaxy-active .orbit-chip:hover,
+.skills-section.is-galaxy-active .orbit-chip:focus-visible,
+.skills-section.is-galaxy-active .orbit-chip.is-selected,
+.skills-section.is-galaxy-active .orbit-chip.is-highlighted {
+  background-color: #143d96;
+  border-color: #bfdbfe;
+  box-shadow: 0 0 0 3px rgba(147, 197, 253, 0.22), 0 10px 22px rgba(2, 6, 23, 0.66);
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .skills-section,
+  .skills-galaxy-bg,
+  .skills-galaxy-aura,
+  .galaxy-star {
+    transition: none !important;
+  }
+
   .orbit-rotator,
   .orbit-upright,
   .orbit-chip,
   .orbit-core-pulse,
   .orbit-switch-wave,
   .orbit-core.is-morphing,
-  .constellation-dot {
+  .constellation-dot,
+  .galaxy-star {
     animation: none !important;
   }
 }
