@@ -658,21 +658,14 @@ body {
   background-color: var(--ice-white);
 }
 
-.skills-split-card {
-  background-color: var(--surface-white);
-  border: 1px solid var(--border-ice);
-  border-radius: 3px;
-  box-shadow: var(--shadow-soft);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-
 .skills-mobile-tabs {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  border-bottom: 1px solid var(--border-ice);
-  background-color: var(--ice-white);
+  border: 1px solid var(--border-ice);
+  border-radius: 3px;
+  overflow: hidden;
+  background-color: var(--surface-white);
+  box-shadow: var(--shadow-soft);
 }
 
 .skills-tab-btn {
@@ -693,26 +686,33 @@ body {
   color: var(--surface-white);
 }
 
-.skills-panel-left {
-  background-color: var(--surface-white);
-  padding: 2rem 2.25rem;
+.skills-card {
+  border-radius: 3px;
+  padding: 2rem 2.15rem;
+  box-shadow: var(--shadow-soft);
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
+}
+
+.skills-card-light {
+  background-color: var(--surface-white);
+  border: 1px solid var(--border-ice);
+}
+
+.skills-card-dark {
+  background-color: var(--midnight-navy);
+  border: 1px solid rgba(146, 180, 204, 0.16);
+  color: var(--surface-white);
 }
 
 .skills-heading {
-  font-size: clamp(1.6rem, 2.6vw, 2.25rem);
+  font-size: clamp(1.55rem, 2.5vw, 2.15rem);
   font-weight: 700;
   line-height: 1.15;
   letter-spacing: -0.02em;
   color: var(--midnight-navy);
-  margin: 0.4rem 0 0.85rem;
-}
-
-.skills-heading strong {
-  font-weight: 800;
-  color: var(--slate-blue);
+  margin: 0.15rem 0 0.6rem;
 }
 
 .skills-lead {
@@ -720,14 +720,13 @@ body {
   color: var(--ink-muted);
   line-height: 1.55;
   margin-bottom: 1.25rem;
-  max-width: 440px;
+  max-width: 460px;
 }
 
 .stack-filter-group {
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem;
-  margin-bottom: 1.25rem;
 }
 
 .stack-filter-btn {
@@ -758,18 +757,19 @@ body {
 .stack-groups {
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
+  gap: 0.75rem;
 }
 
-.stack-group-row {
-  padding-bottom: 0.75rem;
-  border-bottom: 1px solid var(--border-ice);
-  transition: opacity 0.2s ease;
+.stack-subcard {
+  background-color: var(--ice-white);
+  border: 1px solid var(--border-ice);
+  border-radius: 3px;
+  padding: 0.9rem 1rem;
+  transition: border-color 0.2s ease, transform 0.2s ease;
 }
 
-.stack-group-row:last-child {
-  padding-bottom: 0;
-  border-bottom: none;
+.stack-subcard:hover {
+  border-color: var(--steel-blue);
 }
 
 .stack-group-row.is-hidden {
@@ -783,21 +783,21 @@ body {
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--steel-blue);
-  margin-bottom: 0.45rem;
+  margin-bottom: 0.55rem;
 }
 
 .stack-pills {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4rem;
+  gap: 0.45rem;
 }
 
 .stack-pill {
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
-  padding: 0.32rem 0.65rem;
-  background-color: var(--ice-white);
+  gap: 0.38rem;
+  padding: 0.35rem 0.7rem;
+  background-color: var(--surface-white);
   border: 1px solid var(--border-ice);
   border-radius: 2px;
   font-size: 0.74rem;
@@ -807,7 +807,7 @@ body {
 }
 
 .stack-pill i {
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   color: var(--slate-blue);
 }
 
@@ -816,34 +816,25 @@ body {
   background-color: var(--ice-blue);
 }
 
-.skills-panel-right {
-  background-color: var(--midnight-navy);
-  color: var(--surface-white);
-  padding: 2rem 2.25rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
 .skills-exp-heading {
-  font-size: 0.68rem;
+  font-size: 0.72rem;
   font-weight: 700;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--sky-blue);
-  margin-bottom: 1rem;
+  margin: 0.35rem 0 1.25rem;
 }
 
 .exp-list {
   display: flex;
   flex-direction: column;
-  gap: 0.65rem;
+  gap: 0.75rem;
 }
 
 .exp-item {
-  border: 1px solid rgba(146, 180, 204, 0.16);
+  border: 1px solid rgba(146, 180, 204, 0.18);
   border-radius: 3px;
-  padding: 0.85rem 1rem;
+  padding: 0.9rem 1.05rem;
   background-color: rgba(255, 255, 255, 0.03);
   cursor: pointer;
   transition: background-color 0.2s ease, border-color 0.2s ease;
@@ -852,42 +843,35 @@ body {
 .exp-item:hover,
 .exp-item.active {
   background-color: rgba(26, 63, 117, 0.45);
-  border-color: rgba(146, 180, 204, 0.38);
+  border-color: rgba(146, 180, 204, 0.42);
 }
 
-.exp-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 0.75rem;
-  margin-bottom: 0.2rem;
+.exp-year {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--sky-blue);
+  margin-bottom: 0.25rem;
 }
 
-.exp-role {
-  font-size: 0.84rem;
+.exp-info h4 {
+  font-size: 0.92rem;
   font-weight: 700;
   color: var(--surface-white);
-  margin: 0;
+  margin: 0 0 0.18rem;
 }
 
-.exp-period {
-  font-size: 0.68rem;
-  font-weight: 600;
-  color: var(--sky-blue);
-  white-space: nowrap;
-}
-
-.exp-company {
-  font-size: 0.73rem;
+.exp-place {
+  font-size: 0.75rem;
   font-weight: 500;
-  color: rgba(220, 232, 242, 0.72);
-  margin-bottom: 0.35rem;
+  color: rgba(220, 232, 242, 0.74);
+  margin: 0 0 0.35rem;
 }
 
 .exp-desc {
-  font-size: 0.74rem;
+  font-size: 0.76rem;
   line-height: 1.5;
-  color: rgba(220, 232, 242, 0.85);
+  color: rgba(220, 232, 242, 0.86);
   margin: 0;
 }
 
@@ -1237,15 +1221,16 @@ body {
 
 /* ==================== RESPONSIVE ==================== */
 @media (max-width: 991.98px) {
-  .skills-panel-left,
-  .skills-panel-right {
+  .skills-panel-col {
     display: none;
   }
 
-  .skills-panel-left.is-active,
-  .skills-panel-right.is-active {
-    display: flex;
-    flex-direction: column;
+  .skills-panel-col.is-active {
+    display: block;
+  }
+
+  .skills-card {
+    padding: 1.35rem 1.25rem;
   }
 
   .about-section {

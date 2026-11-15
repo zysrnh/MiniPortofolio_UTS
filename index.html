@@ -288,48 +288,48 @@
     <!-- ==================== SKILLS & EXPERIENCE SECTION ==================== -->
     <section id="skills" class="skills-section">
       <div class="container">
-        <div class="skills-split-card">
-          <!-- Mobile Switch Tabs (Shown <= 991px to keep 1-screen fit) -->
-          <div class="skills-mobile-tabs d-lg-none" role="tablist">
-            <button
-              type="button"
-              class="skills-tab-btn active"
-              data-skills-tab="toolkit"
-            >
-              TOOLKIT / STACK
-            </button>
-            <button
-              type="button"
-              class="skills-tab-btn"
-              data-skills-tab="experience"
-            >
-              EXPERIENCE
-            </button>
-          </div>
+        <!-- Mobile Switch Tabs (Shown <= 991px to keep 1-screen fit) -->
+        <div class="skills-mobile-tabs d-lg-none mb-3" role="tablist">
+          <button
+            type="button"
+            class="skills-tab-btn is-active"
+            data-skills-tab="toolkit"
+          >
+            TOOLKIT / STACK
+          </button>
+          <button
+            type="button"
+            class="skills-tab-btn"
+            data-skills-tab="experience"
+          >
+            EXPERIENCE
+          </button>
+        </div>
 
-          <div class="row g-0">
-            <!-- Left Panel: Toolkit & Tech Stack (Warm White) -->
-            <div class="col-lg-6 skills-panel-left is-active" id="skillsToolkitPanel">
-              <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="row g-4 align-items-stretch">
+          <!-- Left Card: Toolkit & Tech Stack (Warm White) -->
+          <div class="col-lg-6 skills-panel-col is-active" id="skillsToolkitPanel">
+            <div class="skills-card skills-card-light h-100">
+              <div class="d-flex justify-content-between align-items-center mb-3 gap-2 flex-wrap">
                 <span class="about-kicker">03 / TOOLKIT &amp; STACK</span>
                 <div class="stack-filter-group" role="group" aria-label="Filter stack">
-                  <button type="button" class="stack-filter-btn active" data-stack="all">All</button>
+                  <button type="button" class="stack-filter-btn is-active" data-stack="all">All</button>
                   <button type="button" class="stack-filter-btn" data-stack="fe">FE</button>
                   <button type="button" class="stack-filter-btn" data-stack="be">BE</button>
                   <button type="button" class="stack-filter-btn" data-stack="tools">Tools</button>
                 </div>
               </div>
 
-              <h2 class="skills-heading mb-2">Tech Stack &amp; Tools.</h2>
-              <p class="text-muted-custom mb-4">
+              <h2 class="skills-heading">Tech Stack &amp; Tools.</h2>
+              <p class="skills-lead">
                 Core technologies and design tools I use to build clean, responsive web
                 applications.
               </p>
 
               <div class="stack-groups">
-                <div class="stack-group-row" data-stack-cat="fe">
-                  <div class="stack-group-label">FRONTEND</div>
-                  <div class="stack-badges">
+                <div class="stack-group-row stack-subcard" data-stack-cat="fe">
+                  <span class="stack-group-label">FRONTEND</span>
+                  <div class="stack-pills">
                     <span class="stack-pill"><i class="bi bi-filetype-html"></i> HTML5</span>
                     <span class="stack-pill"><i class="bi bi-filetype-css"></i> CSS3</span>
                     <span class="stack-pill"><i class="bi bi-bootstrap"></i> Bootstrap 5</span>
@@ -337,9 +337,9 @@
                   </div>
                 </div>
 
-                <div class="stack-group-row" data-stack-cat="be">
-                  <div class="stack-group-label">BACKEND &amp; DATA</div>
-                  <div class="stack-badges">
+                <div class="stack-group-row stack-subcard" data-stack-cat="be">
+                  <span class="stack-group-label">BACKEND &amp; DATA</span>
+                  <div class="stack-pills">
                     <span class="stack-pill"><i class="bi bi-filetype-php"></i> PHP</span>
                     <span class="stack-pill"><i class="bi bi-layers"></i> Laravel</span>
                     <span class="stack-pill"><i class="bi bi-database"></i> MySQL</span>
@@ -347,9 +347,9 @@
                   </div>
                 </div>
 
-                <div class="stack-group-row" data-stack-cat="tools">
-                  <div class="stack-group-label">UI/UX &amp; WORKFLOW</div>
-                  <div class="stack-badges">
+                <div class="stack-group-row stack-subcard" data-stack-cat="tools">
+                  <span class="stack-group-label">UI/UX &amp; WORKFLOW</span>
+                  <div class="stack-pills">
                     <span class="stack-pill"><i class="bi bi-vector-pen"></i> Figma</span>
                     <span class="stack-pill"><i class="bi bi-git"></i> Git &amp; GitHub</span>
                     <span class="stack-pill"><i class="bi bi-code-slash"></i> VS Code</span>
@@ -357,11 +357,13 @@
                 </div>
               </div>
             </div>
+          </div>
 
-            <!-- Right Panel: Experience Timeline (Midnight Navy) -->
-            <div class="col-lg-6 skills-panel-right" id="skillsExpPanel">
+          <!-- Right Card: Experience Timeline (Midnight Navy) -->
+          <div class="col-lg-6 skills-panel-col" id="skillsExpPanel">
+            <div class="skills-card skills-card-dark h-100">
               <div class="ramon-abstract-label">EXPERIENCE</div>
-              <h3 class="skills-exp-heading mb-4">Where I&rsquo;ve Built &amp; Contributed</h3>
+              <h3 class="skills-exp-heading">Where I&rsquo;ve Built &amp; Contributed</h3>
 
               <div class="exp-list" id="expTimelineList">
                 <article class="exp-item active">
