@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   initAboutCarousel();
   initSkillsSection();
+  initPortfolioAutoCarousel();
   initProjectModal();
   initContactForm();
   initMobileNavClose();
@@ -296,4 +297,122 @@ function initSkillsSection() {
       });
     });
   }
+}
+
+/**
+ * 3-card auto-slide portfolio carousel with pause-on-hover and responsive card count.
+ */
+function initPortfolioAutoCarousel() {
+  const viewport = document.getElementById("portfolioViewport");
+  const track = document.getElementById("portfolioTrack");
+  const prevBtn = document.getElementById("portfolioPrevBtn");
+  const nextBtn = document.getElementById("portfolioNextBtn");
+  const dotsWrap = document.getElementById("portfolioDots");
+
+  if (!viewport || !track) return;
+
+  const cards = Array.from(track.querySelectorAll(".portfolio-card"));
+  if (!cards.length) return;
+
+  let currentIndex = 0;
+  let timerId = null;
+
+  function getVisibleCount() {
+    if (window.innerWidth >= 992) return 3;
+    if (window.innerWidth >= 768) return 2;
+    return 1;
+  }
+
+  function getMaxIndex() {
+    return Math.max(0, cards.length - getVisibleCount());
+  }
+
+  function buildDots() {
+    if (!dotsWrap) return;
+    const totalPositions = getMaxIndex() + 1;
+    dotsWrap.innerHTML = "";
+    for (let i = 0; i < totalPositions; i += 1) {
+      const dot = document.createElement("button");
+      dot.type = "button";
+      dot.className = `portfolio-dot${i === currentIndex ? " is-active" : ""}`;
+      dot.setAttribute("aria-label", `Show portfolio slide ${i + 1}`);
+      dot.addEventListener("click", () => {
+        goTo(i);
+        restartAuto();
+      });
+      dotsWrap.appendChild(dot);
+    }
+  }
+
+  function updatePosition() {
+    const maxIndex = getMaxIndex();
+    if (currentIndex > maxIndex) currentIndex = 0;
+    const targetCard = cards[currentIndex];
+    const offset = targetCard ? targetCard.offsetLeft : 0;
+    track.style.transform = `translateX(-${offset}px)`;
+
+    if (dotsWrap) {
+      dotsWrap.querySelectorAll(".portfolio-dot").forEach((dot, idx) => {
+        dot.classList.toggle("is-active", idx === currentIndex);
+      });
+    }
+  }
+
+  function goTo(index) {
+    const maxIndex = getMaxIndex();
+    if (index > maxIndex) {
+      currentIndex = 0;
+    } else if (index < 0) {
+      currentIndex = maxIndex;
+    } else {
+      currentIndex = index;
+    }
+    updatePosition();
+  }
+
+  function startAuto() {
+    stopAuto();
+    timerId = window.setInterval(() => {
+      goTo(currentIndex + 1);
+    }, 3200);
+  }
+
+  function stopAuto() {
+    if (timerId !== null) {
+      window.clearInterval(timerId);
+      timerId = null;
+    }
+  }
+
+  function restartAuto() {
+    startAuto();
+  }
+
+  if (prevBtn) {
+    prevBtn.addEventListener("click", () => {
+      goTo(currentIndex - 1);
+      restartAuto();
+    });
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener("click", () => {
+      goTo(currentIndex + 1);
+      restartAuto();
+    });
+  }
+
+  viewport.addEventListener("mouseenter", stopAuto);
+  viewport.addEventListener("mouseleave", startAuto);
+  viewport.addEventListener("focusin", stopAuto);
+  viewport.addEventListener("focusout", startAuto);
+
+  window.addEventListener("resize", () => {
+    buildDots();
+    updatePosition();
+  });
+
+  buildDots();
+  updatePosition();
+  startAuto();
 }
