@@ -344,23 +344,125 @@ function initMobileNavClose() {
  */
 function initSkillsSection() {
   const filterBtns = document.querySelectorAll(".stack-filter-btn");
-  const stackItems = document.querySelectorAll(".showcase-stack-item");
+  const orbitBox = document.getElementById("skillsOrbitBox");
+  const orbitChips = document.querySelectorAll(".orbit-chip");
+  const orbitCore = document.getElementById("orbitCore");
+  const orbitCoreImg = document.getElementById("orbitCoreImg");
+  const orbitCoreCat = document.getElementById("orbitCoreCat");
+  const orbitReadout = document.getElementById("orbitActiveReadout");
   const expItems = document.querySelectorAll("#expTimelineList .exp-media-item");
   const mobileTabBtns = document.querySelectorAll(".skills-tab-btn");
   const toolkitPanel = document.getElementById("skillsToolkitPanel");
   const expPanel = document.getElementById("skillsExpPanel");
 
-  if (filterBtns.length && stackItems.length) {
+  const defaultReadouts = {
+    all: "HOVER TO INSPECT",
+    fe: "FRONTEND STACK (8)",
+    be: "BACKEND & DATA (5)",
+    tools: "TOOLS & WORKFLOW (3)",
+  };
+  let activeCategory = "all";
+  let pinnedChip = null;
+
+  function showCorePreview(chip) {
+    if (!chip || !orbitCore || !orbitCoreImg || !orbitCoreCat) return;
+    const iconEl = chip.querySelector(".stack-logo-svg");
+    const skillName = chip.dataset.skillName || "";
+    const skillLabel = chip.dataset.skillLabel || "";
+
+    if (iconEl) {
+      orbitCoreImg.src = iconEl.getAttribute("src") || "";
+      orbitCoreImg.alt = skillName;
+    }
+    orbitCoreCat.textContent = skillLabel;
+    orbitCore.classList.add("is-previewing");
+
+    if (orbitReadout) {
+      orbitReadout.textContent = `${skillName} • ${skillLabel}`;
+      orbitReadout.classList.add("is-live");
+    }
+  }
+
+  function resetCorePreview() {
+    if (orbitCore) orbitCore.classList.remove("is-previewing");
+    if (orbitReadout) {
+      orbitReadout.textContent = defaultReadouts[activeCategory] || defaultReadouts.all;
+      orbitReadout.classList.toggle("is-live", activeCategory !== "all");
+    }
+  }
+
+  if (orbitChips.length) {
+    orbitChips.forEach((chip) => {
+      chip.addEventListener("mouseenter", () => {
+        showCorePreview(chip);
+      });
+
+      chip.addEventListener("mouseleave", () => {
+        if (pinnedChip) {
+          showCorePreview(pinnedChip);
+        } else {
+          resetCorePreview();
+        }
+      });
+
+      chip.addEventListener("focus", () => {
+        showCorePreview(chip);
+      });
+
+      chip.addEventListener("blur", () => {
+        if (!pinnedChip) {
+          resetCorePreview();
+        }
+      });
+
+      chip.addEventListener("click", (event) => {
+        event.stopPropagation();
+        const isSame = pinnedChip === chip;
+
+        orbitChips.forEach((c) => c.classList.remove("is-selected"));
+        if (isSame) {
+          pinnedChip = null;
+          if (orbitBox) orbitBox.classList.remove("is-paused");
+          resetCorePreview();
+        } else {
+          pinnedChip = chip;
+          chip.classList.add("is-selected");
+          if (orbitBox) orbitBox.classList.add("is-paused");
+          showCorePreview(chip);
+        }
+      });
+    });
+
+    if (orbitBox) {
+      orbitBox.addEventListener("click", (event) => {
+        if (!event.target.closest(".orbit-chip") && pinnedChip) {
+          orbitChips.forEach((c) => c.classList.remove("is-selected"));
+          pinnedChip = null;
+          orbitBox.classList.remove("is-paused");
+          resetCorePreview();
+        }
+      });
+    }
+  }
+
+  if (filterBtns.length && orbitChips.length) {
     filterBtns.forEach((btn) => {
       btn.addEventListener("click", () => {
-        const selected = btn.dataset.stack;
+        activeCategory = btn.dataset.stack || "all";
         filterBtns.forEach((b) => b.classList.remove("is-active"));
         btn.classList.add("is-active");
 
-        stackItems.forEach((item) => {
-          const match = selected === "all" || item.dataset.stackCat === selected;
-          item.classList.toggle("is-hidden", !match);
+        orbitChips.forEach((chip) => {
+          const match = activeCategory === "all" || chip.dataset.stackCat === activeCategory;
+          chip.classList.toggle("is-highlighted", activeCategory !== "all" && match);
+          chip.classList.toggle("is-dimmed", activeCategory !== "all" && !match);
         });
+
+        if (pinnedChip) {
+          showCorePreview(pinnedChip);
+        } else {
+          resetCorePreview();
+        }
       });
     });
   }
