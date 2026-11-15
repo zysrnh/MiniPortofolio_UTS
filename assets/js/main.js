@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   initTopOnRefresh();
+  initSitePreloader();
   initLanguageSwitcher();
   initHeroEntrance();
   initAboutCarousel();
@@ -1538,4 +1539,153 @@ function initLanguageSwitcher() {
       applyLanguage(btn.dataset.lang, true);
     });
   });
+}
+
+/* ==================== SITE PRELOADER (TYPEWRITER) ==================== */
+function initSitePreloader() {
+  const root = document.documentElement;
+  const preloader = document.getElementById("sitePreloader");
+  const textWrap = document.getElementById("sitePreloaderText");
+  const progressBar = document.getElementById("sitePreloaderBar");
+
+  if (!preloader || !root.classList.contains("is-preloading")) {
+    root.classList.remove("is-preloading");
+    if (preloader) preloader.remove();
+    return;
+  }
+
+  preloader.classList.add("is-active");
+
+  const tokens = [
+    { ch: "z", dot: false },
+    { ch: ".", dot: true },
+    { ch: "y", dot: false },
+    { ch: "s", dot: false },
+    { ch: "r", dot: false },
+    { ch: "n", dot: false },
+    { ch: "h", dot: false },
+  ];
+
+  let currentProgress = 0.06;
+  const setProgress = (value) => {
+    currentProgress = Math.max(currentProgress, Math.min(1, value));
+    if (progressBar) {
+      progressBar.style.transform = `scaleX(${currentProgress.toFixed(3)})`;
+    }
+  };
+
+  let assetsReady = false;
+  let typingDone = false;
+  let dismissed = false;
+
+  const maybeDismiss = () => {
+    if (dismissed || !assetsReady || !typingDone) return;
+    dismissed = true;
+    setProgress(1);
+
+    window.setTimeout(() => {
+      const heroSection = document.getElementById("home");
+      if (heroSection) {
+        heroSection.classList.remove("is-hero-play");
+      }
+
+      root.classList.remove("is-preloading");
+
+      if (heroSection) {
+        void heroSection.offsetWidth;
+        heroSection.classList.add("is-hero-play");
+      }
+
+      window.requestAnimationFrame(() => {
+        preloader.classList.add("is-leaving");
+      });
+
+      let cleaned = false;
+      const cleanup = () => {
+        if (cleaned) return;
+        cleaned = true;
+        preloader.classList.remove("is-active", "is-leaving");
+        preloader.remove();
+      };
+
+      preloader.addEventListener("transitionend", (event) => {
+        if (event.target === preloader && event.propertyName === "transform") {
+          cleanup();
+        }
+      });
+
+      window.setTimeout(cleanup, 850);
+    }, 160);
+  };
+
+  const typeStep = (index) => {
+    if (dismissed) return;
+    if (index >= tokens.length) {
+      typingDone = true;
+      setProgress(assetsReady ? 1 : 0.85);
+      maybeDismiss();
+      return;
+    }
+
+    if (textWrap) {
+      const token = tokens[index];
+      const span = document.createElement("span");
+      span.textContent = token.ch;
+      if (token.dot) {
+        span.className = "site-preloader-dot";
+      }
+      textWrap.appendChild(span);
+    }
+
+    const ratio = (index + 1) / tokens.length;
+    setProgress(0.08 + ratio * 0.72);
+
+    const nextDelay = index === 1 ? 150 : 88;
+    window.setTimeout(() => typeStep(index + 1), nextDelay);
+  };
+
+  window.setTimeout(() => typeStep(0), 110);
+
+  const heroImg = document.querySelector(".hero-portrait-img");
+  const waitHeroImage = () => {
+    if (!heroImg) return Promise.resolve();
+    const decodeImg = () =>
+      typeof heroImg.decode === "function"
+        ? heroImg.decode().catch(() => {})
+        : Promise.resolve();
+
+    if (heroImg.complete) {
+      return decodeImg();
+    }
+
+    return new Promise((resolve) => {
+      const done = () => {
+        heroImg.removeEventListener("load", done);
+        heroImg.removeEventListener("error", done);
+        decodeImg().finally(resolve);
+      };
+      heroImg.addEventListener("load", done, { once: true });
+      heroImg.addEventListener("error", done, { once: true });
+    });
+  };
+
+  const waitFonts =
+    document.fonts && document.fonts.ready
+      ? document.fonts.ready.catch(() => {})
+      : Promise.resolve();
+
+  const markAssetsReady = () => {
+    if (assetsReady) return;
+    assetsReady = true;
+    setProgress(typingDone ? 1 : 0.92);
+    maybeDismiss();
+  };
+
+  Promise.all([waitHeroImage(), waitFonts]).then(markAssetsReady);
+
+  window.setTimeout(() => {
+    assetsReady = true;
+    typingDone = true;
+    maybeDismiss();
+  }, 4000);
 }
