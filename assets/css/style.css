@@ -962,7 +962,7 @@ body {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  margin-bottom: 1.1rem;
+  margin-bottom: 0.85rem;
   background-color: var(--midnight-navy);
   border: 1px solid rgba(26, 63, 117, 0.16);
   box-shadow: var(--shadow-soft);
@@ -986,7 +986,7 @@ body {
 
 .portfolio-card-img {
   width: 100%;
-  height: clamp(340px, 44vh, 420px);
+  height: clamp(250px, 34vh, 360px);
   object-fit: cover;
   object-position: top center;
   display: block;
@@ -1287,17 +1287,21 @@ body {
 }
 
 @media (min-width: 992px) {
+  html {
+    scroll-snap-type: y mandatory;
+  }
+
   .skills-section,
   .work-section {
-    padding: 2.5rem 0 !important;
+    padding: 1.5rem 0 !important;
   }
 
-  .work-section .mb-5 {
-    margin-bottom: 1.75rem !important;
+  .site-footer {
+    scroll-snap-align: end;
   }
 
-  .work-section .mt-5 {
-    margin-top: 3rem !important;
+  .work-section .mb-4 {
+    margin-bottom: 1.15rem !important;
   }
 }
 
