@@ -427,7 +427,16 @@ function initSkillsSection() {
   let activeCategory = "all";
   let pinnedChip = null;
   let hoveredInteractive = false;
+  let keyboardFocused = false;
   let switchCleanupTimer = null;
+
+  function setChipLayerActive(chip, isActive) {
+    if (!chip) return;
+    const anchor = chip.closest(".orbit-anchor");
+    const rotator = chip.closest(".orbit-rotator");
+    if (anchor) anchor.classList.toggle("is-anchor-active", isActive);
+    if (rotator) rotator.classList.toggle("is-anchor-active", isActive);
+  }
 
   function applyCoreFilterState() {
     const state = coreFilterStates[activeCategory] || coreFilterStates.all;
@@ -471,11 +480,15 @@ function initSkillsSection() {
     orbitChips.forEach((chip) => {
       chip.addEventListener("mouseenter", () => {
         hoveredInteractive = true;
+        setChipLayerActive(chip, true);
         showCorePreview(chip);
       });
 
       chip.addEventListener("mouseleave", () => {
         hoveredInteractive = false;
+        if (chip !== pinnedChip && document.activeElement !== chip) {
+          setChipLayerActive(chip, false);
+        }
         if (pinnedChip) {
           showCorePreview(pinnedChip);
         } else {
@@ -484,10 +497,16 @@ function initSkillsSection() {
       });
 
       chip.addEventListener("focus", () => {
+        keyboardFocused = true;
+        setChipLayerActive(chip, true);
         showCorePreview(chip);
       });
 
       chip.addEventListener("blur", () => {
+        keyboardFocused = false;
+        if (chip !== pinnedChip) {
+          setChipLayerActive(chip, false);
+        }
         if (!pinnedChip) {
           resetCorePreview();
         }
@@ -497,15 +516,20 @@ function initSkillsSection() {
         event.stopPropagation();
         const isSame = pinnedChip === chip;
 
-        orbitChips.forEach((c) => c.classList.remove("is-selected"));
+        orbitChips.forEach((c) => {
+          c.classList.remove("is-selected");
+          if (c !== chip) setChipLayerActive(c, false);
+        });
         if (isSame) {
           pinnedChip = null;
+          setChipLayerActive(chip, false);
           chip.blur();
           if (orbitBox) orbitBox.classList.remove("is-paused");
           resetCorePreview();
         } else {
           pinnedChip = chip;
           chip.classList.add("is-selected");
+          setChipLayerActive(chip, true);
           if (orbitBox) orbitBox.classList.add("is-paused");
           showCorePreview(chip);
         }
@@ -515,7 +539,10 @@ function initSkillsSection() {
     if (orbitBox) {
       orbitBox.addEventListener("click", (event) => {
         if (!event.target.closest(".orbit-chip") && pinnedChip) {
-          orbitChips.forEach((c) => c.classList.remove("is-selected"));
+          orbitChips.forEach((c) => {
+            c.classList.remove("is-selected");
+            setChipLayerActive(c, false);
+          });
           pinnedChip = null;
           orbitBox.classList.remove("is-paused");
           resetCorePreview();
@@ -524,10 +551,10 @@ function initSkillsSection() {
     }
   }
 
-  const orbitController = setupEllipticalOrbitController(orbitBox, () => {
-    const hasKeyboardFocus = Boolean(orbitBox && orbitBox.querySelector(".orbit-chip:focus-visible"));
-    return Boolean(pinnedChip || hoveredInteractive || hasKeyboardFocus);
-  });
+  const orbitController = setupEllipticalOrbitController(
+    orbitBox,
+    () => Boolean(pinnedChip || hoveredInteractive || keyboardFocused)
+  );
 
   function playTabSwitchFX(nextCategory) {
     if (switchCleanupTimer) {
@@ -586,6 +613,7 @@ function initSkillsSection() {
 
         orbitChips.forEach((chip) => {
           chip.classList.remove("is-selected");
+          setChipLayerActive(chip, false);
           const match = activeCategory === "all" || chip.dataset.stackCat === activeCategory;
           chip.classList.toggle("is-highlighted", activeCategory !== "all" && match);
           chip.classList.toggle("is-dimmed", activeCategory !== "all" && !match);
@@ -604,6 +632,7 @@ function initSkillsSection() {
 
   const skillsSection = document.getElementById("skills");
   if (skillsSection) {
+    const galaxyBg = skillsSection.querySelector(".skills-galaxy-bg");
     const syncGalaxyOrigin = () => {
       if (!orbitCore) return;
       const secRect = skillsSection.getBoundingClientRect();
@@ -620,10 +649,23 @@ function initSkillsSection() {
     window.addEventListener("resize", syncGalaxyOrigin, { passive: true });
 
     let galaxyDelayTimer = null;
+    let galaxySettleTimer = null;
     const galaxyMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 
+    if (galaxyBg) {
+      galaxyBg.addEventListener("transitionend", (event) => {
+        if (event.propertyName === "clip-path" && skillsSection.classList.contains("is-galaxy-active")) {
+          if (galaxySettleTimer) {
+            clearTimeout(galaxySettleTimer);
+            galaxySettleTimer = null;
+          }
+          skillsSection.classList.add("is-galaxy-settled");
+        }
+      });
+    }
+
     if (galaxyMotionQuery.matches || typeof IntersectionObserver === "undefined") {
-      skillsSection.classList.add("is-galaxy-active");
+      skillsSection.classList.add("is-galaxy-active", "is-galaxy-settled");
     } else {
       const galaxyObserver = new IntersectionObserver(
         (entries) => {
@@ -634,7 +676,15 @@ function initSkillsSection() {
                 galaxyDelayTimer = setTimeout(() => {
                   galaxyDelayTimer = null;
                   syncGalaxyOrigin();
+                  skillsSection.classList.remove("is-galaxy-settled");
                   skillsSection.classList.add("is-galaxy-active");
+                  if (galaxySettleTimer) clearTimeout(galaxySettleTimer);
+                  galaxySettleTimer = setTimeout(() => {
+                    galaxySettleTimer = null;
+                    if (skillsSection.classList.contains("is-galaxy-active")) {
+                      skillsSection.classList.add("is-galaxy-settled");
+                    }
+                  }, 5200);
                 }, 350);
               }
             } else if (!entry.isIntersecting) {
@@ -642,7 +692,11 @@ function initSkillsSection() {
                 clearTimeout(galaxyDelayTimer);
                 galaxyDelayTimer = null;
               }
-              skillsSection.classList.remove("is-galaxy-active");
+              if (galaxySettleTimer) {
+                clearTimeout(galaxySettleTimer);
+                galaxySettleTimer = null;
+              }
+              skillsSection.classList.remove("is-galaxy-active", "is-galaxy-settled");
             }
           });
         },
@@ -1065,11 +1119,29 @@ function setupEllipticalOrbitController(orbitBox, isInteractionPaused) {
     renderRingPositions();
   }
 
+  let rafId = null;
+
+  function scheduleNextFrame() {
+    if (rafId !== null || !isInViewport || document.hidden || reducedMotionQuery.matches) return;
+    lastFrameTime = performance.now();
+    rafId = requestAnimationFrame(animateFrame);
+  }
+
+  function stopOrbitLoop() {
+    if (rafId !== null) {
+      cancelAnimationFrame(rafId);
+      rafId = null;
+    }
+  }
+
   function animateFrame(now) {
+    rafId = null;
+    if (!isInViewport || document.hidden || reducedMotionQuery.matches) return;
+
     const dtSec = Math.min(0.05, Math.max(0, (now - lastFrameTime) / 1000));
     lastFrameTime = now;
 
-    if (isInViewport && !reducedMotionQuery.matches && (!isInteractionPaused() || impulseEnergy > 0.02)) {
+    if (!isInteractionPaused() || impulseEnergy > 0.02) {
       const boost = 1 + impulseEnergy * 4.5;
       impulseEnergy *= Math.pow(0.012, dtSec);
       if (impulseEnergy < 0.01) impulseEnergy = 0;
@@ -1082,14 +1154,13 @@ function setupEllipticalOrbitController(orbitBox, isInteractionPaused) {
       renderRingPositions();
     }
 
-    requestAnimationFrame(animateFrame);
+    rafId = requestAnimationFrame(animateFrame);
   }
 
   computeEllipseLayout();
   requestAnimationFrame(() => {
     computeEllipseLayout();
-    lastFrameTime = performance.now();
-    requestAnimationFrame(animateFrame);
+    scheduleNextFrame();
   });
 
   if (typeof ResizeObserver !== "undefined") {
@@ -1104,17 +1175,30 @@ function setupEllipticalOrbitController(orbitBox, isInteractionPaused) {
     mobileBreakpointQuery.addEventListener("change", computeEllipseLayout);
   }
 
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      stopOrbitLoop();
+    } else if (isInViewport) {
+      scheduleNextFrame();
+    }
+  });
+
   const skillsSection = document.getElementById("skills");
   if (skillsSection && typeof IntersectionObserver !== "undefined") {
     const io = new IntersectionObserver(
       (entries) => {
         const prevVisible = isInViewport;
         isInViewport = entries[0]?.isIntersecting ?? true;
+        if (isInViewport) {
+          scheduleNextFrame();
+        } else {
+          stopOrbitLoop();
+        }
         if (!prevVisible && isInViewport && isMobileCycle && cyclePhase === "idle") {
           scheduleNextWave(MOBILE_DWELL_MS);
         }
       },
-      { threshold: 0.05 }
+      { threshold: 0.02 }
     );
     io.observe(skillsSection);
   }
@@ -1129,6 +1213,7 @@ function setupEllipticalOrbitController(orbitBox, isInteractionPaused) {
     triggerImpulse() {
       if (!reducedMotionQuery.matches) {
         impulseEnergy = 1;
+        scheduleNextFrame();
       }
     },
   };
@@ -1257,6 +1342,18 @@ function initPortfolioAutoCarousel() {
 function initHeroEntrance() {
   const heroSection = document.getElementById("home");
   if (!heroSection) return;
+
+  if (typeof IntersectionObserver !== "undefined") {
+    const heroVisibilityObserver = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (!entry) return;
+        heroSection.classList.toggle("is-hero-offscreen", !entry.isIntersecting);
+      },
+      { threshold: 0.01 }
+    );
+    heroVisibilityObserver.observe(heroSection);
+  }
 
   const homeLinks = document.querySelectorAll('a[href="#home"]');
   if (!homeLinks.length) return;
