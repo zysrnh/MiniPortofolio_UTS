@@ -986,7 +986,7 @@ body {
 
 .portfolio-card-img {
   width: 100%;
-  height: clamp(250px, 34vh, 360px);
+  height: clamp(320px, 42vh, 410px);
   object-fit: cover;
   object-position: top center;
   display: block;
