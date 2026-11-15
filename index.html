@@ -401,14 +401,17 @@
                 <!-- Expanded Detail View (Shown when READ MORE / item clicked) -->
                 <div class="ramon-detail-panel" id="aboutDetailPanel">
                   <div class="ramon-detail-tabs mb-3" role="tablist">
-                    <button type="button" class="detail-tab active" data-tab="overview" data-i18n="about.tabOverview">
-                      Ringkasan
+                    <button type="button" class="detail-tab active" data-tab="overview">
+                      <i class="bi bi-file-text" aria-hidden="true"></i>
+                      <span data-i18n="about.tabOverview">Ringkasan</span>
                     </button>
-                    <button type="button" class="detail-tab" data-tab="stack" data-i18n="about.tabStack">
-                      Stack Utama
+                    <button type="button" class="detail-tab" data-tab="stack">
+                      <i class="bi bi-layers" aria-hidden="true"></i>
+                      <span data-i18n="about.tabStack">Stack Utama</span>
                     </button>
-                    <button type="button" class="detail-tab" data-tab="focus" data-i18n="about.tabFocus">
-                      Fokus
+                    <button type="button" class="detail-tab" data-tab="focus">
+                      <i class="bi bi-bullseye" aria-hidden="true"></i>
+                      <span data-i18n="about.tabFocus">Fokus</span>
                     </button>
                   </div>
                   <p class="ramon-detail-copy mb-3" id="aboutDetailCopy"></p>

@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initAboutCarousel();
   initSkillsSection();
   initSectionEntrance("work", "is-work-ready", "is-work-play", 0.12, 0.86);
+  initWorkStackIcons();
   initPortfolioAutoCarousel();
   initProjectModal();
   initContactForm();
@@ -52,6 +53,75 @@ function initSectionEntrance(sectionId, readyClass, playClass, thresholdRatio, v
   );
 
   observer.observe(sectionEl);
+}
+
+const STACK_ICON_MAP = {
+  "Laravel & Blade": { svgs: ["assets/img/icons/laravel.svg", "assets/img/icons/blade.svg"] },
+  "React + TypeScript": { svgs: ["assets/img/icons/react.svg", "assets/img/icons/typescript.svg"] },
+  "React & Inertia.js": { svgs: ["assets/img/icons/react.svg", "assets/img/icons/inertia.svg"] },
+  TypeScript: { svgs: ["assets/img/icons/typescript.svg"] },
+  "Tailwind CSS": { svgs: ["assets/img/icons/tailwind.svg"] },
+  "Clean Code": { bi: "bi bi-braces" },
+  "Responsive UI": { bi: "bi bi-phone" },
+  "PHP & Laravel": { svgs: ["assets/img/icons/php.svg", "assets/img/icons/laravel.svg"] },
+  MySQL: { svgs: ["assets/img/icons/mysql.svg"] },
+  "REST API": { svgs: ["assets/img/icons/restapi.svg"] },
+  "Git & GitHub": { svgs: ["assets/img/icons/git.svg", "assets/img/icons/github.svg"] },
+  HTML5: { svgs: ["assets/img/icons/html5.svg"] },
+  CSS3: { svgs: ["assets/img/icons/css3.svg"] },
+  "Bootstrap 5": { svgs: ["assets/img/icons/bootstrap.svg"] },
+  JavaScript: { svgs: ["assets/img/icons/javascript.svg"] },
+  Laravel: { svgs: ["assets/img/icons/laravel.svg"] },
+  "Laravel API": { svgs: ["assets/img/icons/laravel.svg", "assets/img/icons/restapi.svg"] },
+  "Chart.js": { svgs: ["assets/img/icons/chartjs.svg"] },
+  Figma: { svgs: ["assets/img/icons/figma.svg"] },
+  "Design System": { bi: "bi bi-grid-1x2" },
+  Wireframing: { bi: "bi bi-vector-pen" },
+};
+
+/**
+ * Create a styled badge/chip containing local SVG or Bootstrap icons alongside a label.
+ *
+ * @param {string} label Visible technology or capability label.
+ * @param {string} chipClass CSS class for the badge element.
+ * @returns {HTMLSpanElement} Populated span badge element.
+ */
+function createStackChip(label, chipClass) {
+  const span = document.createElement("span");
+  span.className = chipClass;
+
+  const entry = STACK_ICON_MAP[label];
+  if (entry && Array.isArray(entry.svgs)) {
+    entry.svgs.forEach((src) => {
+      const img = document.createElement("img");
+      img.src = src;
+      img.alt = "";
+      img.className = "tech-chip-icon";
+      img.setAttribute("aria-hidden", "true");
+      span.appendChild(img);
+    });
+  } else {
+    const icon = document.createElement("i");
+    icon.className = `${entry?.bi || "bi bi-tag"} tech-chip-bi`;
+    icon.setAttribute("aria-hidden", "true");
+    span.appendChild(icon);
+  }
+
+  const text = document.createElement("span");
+  text.textContent = label;
+  span.appendChild(text);
+  return span;
+}
+
+/**
+ * Hydrate static stack tags inside portfolio cards with icons from STACK_ICON_MAP.
+ */
+function initWorkStackIcons() {
+  document.querySelectorAll("#portfolioTrack .slide-stack-tag").forEach((tagEl) => {
+    const label = tagEl.textContent.trim();
+    if (!label) return;
+    tagEl.replaceWith(createStackChip(label, "slide-stack-tag"));
+  });
 }
 
 /**
@@ -228,10 +298,7 @@ function initAboutCarousel() {
 
       detailBadgesEl.innerHTML = "";
       slide.badges.forEach((badgeText) => {
-        const span = document.createElement("span");
-        span.className = "detail-badge";
-        span.textContent = badgeText;
-        detailBadgesEl.appendChild(span);
+        detailBadgesEl.appendChild(createStackChip(badgeText, "detail-badge"));
       });
 
       itemRows.forEach((row, idx) => {
@@ -425,10 +492,7 @@ function initProjectModal() {
         .filter(Boolean);
 
       stackItems.forEach((item) => {
-        const tag = document.createElement("span");
-        tag.className = "slide-stack-tag";
-        tag.textContent = item;
-        stackEl.appendChild(tag);
+        stackEl.appendChild(createStackChip(item, "slide-stack-tag"));
       });
     }
   }

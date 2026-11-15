@@ -1416,6 +1416,9 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
 }
 
 .detail-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
   background: transparent;
   border: none;
   border-bottom: 2px solid transparent;
@@ -1426,6 +1429,11 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
   color: rgba(241, 235, 235, 0.64);
   cursor: pointer;
   transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.detail-tab i {
+  font-size: 0.78rem;
+  line-height: 1;
 }
 
 .detail-tab:hover {
@@ -1444,13 +1452,35 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
 }
 
 .detail-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.42rem;
   background-color: var(--dark-red);
   border: 1px solid rgba(241, 235, 235, 0.25);
   color: var(--stone);
   font-size: 0.7rem;
   font-weight: 600;
-  padding: 0.28rem 0.65rem;
+  padding: 0.32rem 0.68rem;
   border-radius: 4px;
+}
+
+.tech-chip-icon {
+  width: 14px;
+  height: 14px;
+  object-fit: contain;
+  flex-shrink: 0;
+  display: block;
+}
+
+.tech-chip-bi {
+  font-size: 0.8rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.detail-badge .tech-chip-icon {
+  width: 15px;
+  height: 15px;
 }
 
 .ramon-socials a,
@@ -2674,11 +2704,14 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
 }
 
 .slide-stack-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.38rem;
   font-size: 0.64rem;
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  padding: 0.26rem 0.56rem;
+  padding: 0.28rem 0.58rem;
   border-radius: 2px;
   background-color: var(--stone);
   border: 1px solid rgba(39, 7, 7, 0.14);
