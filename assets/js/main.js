@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   initTopOnRefresh();
   initSitePreloader();
+  initPageTransitions();
   initLanguageSwitcher();
   initHeroEntrance();
   initSectionEntrance("about", "is-about-ready", "is-about-play", 0.16, 0.82);
@@ -451,6 +452,93 @@ const PROJECTS_CATALOG = [
     github: "https://github.com/zysrnh",
   },
 ];
+
+/**
+ * Handle smooth two-tone editorial shutter wipe transitions between portfolio and project detail pages.
+ */
+function initPageTransitions() {
+  const root = document.documentElement;
+  const curtain = document.getElementById("pageTransitionCurtain");
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  let isNavigating = false;
+
+  try {
+    window.sessionStorage.removeItem("portfolioTransition");
+  } catch (_) {}
+
+  function revealEnteredPage() {
+    if (!root.classList.contains("is-page-entering")) return;
+    if (!curtain || prefersReducedMotion.matches) {
+      root.classList.remove("is-page-entering");
+      return;
+    }
+
+    window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => {
+        curtain.classList.add("is-curtain-out");
+        root.classList.remove("is-page-entering");
+        window.setTimeout(() => {
+          curtain.classList.remove("is-curtain-out");
+        }, 480);
+      });
+    });
+  }
+
+  function resetTransitionState() {
+    isNavigating = false;
+    root.classList.remove("is-page-entering");
+    if (curtain) {
+      curtain.classList.remove("is-curtain-in", "is-curtain-out");
+    }
+  }
+
+  revealEnteredPage();
+  window.addEventListener("pageshow", () => {
+    resetTransitionState();
+  });
+
+  if (!curtain) return;
+
+  const transitionLinks = document.querySelectorAll(
+    '.project-detail-btn, #projectBackBtn, body[data-page="project"] a[href^="index.html"]'
+  );
+
+  transitionLinks.forEach((link) => {
+    link.addEventListener("click", (event) => {
+      if (
+        isNavigating ||
+        prefersReducedMotion.matches ||
+        event.defaultPrevented ||
+        event.button !== 0 ||
+        event.metaKey ||
+        event.ctrlKey ||
+        event.shiftKey ||
+        event.altKey ||
+        link.target === "_blank"
+      ) {
+        return;
+      }
+
+      const href = link.getAttribute("href");
+      if (!href) return;
+
+      event.preventDefault();
+      isNavigating = true;
+
+      try {
+        window.sessionStorage.setItem("portfolioTransition", "1");
+      } catch (_) {}
+
+      curtain.classList.remove("is-curtain-out");
+      void curtain.offsetWidth;
+      curtain.classList.add("is-curtain-in");
+
+      window.setTimeout(() => {
+        window.location.href = href;
+      }, 320);
+    });
+  });
+}
 
 /**
  * Populate and control the standalone 1-screen dark editorial project detail page.

@@ -2805,8 +2805,11 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
 }
 
 .work-section .project-detail-btn {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
   background-color: var(--deep-red);
-  border-color: var(--deep-red);
+  border: 1px solid var(--deep-red);
   color: var(--white);
   border-radius: 2px;
   font-size: 0.72rem;
@@ -2817,33 +2820,54 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
   display: inline-flex;
   align-items: center;
   text-decoration: none;
-  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.14s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: border-color 0.25s ease, color 0.25s ease, transform 0.16s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.work-section .project-detail-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-color: var(--dark-red);
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform 0.34s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.work-section .project-detail-btn > * {
+  position: relative;
+  z-index: 1;
 }
 
 .work-section .project-detail-btn .bi {
-  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .work-section .project-detail-btn:hover,
 .work-section .project-detail-btn:focus-visible {
-  background-color: var(--dark-red);
+  background-color: var(--deep-red);
   border-color: var(--dark-red);
   color: var(--stone);
+}
+
+.work-section .project-detail-btn:hover::before,
+.work-section .project-detail-btn:focus-visible::before {
+  transform: scaleX(1);
+  transform-origin: left center;
 }
 
 .work-section .project-detail-btn:hover .bi {
-  transform: translateX(4px);
+  transform: translateX(5px);
 }
 
 .work-section .project-detail-btn:active {
-  background-color: var(--dark-red);
   border-color: var(--dark-red);
   color: var(--stone);
-  transform: translateY(1px) scale(0.96);
+  transform: translateY(2px) scale(0.95);
 }
 
 .work-section .project-detail-btn:active .bi {
-  transform: translateX(6px);
+  transform: translateX(8px);
 }
 
 .portfolio-dots {
@@ -3298,6 +3322,97 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
   text-decoration: underline;
 }
 
+/* ==================== EDITORIAL PAGE TRANSITION CURTAIN ==================== */
+.page-transition-curtain {
+  position: fixed;
+  inset: 0;
+  z-index: 9990;
+  pointer-events: none;
+  visibility: hidden;
+  overflow: hidden;
+}
+
+.page-transition-accent,
+.page-transition-panel {
+  position: absolute;
+  inset: 0;
+  transform: translate3d(0, 102%, 0);
+  will-change: transform;
+}
+
+.page-transition-accent {
+  background-color: var(--deep-red);
+}
+
+.page-transition-panel {
+  background-color: var(--dark-red);
+  border-top: 2px solid rgba(241, 235, 235, 0.24);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.page-transition-tag {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: rgba(241, 235, 235, 0.78);
+}
+
+html.is-page-entering .page-transition-curtain {
+  visibility: visible;
+  pointer-events: auto;
+}
+
+html.is-page-entering .page-transition-accent,
+html.is-page-entering .page-transition-panel {
+  transform: translate3d(0, 0, 0);
+}
+
+.page-transition-curtain.is-curtain-in {
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.page-transition-curtain.is-curtain-in .page-transition-accent {
+  animation: pageCurtainCover 0.28s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+}
+
+.page-transition-curtain.is-curtain-in .page-transition-panel {
+  animation: pageCurtainCover 0.31s cubic-bezier(0.76, 0, 0.24, 1) 0.04s forwards;
+}
+
+.page-transition-curtain.is-curtain-out {
+  visibility: visible;
+}
+
+.page-transition-curtain.is-curtain-out .page-transition-panel {
+  animation: pageCurtainReveal 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.page-transition-curtain.is-curtain-out .page-transition-accent {
+  animation: pageCurtainReveal 0.44s cubic-bezier(0.16, 1, 0.3, 1) 0.05s forwards;
+}
+
+@keyframes pageCurtainCover {
+  0% {
+    transform: translate3d(0, 102%, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes pageCurtainReveal {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(0, -104%, 0);
+  }
+}
+
 /* ==================== PROJECT DETAIL PAGE (STANDALONE DARK EDITORIAL) ==================== */
 .project-page-shell {
   min-height: calc(100vh - 58px);
@@ -3342,6 +3457,9 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
 }
 
 .project-fullscreen-back {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
@@ -3356,26 +3474,47 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
   text-decoration: none;
   padding: 0.5rem 0.9rem;
   cursor: pointer;
-  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.14s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: border-color 0.24s ease, color 0.24s ease, transform 0.16s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.project-fullscreen-back::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-color: var(--stone);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.34s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.project-fullscreen-back > * {
+  position: relative;
+  z-index: 1;
 }
 
 .project-fullscreen-back .bi {
-  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .project-fullscreen-back:hover,
 .project-fullscreen-back:focus-visible {
-  background-color: var(--stone);
   border-color: var(--stone);
   color: var(--dark-red);
 }
 
+.project-fullscreen-back:hover::before,
+.project-fullscreen-back:focus-visible::before {
+  transform: scaleX(1);
+  transform-origin: right center;
+}
+
 .project-fullscreen-back:hover .bi {
-  transform: translateX(-3px);
+  transform: translateX(-4px);
 }
 
 .project-fullscreen-back:active {
-  transform: translateY(1px) scale(0.96);
+  transform: translateY(2px) scale(0.95);
 }
 
 .project-fullscreen-counter {
@@ -3383,11 +3522,12 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
   font-weight: 800;
   letter-spacing: 0.12em;
   font-variant-numeric: tabular-nums;
-  color: rgba(241, 235, 235, 0.76);
+  color: rgba(241, 235, 235, 0.8);
   padding: 0.44rem 0.68rem;
   border: 1px solid rgba(241, 235, 235, 0.16);
   border-radius: 2px;
   background-color: rgba(241, 235, 235, 0.05);
+  display: inline-block;
 }
 
 .project-fullscreen-nav-btn {
@@ -3402,7 +3542,11 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
   color: var(--stone);
   font-size: 0.9rem;
   cursor: pointer;
-  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.14s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.16s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.project-fullscreen-nav-btn .bi {
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .project-fullscreen-nav-btn:hover,
@@ -3412,11 +3556,19 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
   color: var(--white);
 }
 
+#projectPrevBtn:hover .bi {
+  transform: translateX(-2px);
+}
+
+#projectNextBtn:hover .bi {
+  transform: translateX(2px);
+}
+
 .project-fullscreen-nav-btn:active {
   background-color: var(--stone);
   border-color: var(--stone);
   color: var(--dark-red);
-  transform: translateY(1px) scale(0.94);
+  transform: translateY(2px) scale(0.92);
 }
 
 .project-fullscreen-body {
@@ -3436,11 +3588,23 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
 }
 
 .project-fullscreen-preview {
+  position: relative;
   background-color: #190404;
   border: 1px solid rgba(241, 235, 235, 0.2);
   border-radius: 2px;
   padding: 0.7rem;
   overflow: hidden;
+}
+
+.project-fullscreen-preview::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background-color: var(--deep-red);
+  pointer-events: none;
+  opacity: 0;
+  transform: translate3d(-101%, 0, 0);
 }
 
 .project-fullscreen-img {
@@ -3513,6 +3677,7 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
 .project-fullscreen-stack-row .slide-stack-tag:focus-visible {
   background-color: rgba(241, 235, 235, 0.16);
   border-color: var(--stone);
+  transform: translateY(-2px);
 }
 
 .project-fullscreen-stack-row .tech-chip-icon {
@@ -3529,6 +3694,9 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
 }
 
 .project-fullscreen-github-btn {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
@@ -3542,89 +3710,217 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
   text-transform: uppercase;
   text-decoration: none;
   padding: 0.68rem 1.2rem;
-  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.14s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: border-color 0.24s ease, color 0.24s ease, transform 0.16s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.project-fullscreen-github-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-color: var(--stone);
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform 0.34s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.project-fullscreen-github-btn > * {
+  position: relative;
+  z-index: 1;
 }
 
 .project-fullscreen-github-btn .project-github-ext {
   font-size: 0.72rem;
   opacity: 0.78;
-  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .project-fullscreen-github-btn:hover,
 .project-fullscreen-github-btn:focus-visible {
-  background-color: var(--stone);
   border-color: var(--stone);
   color: var(--dark-red);
 }
 
+.project-fullscreen-github-btn:hover::before,
+.project-fullscreen-github-btn:focus-visible::before {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+
 .project-fullscreen-github-btn:hover .project-github-ext {
-  transform: translate(2px, -2px);
+  transform: translate(3px, -3px);
 }
 
 .project-fullscreen-github-btn:active {
-  transform: translateY(1px) scale(0.97);
+  transform: translateY(2px) scale(0.95);
 }
 
-/* Page initial load choreography */
+/* Page initial load choreography (matching Hero & About editorial shutter style) */
+.project-fullscreen-modal.is-project-enter .project-fullscreen-reticle {
+  animation: projectReticleSettle 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.04s both;
+}
+
 .project-fullscreen-modal.is-project-enter .project-fullscreen-topbar {
-  animation: projectFadeIn 0.32s ease both;
+  animation: projectTopbarDrop 0.56s cubic-bezier(0.16, 1, 0.3, 1) 0.08s backwards;
 }
 
 .project-fullscreen-modal.is-project-enter .project-fullscreen-preview {
-  animation: projectEnterRise 0.52s cubic-bezier(0.22, 1, 0.36, 1) 0.04s backwards;
+  will-change: clip-path, transform, opacity;
+  animation: projectFrameCurtain 0.76s cubic-bezier(0.16, 1, 0.3, 1) 0.1s backwards;
+}
+
+.project-fullscreen-modal.is-project-enter .project-fullscreen-preview::after {
+  animation: projectShutterSweep 0.68s cubic-bezier(0.76, 0, 0.24, 1) 0.1s both;
+}
+
+.project-fullscreen-modal.is-project-enter .project-fullscreen-img {
+  will-change: transform, opacity;
+  animation: projectImgZoomSettle 0.92s cubic-bezier(0.16, 1, 0.3, 1) 0.12s backwards;
 }
 
 .project-fullscreen-modal.is-project-enter .project-fullscreen-title {
-  animation: projectEnterRise 0.46s cubic-bezier(0.22, 1, 0.36, 1) 0.1s backwards;
+  will-change: clip-path, transform, opacity;
+  animation: projectTitleCurtain 0.68s cubic-bezier(0.16, 1, 0.3, 1) 0.18s backwards;
 }
 
 .project-fullscreen-modal.is-project-enter .project-fullscreen-rule {
-  animation: projectRuleGrow 0.42s cubic-bezier(0.22, 1, 0.36, 1) 0.16s backwards;
+  animation: projectRuleGrow 0.48s cubic-bezier(0.16, 1, 0.3, 1) 0.26s backwards;
 }
 
 .project-fullscreen-modal.is-project-enter .project-fullscreen-desc {
-  animation: projectEnterRise 0.44s cubic-bezier(0.22, 1, 0.36, 1) 0.2s backwards;
+  animation: projectEnterRise 0.58s cubic-bezier(0.16, 1, 0.3, 1) 0.3s backwards;
+}
+
+.project-fullscreen-modal.is-project-enter .project-fullscreen-stack-block {
+  animation: projectEnterRise 0.52s cubic-bezier(0.16, 1, 0.3, 1) 0.34s backwards;
 }
 
 .project-fullscreen-modal.is-project-enter .project-fullscreen-stack-row .slide-stack-tag {
-  animation: projectChipEnter 0.36s cubic-bezier(0.22, 1, 0.36, 1) calc(0.24s + var(--chip-index, 0) * 45ms) backwards;
+  animation: projectChipEnter 0.44s cubic-bezier(0.16, 1, 0.3, 1) calc(0.38s + var(--chip-index, 0) * 60ms) backwards;
 }
 
 .project-fullscreen-modal.is-project-enter .project-fullscreen-actions {
-  animation: projectEnterRise 0.42s cubic-bezier(0.22, 1, 0.36, 1) 0.3s backwards;
+  animation: projectEnterRise 0.52s cubic-bezier(0.16, 1, 0.3, 1) 0.44s backwards;
 }
 
-/* Directional project switch choreography (only active media, copy & chips animate) */
+/* Directional project switch choreography (< / > & keyboard arrows) */
+.project-fullscreen-modal.is-project-switch .project-fullscreen-counter {
+  animation: projectCounterTick 0.36s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.project-fullscreen-modal.is-project-switch .project-fullscreen-preview::after {
+  animation: projectShutterSwitch 0.52s cubic-bezier(0.76, 0, 0.24, 1) both;
+}
+
 .project-fullscreen-modal.is-project-switch .project-fullscreen-img {
-  animation: projectMediaSlide 0.36s cubic-bezier(0.22, 1, 0.36, 1) both;
+  will-change: clip-path, transform, opacity;
+  animation: projectMediaSlide 0.56s cubic-bezier(0.16, 1, 0.3, 1) 0.04s backwards;
 }
 
 .project-fullscreen-modal.is-project-switch .project-fullscreen-title {
-  animation: projectCopySlide 0.32s cubic-bezier(0.22, 1, 0.36, 1) both;
+  will-change: clip-path, transform, opacity;
+  animation: projectCopySlide 0.48s cubic-bezier(0.16, 1, 0.3, 1) 0.04s backwards;
+}
+
+.project-fullscreen-modal.is-project-switch .project-fullscreen-rule {
+  animation: projectRulePulse 0.42s cubic-bezier(0.16, 1, 0.3, 1) 0.08s backwards;
 }
 
 .project-fullscreen-modal.is-project-switch .project-fullscreen-desc {
-  animation: projectCopySlide 0.34s cubic-bezier(0.22, 1, 0.36, 1) 0.04s backwards;
+  animation: projectCopySlide 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.1s backwards;
 }
 
 .project-fullscreen-modal.is-project-switch .project-fullscreen-stack-row .slide-stack-tag {
-  animation: projectChipSlide 0.28s cubic-bezier(0.22, 1, 0.36, 1) calc(var(--chip-index, 0) * 35ms) backwards;
+  animation: projectChipSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1) calc(0.12s + var(--chip-index, 0) * 50ms) backwards;
 }
 
-@keyframes projectFadeIn {
+@keyframes projectReticleSettle {
   0% {
     opacity: 0;
+    transform: scale(1.04);
   }
   100% {
     opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes projectTopbarDrop {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -14px, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes projectFrameCurtain {
+  0% {
+    opacity: 0.25;
+    clip-path: inset(0 100% 0 0);
+    transform: translate3d(-18px, 0, 0);
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes projectShutterSweep {
+  0% {
+    opacity: 0.92;
+    transform: translate3d(-101%, 0, 0);
+  }
+  38% {
+    opacity: 0.92;
+    transform: translate3d(0%, 0, 0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(101%, 0, 0);
+  }
+}
+
+@keyframes projectImgZoomSettle {
+  0% {
+    opacity: 0;
+    transform: scale(1.1);
+  }
+  25% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes projectTitleCurtain {
+  0% {
+    opacity: 0.1;
+    clip-path: inset(0 0 100% 0);
+    transform: translate3d(0, 34px, 0);
+  }
+  25% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    clip-path: inset(-10% 0 -10% 0);
+    transform: translate3d(0, 0, 0);
   }
 }
 
 @keyframes projectEnterRise {
   0% {
     opacity: 0;
-    transform: translate3d(0, 12px, 0);
+    transform: translate3d(0, 26px, 0);
   }
   100% {
     opacity: 1;
@@ -3641,32 +3937,72 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
   }
 }
 
+@keyframes projectRulePulse {
+  0% {
+    transform: scaleX(0.25);
+  }
+  100% {
+    transform: scaleX(1);
+  }
+}
+
 @keyframes projectChipEnter {
   0% {
     opacity: 0;
-    transform: translate3d(0, 6px, 0);
+    transform: translate3d(0, 16px, 0) scale(0.84);
   }
   100% {
     opacity: 1;
-    transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes projectCounterTick {
+  0% {
+    opacity: 0.35;
+    transform: translate3d(0, -6px, 0) scale(0.92);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes projectShutterSwitch {
+  0% {
+    opacity: 0.85;
+    transform: translate3d(calc(var(--slide-dir, 1) * 101%), 0, 0);
+  }
+  42% {
+    opacity: 0.85;
+    transform: translate3d(0%, 0, 0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(calc(var(--slide-dir, 1) * -101%), 0, 0);
   }
 }
 
 @keyframes projectMediaSlide {
   0% {
-    opacity: 0.25;
-    transform: translate3d(calc(var(--slide-dir, 1) * 28px), 0, 0);
+    opacity: 0.15;
+    clip-path: inset(0 calc((1 - var(--slide-dir, 1)) * 50%) 0 calc((1 + var(--slide-dir, 1)) * 50%));
+    transform: translate3d(calc(var(--slide-dir, 1) * 44px), 0, 0) scale(1.07);
+  }
+  25% {
+    opacity: 1;
   }
   100% {
     opacity: 1;
-    transform: translate3d(0, 0, 0);
+    clip-path: inset(0 0 0 0);
+    transform: translate3d(0, 0, 0) scale(1);
   }
 }
 
 @keyframes projectCopySlide {
   0% {
-    opacity: 0.18;
-    transform: translate3d(calc(var(--slide-dir, 1) * 20px), 0, 0);
+    opacity: 0;
+    transform: translate3d(calc(var(--slide-dir, 1) * 40px), 0, 0);
   }
   100% {
     opacity: 1;
@@ -3677,11 +4013,11 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
 @keyframes projectChipSlide {
   0% {
     opacity: 0;
-    transform: translate3d(calc(var(--slide-dir, 1) * 10px), 0, 0);
+    transform: translate3d(calc(var(--slide-dir, 1) * 18px), 0, 0) scale(0.88);
   }
   100% {
     opacity: 1;
-    transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0) scale(1);
   }
 }
 
@@ -4365,17 +4701,26 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
   .work-section.is-work-play .work-header,
   .work-section.is-work-play .portfolio-marquee-viewport,
   .work-section.is-work-play .portfolio-dots,
+  .project-fullscreen-modal.is-project-enter .project-fullscreen-reticle,
   .project-fullscreen-modal.is-project-enter .project-fullscreen-topbar,
   .project-fullscreen-modal.is-project-enter .project-fullscreen-preview,
+  .project-fullscreen-modal.is-project-enter .project-fullscreen-preview::after,
+  .project-fullscreen-modal.is-project-enter .project-fullscreen-img,
   .project-fullscreen-modal.is-project-enter .project-fullscreen-title,
   .project-fullscreen-modal.is-project-enter .project-fullscreen-rule,
   .project-fullscreen-modal.is-project-enter .project-fullscreen-desc,
+  .project-fullscreen-modal.is-project-enter .project-fullscreen-stack-block,
   .project-fullscreen-modal.is-project-enter .project-fullscreen-stack-row .slide-stack-tag,
   .project-fullscreen-modal.is-project-enter .project-fullscreen-actions,
+  .project-fullscreen-modal.is-project-switch .project-fullscreen-counter,
+  .project-fullscreen-modal.is-project-switch .project-fullscreen-preview::after,
   .project-fullscreen-modal.is-project-switch .project-fullscreen-img,
   .project-fullscreen-modal.is-project-switch .project-fullscreen-title,
+  .project-fullscreen-modal.is-project-switch .project-fullscreen-rule,
   .project-fullscreen-modal.is-project-switch .project-fullscreen-desc,
-  .project-fullscreen-modal.is-project-switch .project-fullscreen-stack-row .slide-stack-tag {
+  .project-fullscreen-modal.is-project-switch .project-fullscreen-stack-row .slide-stack-tag,
+  .page-transition-curtain .page-transition-accent,
+  .page-transition-curtain .page-transition-panel {
     animation: none !important;
   }
 
@@ -4383,10 +4728,15 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
   .hero-navy-sheen,
   .orbit-core::after,
   .orbit-chip::after,
-  .site-preloader {
+  .site-preloader,
+  .page-transition-curtain,
+  .project-fullscreen-preview::after {
     display: none !important;
   }
 
+  .work-section .project-detail-btn::before,
+  .project-fullscreen-back::before,
+  .project-fullscreen-github-btn::before,
   .site-preloader,
   .site-preloader-pane,
   .site-preloader-card,
