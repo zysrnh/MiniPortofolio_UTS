@@ -55,12 +55,38 @@
 <body data-page="home">
   <!-- ==================== PRELOADER ==================== -->
   <div id="sitePreloader" class="site-preloader" role="status" aria-live="polite" aria-label="Loading portfolio">
-    <div class="site-preloader-inner">
+    <!-- Top Curtain: Editorial Stone -->
+    <div class="site-preloader-pane site-preloader-pane--top">
+      <div class="container site-preloader-edge">
+        <span class="site-preloader-brand">
+          <i class="bi bi-diamond-half me-2" aria-hidden="true"></i>
+          <span>ZAKI YUSRON HASYIMMI</span>
+        </span>
+        <span class="site-preloader-tag">WEB DEVELOPER</span>
+      </div>
+    </div>
+
+    <!-- Bottom Curtain: Editorial Dark Red -->
+    <div class="site-preloader-pane site-preloader-pane--bottom">
+      <div class="container site-preloader-edge">
+        <span class="site-preloader-tag">PORTFOLIO // 2026</span>
+        <span class="site-preloader-percent" id="sitePreloaderPercent">00%</span>
+      </div>
+    </div>
+
+    <!-- Center Split Seam -->
+    <div class="site-preloader-seam" aria-hidden="true">
+      <div class="site-preloader-seam-fill" id="sitePreloaderSeam"></div>
+    </div>
+
+    <!-- Center Overlapping Stamp Card (Ramon / Swiss Frame) -->
+    <div class="site-preloader-card">
+      <span class="site-preloader-kicker" aria-hidden="true">INITIALIZING</span>
       <div class="site-preloader-word" aria-label="z.ysrnh">
         <span class="site-preloader-text" id="sitePreloaderText" aria-hidden="true"></span><span class="site-preloader-caret" aria-hidden="true"></span>
       </div>
-      <div class="site-preloader-track" aria-hidden="true">
-        <div class="site-preloader-bar" id="sitePreloaderBar"></div>
+      <div class="site-preloader-card-track" aria-hidden="true">
+        <div class="site-preloader-card-bar" id="sitePreloaderBar"></div>
       </div>
     </div>
   </div>

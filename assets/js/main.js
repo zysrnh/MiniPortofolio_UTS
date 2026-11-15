@@ -1541,12 +1541,15 @@ function initLanguageSwitcher() {
   });
 }
 
-/* ==================== SITE PRELOADER (TYPEWRITER) ==================== */
+/* ==================== SITE PRELOADER (DUAL-TONE TYPEWRITER & SPLIT CURTAIN) ==================== */
 function initSitePreloader() {
   const root = document.documentElement;
   const preloader = document.getElementById("sitePreloader");
   const textWrap = document.getElementById("sitePreloaderText");
   const progressBar = document.getElementById("sitePreloaderBar");
+  const seamFill = document.getElementById("sitePreloaderSeam");
+  const percentEl = document.getElementById("sitePreloaderPercent");
+  const topPane = preloader ? preloader.querySelector(".site-preloader-pane--top") : null;
 
   if (!preloader || !root.classList.contains("is-preloading")) {
     root.classList.remove("is-preloading");
@@ -1569,10 +1572,20 @@ function initSitePreloader() {
   let currentProgress = 0.06;
   const setProgress = (value) => {
     currentProgress = Math.max(currentProgress, Math.min(1, value));
+    const scaleStr = `scaleX(${currentProgress.toFixed(3)})`;
     if (progressBar) {
-      progressBar.style.transform = `scaleX(${currentProgress.toFixed(3)})`;
+      progressBar.style.transform = scaleStr;
+    }
+    if (seamFill) {
+      seamFill.style.transform = scaleStr;
+    }
+    if (percentEl) {
+      const pct = Math.round(currentProgress * 100);
+      percentEl.textContent = `${String(pct).padStart(2, "0")}%`;
     }
   };
+
+  setProgress(0.06);
 
   let assetsReady = false;
   let typingDone = false;
@@ -1584,37 +1597,42 @@ function initSitePreloader() {
     setProgress(1);
 
     window.setTimeout(() => {
-      const heroSection = document.getElementById("home");
-      if (heroSection) {
-        heroSection.classList.remove("is-hero-play");
-      }
+      preloader.classList.add("is-card-exit");
 
-      root.classList.remove("is-preloading");
-
-      if (heroSection) {
-        void heroSection.offsetWidth;
-        heroSection.classList.add("is-hero-play");
-      }
-
-      window.requestAnimationFrame(() => {
-        preloader.classList.add("is-leaving");
-      });
-
-      let cleaned = false;
-      const cleanup = () => {
-        if (cleaned) return;
-        cleaned = true;
-        preloader.classList.remove("is-active", "is-leaving");
-        preloader.remove();
-      };
-
-      preloader.addEventListener("transitionend", (event) => {
-        if (event.target === preloader && event.propertyName === "transform") {
-          cleanup();
+      window.setTimeout(() => {
+        const heroSection = document.getElementById("home");
+        if (heroSection) {
+          heroSection.classList.remove("is-hero-play");
         }
-      });
 
-      window.setTimeout(cleanup, 850);
+        root.classList.remove("is-preloading");
+
+        if (heroSection) {
+          void heroSection.offsetWidth;
+          heroSection.classList.add("is-hero-play");
+        }
+
+        window.requestAnimationFrame(() => {
+          preloader.classList.add("is-splitting");
+        });
+
+        let cleaned = false;
+        const cleanup = () => {
+          if (cleaned) return;
+          cleaned = true;
+          preloader.classList.remove("is-active", "is-card-exit", "is-splitting");
+          preloader.remove();
+        };
+
+        const transitionTarget = topPane || preloader;
+        transitionTarget.addEventListener("transitionend", (event) => {
+          if (event.target === transitionTarget && event.propertyName === "transform") {
+            cleanup();
+          }
+        });
+
+        window.setTimeout(cleanup, 950);
+      }, 150);
     }, 160);
   };
 
@@ -1622,7 +1640,7 @@ function initSitePreloader() {
     if (dismissed) return;
     if (index >= tokens.length) {
       typingDone = true;
-      setProgress(assetsReady ? 1 : 0.85);
+      setProgress(assetsReady ? 1 : 0.86);
       maybeDismiss();
       return;
     }
@@ -1640,11 +1658,11 @@ function initSitePreloader() {
     const ratio = (index + 1) / tokens.length;
     setProgress(0.08 + ratio * 0.72);
 
-    const nextDelay = index === 1 ? 150 : 88;
+    const nextDelay = index === 1 ? 155 : 92;
     window.setTimeout(() => typeStep(index + 1), nextDelay);
   };
 
-  window.setTimeout(() => typeStep(0), 110);
+  window.setTimeout(() => typeStep(0), 120);
 
   const heroImg = document.querySelector(".hero-portrait-img");
   const waitHeroImage = () => {

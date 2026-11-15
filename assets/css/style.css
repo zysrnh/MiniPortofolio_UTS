@@ -80,7 +80,7 @@ body {
   background-color: var(--deep-red);
 }
 
-/* ==================== PRELOADER ==================== */
+/* ==================== PRELOADER (DUAL-TONE SPLIT CURTAIN) ==================== */
 html.is-preloading,
 html.is-preloading body {
   overflow: hidden;
@@ -91,43 +91,183 @@ html.is-preloading body {
   inset: 0;
   z-index: 9999;
   display: none;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--dark-red);
-  transform: translate3d(0, 0, 0);
-  transition: transform 0.65s cubic-bezier(0.76, 0, 0.24, 1);
-  will-change: transform;
+  pointer-events: auto;
 }
 
 html.is-preloading .site-preloader,
 .site-preloader.is-active,
-.site-preloader.is-leaving {
-  display: flex;
+.site-preloader.is-splitting {
+  display: block;
 }
 
-.site-preloader.is-leaving {
-  transform: translate3d(0, -100%, 0);
+.site-preloader.is-splitting {
   pointer-events: none;
 }
 
-.site-preloader-inner {
+.site-preloader-pane {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  display: flex;
+  padding: clamp(1.15rem, 3vw, 2rem) 0;
+  transition: transform 0.72s cubic-bezier(0.76, 0, 0.24, 1);
+  will-change: transform;
+  overflow: hidden;
+}
+
+.site-preloader-pane::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  pointer-events: none;
+}
+
+.site-preloader-pane--top {
+  top: 0;
+  align-items: flex-start;
+  background-color: var(--stone);
+  color: var(--dark-red);
+  border-bottom: 1px solid rgba(39, 7, 7, 0.18);
+  transform: translate3d(0, 0, 0);
+}
+
+.site-preloader-pane--top::before {
+  background-color: rgba(39, 7, 7, 0.08);
+}
+
+.site-preloader-pane--bottom {
+  bottom: 0;
+  align-items: flex-end;
+  background-color: var(--dark-red);
+  color: var(--stone);
+  border-top: 2px solid var(--deep-red);
+  transform: translate3d(0, 0, 0);
+}
+
+.site-preloader-pane--bottom::before {
+  background-color: rgba(241, 235, 235, 0.08);
+}
+
+.site-preloader.is-splitting .site-preloader-pane--top {
+  transform: translate3d(0, -100%, 0);
+}
+
+.site-preloader.is-splitting .site-preloader-pane--bottom {
+  transform: translate3d(0, 100%, 0);
+}
+
+.site-preloader-edge {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  position: relative;
+  z-index: 1;
+}
+
+.site-preloader-brand {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  line-height: 1;
+}
+
+.site-preloader-brand i {
+  color: var(--deep-red);
+}
+
+.site-preloader-tag {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.78;
+}
+
+.site-preloader-percent {
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  font-variant-numeric: tabular-nums;
+  color: var(--stone);
+}
+
+.site-preloader-seam {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100%;
+  height: 2px;
+  transform: translateY(-50%);
+  background-color: rgba(39, 7, 7, 0.14);
+  z-index: 2;
+  transition: opacity 0.16s ease;
+}
+
+.site-preloader-seam-fill {
+  width: 100%;
+  height: 100%;
+  background-color: var(--deep-red);
+  transform-origin: center center;
+  transform: scaleX(0.04);
+  transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+.site-preloader-card {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  z-index: 3;
+  min-width: min(84vw, 340px);
+  padding: clamp(1.2rem, 3vw, 1.85rem) clamp(1.6rem, 4.5vw, 3rem)
+    clamp(1.35rem, 3.2vw, 2rem);
+  background-color: var(--white);
+  border: 1.5px solid var(--dark-red);
+  border-radius: 0;
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.22);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 1.15rem;
-  padding: 1.5rem;
+  align-items: flex-start;
+  gap: 0.5rem;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.site-preloader.is-card-exit .site-preloader-card {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.96);
+}
+
+.site-preloader.is-card-exit .site-preloader-seam {
+  opacity: 0;
+}
+
+.site-preloader-kicker {
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  color: var(--muted);
+  text-transform: uppercase;
+  user-select: none;
 }
 
 .site-preloader-word {
   display: inline-flex;
   align-items: center;
-  min-height: 1.1em;
+  min-height: 1.15em;
   font-family: var(--font-body);
   font-weight: 800;
-  font-size: clamp(2.15rem, 6.2vw, 3.6rem);
-  letter-spacing: 0.04em;
+  font-size: clamp(2rem, 5.5vw, 3.15rem);
+  letter-spacing: 0.03em;
   line-height: 1;
-  color: var(--stone);
+  color: var(--dark-red);
   text-transform: none;
   user-select: none;
 }
@@ -138,15 +278,15 @@ html.is-preloading .site-preloader,
 }
 
 .site-preloader-dot {
-  color: #d93843;
+  color: var(--deep-red);
 }
 
 .site-preloader-caret {
   display: inline-block;
   width: 3px;
-  height: 0.88em;
+  height: 0.86em;
   margin-left: 0.14em;
-  background-color: #d93843;
+  background-color: var(--deep-red);
   animation: preloaderCaretBlink 0.72s steps(1, end) infinite;
 }
 
@@ -161,23 +301,36 @@ html.is-preloading .site-preloader,
   }
 }
 
-.site-preloader-track {
-  width: clamp(168px, 34vw, 240px);
-  height: 2px;
-  border-radius: 0;
-  background-color: rgba(241, 235, 235, 0.16);
+.site-preloader-card-track {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background-color: var(--stone);
   overflow: hidden;
 }
 
-.site-preloader-bar {
+.site-preloader-card-bar {
   width: 100%;
   height: 100%;
-  border-radius: 0;
-  background-color: #d93843;
+  background-color: var(--deep-red);
   transform-origin: left center;
   transform: scaleX(0.06);
-  transition: transform 0.24s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1);
   will-change: transform;
+}
+
+@media (max-width: 575.98px) {
+  .site-preloader-brand {
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+  }
+
+  .site-preloader-tag {
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+  }
 }
 
 html.is-preloading .hero-section.is-hero-play .hero-word-solid,
@@ -3367,7 +3520,10 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
     display: none !important;
   }
 
-  .site-preloader {
+  .site-preloader,
+  .site-preloader-pane,
+  .site-preloader-card,
+  .site-preloader-seam {
     transition: none !important;
   }
 }
