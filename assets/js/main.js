@@ -615,9 +615,9 @@ function setupEllipticalOrbitController(orbitBox, isInteractionPaused) {
   orbitBox.classList.add("is-elliptical");
 
   const MOBILE_BREAKPOINT = 768;
-  const MOBILE_DWELL_MS = 4200;
-  const MOBILE_EXIT_MS = 620;
-  const MOBILE_ENTER_MS = 840;
+  const MOBILE_DWELL_MS = 1000;
+  const MOBILE_EXIT_MS = 340;
+  const MOBILE_ENTER_MS = 400;
 
   const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
   let isInViewport = true;
@@ -761,7 +761,7 @@ function setupEllipticalOrbitController(orbitBox, isInteractionPaused) {
 
       cyclePhase = "entering";
       waveItems.forEach((item, idx) => {
-        setChipCycleState(item, "in", idx * 28);
+        setChipCycleState(item, "in", idx * 10);
       });
 
       if (phaseTimerId) clearTimeout(phaseTimerId);
@@ -794,7 +794,7 @@ function setupEllipticalOrbitController(orbitBox, isInteractionPaused) {
     cyclePhase = "exiting";
 
     currentWave.forEach((item, idx) => {
-      setChipCycleState(item, "out", idx * 20);
+      setChipCycleState(item, "out", idx * 8);
     });
 
     if (phaseTimerId) clearTimeout(phaseTimerId);
