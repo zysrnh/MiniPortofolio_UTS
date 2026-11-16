@@ -3115,8 +3115,39 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
 }
 
 /* ==================== INDEX CTA & 3-COLUMN FOOTER ==================== */
-.contact-page-shell .site-footer {
-  border-top: 1px solid rgba(241, 235, 235, 0.14);
+#contactShell .site-footer {
+  background-color: var(--stone);
+  color: var(--dark-red);
+  border-top: 3px solid var(--deep-red);
+}
+
+#contactShell .footer-main-row {
+  border-bottom-color: var(--line);
+}
+
+#contactShell .footer-name {
+  color: var(--dark-red);
+}
+
+#contactShell .footer-bio {
+  color: rgba(39, 7, 7, 0.78);
+}
+
+#contactShell .footer-col-title {
+  color: var(--muted);
+}
+
+#contactShell .footer-col-links a {
+  color: var(--dark-red);
+}
+
+#contactShell .footer-col-links a:hover {
+  color: var(--deep-red);
+  text-decoration-color: var(--deep-red);
+}
+
+#contactShell .footer-copy {
+  color: var(--muted);
 }
 
 .cta-typo-section {
