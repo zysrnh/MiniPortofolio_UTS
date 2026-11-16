@@ -531,6 +531,103 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
   display: none;
 }
 
+/* ==================== BACK TO TOP BUTTON ==================== */
+.scroll-top-btn {
+  position: fixed;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  z-index: 1025;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 4px;
+  background-color: var(--deep-red);
+  color: var(--white);
+  border: 1.5px solid rgba(241, 235, 235, 0.72);
+  box-shadow: var(--shadow-btn);
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate3d(0, 14px, 0);
+  transition:
+    opacity 0.24s ease,
+    visibility 0.24s ease,
+    transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.scroll-top-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: var(--dark-red);
+  transform: translateY(100%);
+  transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 0;
+}
+
+.scroll-top-btn-icon {
+  position: relative;
+  z-index: 1;
+  font-size: 1.15rem;
+  line-height: 1;
+  transition: transform 0.22s ease;
+}
+
+.scroll-top-btn-progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background-color: var(--stone);
+  transform-origin: left center;
+  transform: scaleX(var(--scroll-progress, 0));
+  transition: transform 0.08s linear;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.scroll-top-btn.is-visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate3d(0, 0, 0);
+}
+
+.scroll-top-btn.is-visible:hover,
+.scroll-top-btn.is-visible:focus-visible {
+  border-color: var(--stone);
+  box-shadow: var(--shadow-hover);
+  outline: none;
+}
+
+.scroll-top-btn.is-visible:hover::before,
+.scroll-top-btn.is-visible:focus-visible::before {
+  transform: translateY(0);
+}
+
+.scroll-top-btn.is-visible:hover .scroll-top-btn-icon,
+.scroll-top-btn.is-visible:focus-visible .scroll-top-btn-icon {
+  transform: translateY(-2px);
+}
+
+.scroll-top-btn.is-visible:active {
+  transform: translate3d(0, 1px, 0) scale(0.96);
+}
+
+html.is-preloading .scroll-top-btn {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
 /* ==================== HERO SECTION (Dark Red + Stone + Deep Red) ==================== */
 .hero-section {
   background-color: var(--dark-red);
@@ -4467,6 +4564,13 @@ html.is-page-entering.is-page-entering-soft .page-transition-panel {
     font-weight: 800;
   }
 
+  .scroll-top-btn {
+    right: 1rem;
+    bottom: calc(76px + env(safe-area-inset-bottom, 0px));
+    width: 40px;
+    height: 40px;
+  }
+
   .about-section {
     min-height: calc(100vh - 64px);
     min-height: calc(100svh - 64px);
@@ -5044,6 +5148,10 @@ html.is-page-entering.is-page-entering-soft .page-transition-panel {
   .project-fullscreen-github-btn::before,
   .cta-typo-actions .btn::before,
   .editorial-contact-form .btn-solid-dark::before,
+  .scroll-top-btn,
+  .scroll-top-btn::before,
+  .scroll-top-btn-icon,
+  .scroll-top-btn-progress,
   .page-transition-curtain.page-transition-curtain--soft .page-transition-panel,
   .site-preloader,
   .site-preloader-pane,

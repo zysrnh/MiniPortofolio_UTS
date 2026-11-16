@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initServiceDropdown();
   initMobileNavClose();
   initAppBottomBar();
+  initScrollTopButton();
 });
 
 /**
@@ -1078,6 +1079,59 @@ function initAppBottomBar() {
       { passive: true }
     );
   }
+}
+
+/**
+ * Floating back-to-top button visibility, scroll progress bar, and smooth scroll-to-top.
+ */
+function initScrollTopButton() {
+  const btn = document.getElementById("scrollTopBtn");
+  if (!btn) return;
+
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const SHOW_OFFSET_DESKTOP = 320;
+  const SHOW_OFFSET_MOBILE = 240;
+  let rafId = null;
+
+  const updateState = () => {
+    rafId = null;
+    const scrollTop = window.scrollY || window.pageYOffset || 0;
+    const maxScroll = Math.max(
+      document.documentElement.scrollHeight - window.innerHeight,
+      0
+    );
+    const threshold = window.innerWidth < 992 ? SHOW_OFFSET_MOBILE : SHOW_OFFSET_DESKTOP;
+    const isVisible = scrollTop > threshold && maxScroll > threshold * 0.5;
+    const progress = maxScroll > 0 ? Math.min(Math.max(scrollTop / maxScroll, 0), 1) : 0;
+
+    btn.classList.toggle("is-visible", isVisible);
+    btn.style.setProperty("--scroll-progress", progress.toFixed(4));
+    btn.setAttribute("aria-hidden", String(!isVisible));
+    btn.tabIndex = isVisible ? 0 : -1;
+  };
+
+  const scheduleUpdate = () => {
+    if (rafId !== null) return;
+    rafId = window.requestAnimationFrame(updateState);
+  };
+
+  btn.addEventListener("click", () => {
+    window.scrollTo({
+      top: 0,
+      behavior: prefersReducedMotion.matches ? "auto" : "smooth",
+    });
+
+    const homeAppItem = document.querySelector('.mobile-app-item[data-app-section="home"]');
+    if (homeAppItem) {
+      document.querySelectorAll(".mobile-app-item[data-app-section]").forEach((el) => {
+        el.classList.toggle("is-active", el === homeAppItem);
+      });
+    }
+  });
+
+  window.addEventListener("scroll", scheduleUpdate, { passive: true });
+  window.addEventListener("resize", scheduleUpdate, { passive: true });
+  updateState();
 }
 
 /**
@@ -2226,7 +2280,8 @@ const SITE_TRANSLATIONS = {
     "contact.emailPh": "anda@contoh.com",
     "contact.descLabel": "Deskripsi proyek",
     "contact.descPh": "Ceritakan singkat tentang proyek Anda...",
-    "contact.submit": "Kirim"
+    "contact.submit": "Kirim",
+    "common.scrollTopAria": "Kembali ke atas"
   },
   en: {
     "title.home": "Portfolio — Zaki Yusron Hasyimmi",
@@ -2319,7 +2374,8 @@ const SITE_TRANSLATIONS = {
     "contact.emailPh": "you@example.com",
     "contact.descLabel": "Project description",
     "contact.descPh": "Tell me briefly about your project...",
-    "contact.submit": "Submit"
+    "contact.submit": "Submit",
+    "common.scrollTopAria": "Back to top"
   }
 };
 
