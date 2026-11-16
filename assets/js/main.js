@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initHeroEntrance();
   initSectionEntrance("about", "is-about-ready", "is-about-play", 0.16, 0.82);
   initAboutCarousel();
+  initSectionEntrance("skills", "is-skills-ready", "is-skills-play", 0.14, 0.84);
   initSkillsSection();
   initSectionEntrance("work", "is-work-ready", "is-work-play", 0.12, 0.86);
   initWorkStackIcons();
@@ -19,14 +20,43 @@ document.addEventListener("DOMContentLoaded", () => {
   initScrollTopButton();
 });
 
+const scrollDirectionState = {
+  lastY: 0,
+  dir: 1,
+  initialized: false,
+};
+
 /**
- * Trigger editorial scroll-entrance choreography when a target section enters viewport.
+ * Keep track of the latest vertical scroll direction (1 = down, -1 = up).
+ */
+function ensureScrollDirectionTracker() {
+  if (scrollDirectionState.initialized) return scrollDirectionState;
+  scrollDirectionState.initialized = true;
+  scrollDirectionState.lastY = window.scrollY || window.pageYOffset || 0;
+
+  window.addEventListener(
+    "scroll",
+    () => {
+      const currentY = window.scrollY || window.pageYOffset || 0;
+      if (Math.abs(currentY - scrollDirectionState.lastY) > 1) {
+        scrollDirectionState.dir = currentY > scrollDirectionState.lastY ? 1 : -1;
+        scrollDirectionState.lastY = currentY;
+      }
+    },
+    { passive: true }
+  );
+
+  return scrollDirectionState;
+}
+
+/**
+ * Trigger bidirectional editorial scroll-entrance choreography on desktop & mobile.
  *
  * @param {string} sectionId Target section element ID.
  * @param {string} readyClass Class added prior to reveal to hide animated children.
  * @param {string} playClass Class toggled when section becomes visible.
  * @param {number} thresholdRatio Intersection ratio required to trigger reveal.
- * @param {number} viewportCutoff Fraction of viewport height for top-edge reveal.
+ * @param {number} viewportCutoff Fraction of viewport height for entry edge reveal.
  */
 function initSectionEntrance(sectionId, readyClass, playClass, thresholdRatio, viewportCutoff) {
   const sectionEl = document.getElementById(sectionId);
@@ -37,22 +67,43 @@ function initSectionEntrance(sectionId, readyClass, playClass, thresholdRatio, v
     return;
   }
 
+  const scrollState = ensureScrollDirectionTracker();
   sectionEl.classList.add(readyClass);
+
+  const resolveEnterDir = (rect, vh) => {
+    if (rect.top < 0 && rect.bottom < vh * 0.95) return -1;
+    if (rect.bottom > vh && rect.top > vh * 0.05) return 1;
+    return scrollState.dir;
+  };
+
+  const thresholds = Array.from(new Set([0, 0.06, 0.12, thresholdRatio, 0.24, 0.36])).sort(
+    (a, b) => a - b
+  );
 
   const observer = new IntersectionObserver(
     (entries) => {
-      const entry = entries[0];
+      const entry = entries[entries.length - 1];
       if (!entry) return;
+
       if (!entry.isIntersecting) {
         sectionEl.classList.remove(playClass);
-      } else if (
-        entry.intersectionRatio >= thresholdRatio ||
-        entry.boundingClientRect.top < window.innerHeight * viewportCutoff
-      ) {
+        delete sectionEl.dataset.enterDir;
+        return;
+      }
+
+      const vh = window.innerHeight || document.documentElement.clientHeight || 800;
+      const rect = entry.boundingClientRect;
+      const inViewFromEdges =
+        rect.top < vh * viewportCutoff && rect.bottom > vh * (1 - viewportCutoff);
+
+      if ((entry.intersectionRatio >= thresholdRatio || inViewFromEdges) && !sectionEl.classList.contains(playClass)) {
+        const dir = resolveEnterDir(rect, vh);
+        sectionEl.style.setProperty("--scroll-enter-dir", String(dir));
+        sectionEl.dataset.enterDir = dir < 0 ? "up" : "down";
         sectionEl.classList.add(playClass);
       }
     },
-    { threshold: [0.01, thresholdRatio] }
+    { threshold: thresholds }
   );
 
   observer.observe(sectionEl);
@@ -2103,14 +2154,47 @@ function initHeroEntrance() {
   const heroSection = document.getElementById("home");
   if (!heroSection) return;
 
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  let hasLeftHero = false;
+  let lastReplayAt = 0;
+
+  function triggerReplay() {
+    if (prefersReducedMotion.matches) return;
+    const now = window.performance ? window.performance.now() : Date.now();
+    if (now - lastReplayAt < 450) return;
+    lastReplayAt = now;
+
+    heroSection.classList.remove("is-hero-armed", "is-hero-play");
+    void heroSection.offsetWidth;
+    heroSection.classList.add("is-hero-play");
+  }
+
   if (typeof IntersectionObserver !== "undefined") {
     const heroVisibilityObserver = new IntersectionObserver(
       (entries) => {
-        const entry = entries[0];
+        const entry = entries[entries.length - 1];
         if (!entry) return;
-        heroSection.classList.toggle("is-hero-offscreen", !entry.isIntersecting);
+        const isVisible = entry.isIntersecting;
+        heroSection.classList.toggle("is-hero-offscreen", !isVisible);
+
+        if (prefersReducedMotion.matches || document.documentElement.classList.contains("is-preloading")) {
+          return;
+        }
+
+        const vh = window.innerHeight || document.documentElement.clientHeight || 800;
+        if (!isVisible) {
+          hasLeftHero = true;
+          heroSection.classList.add("is-hero-armed");
+          heroSection.classList.remove("is-hero-play");
+        } else if (
+          hasLeftHero &&
+          (entry.intersectionRatio >= 0.22 || entry.boundingClientRect.bottom > vh * 0.22)
+        ) {
+          hasLeftHero = false;
+          triggerReplay();
+        }
       },
-      { threshold: 0.01 }
+      { threshold: [0, 0.12, 0.22, 0.4] }
     );
     heroVisibilityObserver.observe(heroSection);
   }
@@ -2118,15 +2202,7 @@ function initHeroEntrance() {
   const homeLinks = document.querySelectorAll('a[href="#home"]');
   if (!homeLinks.length) return;
 
-  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   let scrollWaitRaf = null;
-
-  function triggerReplay() {
-    if (prefersReducedMotion.matches) return;
-    heroSection.classList.remove("is-hero-play");
-    void heroSection.offsetWidth;
-    heroSection.classList.add("is-hero-play");
-  }
 
   homeLinks.forEach((link) => {
     link.addEventListener("click", () => {
@@ -2138,15 +2214,20 @@ function initHeroEntrance() {
       }
 
       if (window.scrollY <= 120) {
+        hasLeftHero = false;
         triggerReplay();
         return;
       }
 
-      const startAt = window.performance.now();
+      const startAt = window.performance ? window.performance.now() : Date.now();
       const waitForTop = () => {
-        if (window.scrollY <= 120 || window.performance.now() - startAt > 950) {
+        const now = window.performance ? window.performance.now() : Date.now();
+        if (window.scrollY <= 120 || now - startAt > 950) {
           scrollWaitRaf = null;
-          triggerReplay();
+          if (!heroSection.classList.contains("is-hero-play")) {
+            hasLeftHero = false;
+            triggerReplay();
+          }
           return;
         }
         scrollWaitRaf = window.requestAnimationFrame(waitForTop);

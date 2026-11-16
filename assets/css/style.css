@@ -344,6 +344,16 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
   opacity: 0 !important;
 }
 
+.hero-section.is-hero-armed:not(.is-hero-play) .hero-word-solid,
+.hero-section.is-hero-armed:not(.is-hero-play) .hero-word-outline,
+.hero-section.is-hero-armed:not(.is-hero-play) .hero-portrait-img,
+.hero-section.is-hero-armed:not(.is-hero-play) .hero-inner > .hero-meta,
+.hero-section.is-hero-armed:not(.is-hero-play) .hero-arrow-link,
+.hero-section.is-hero-armed:not(.is-hero-play) .hero-ambient-bg,
+.hero-section.is-hero-armed:not(.is-hero-play) .hero-bg-rings {
+  opacity: 0;
+}
+
 /* Primary CTA: Deep Red */
 .btn-solid-dark {
   background-color: var(--deep-red);
@@ -1146,7 +1156,7 @@ html.is-preloading .scroll-top-btn {
 @keyframes aboutCardRise {
   0% {
     opacity: 0;
-    transform: translate3d(0, 32px, 0);
+    transform: translate3d(0, calc(var(--scroll-enter-dir, 1) * 32px), 0);
   }
   100% {
     opacity: 1;
@@ -1982,6 +1992,38 @@ html.is-preloading .scroll-top-btn {
   height: 100%;
   pointer-events: none;
   z-index: 1;
+}
+
+/* Scroll-triggered entrance for Skills section */
+.skills-section.is-skills-ready:not(.is-skills-play) .skills-top-bar,
+.skills-section.is-skills-ready:not(.is-skills-play) .skills-backdrop-word,
+.skills-section.is-skills-ready:not(.is-skills-play) .skills-bg-reticle,
+.skills-section.is-skills-ready:not(.is-skills-play) .orbit-showcase {
+  opacity: 0;
+}
+
+.skills-section.is-skills-play .skills-bg-reticle,
+.skills-section.is-skills-play .skills-backdrop-word {
+  animation: aboutBgReveal 0.65s ease 0.04s backwards;
+}
+
+.skills-section.is-skills-play .skills-top-bar {
+  animation: projectEnterRise 0.58s cubic-bezier(0.16, 1, 0.3, 1) 0.06s backwards;
+}
+
+.skills-section.is-skills-play .orbit-showcase {
+  animation: skillsOrbitEnter 0.76s cubic-bezier(0.16, 1, 0.3, 1) 0.12s backwards;
+}
+
+@keyframes skillsOrbitEnter {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, calc(var(--scroll-enter-dir, 1) * 28px), 0) scale(0.94);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
 }
 
 .skills-orbit-center {
@@ -4294,7 +4336,7 @@ html.is-page-entering.is-page-entering-soft .page-transition-panel {
   0% {
     opacity: 0.1;
     clip-path: inset(0 0 100% 0);
-    transform: translate3d(0, 34px, 0);
+    transform: translate3d(0, calc(var(--scroll-enter-dir, 1) * 30px), 0);
   }
   25% {
     opacity: 1;
@@ -4309,7 +4351,7 @@ html.is-page-entering.is-page-entering-soft .page-transition-panel {
 @keyframes projectEnterRise {
   0% {
     opacity: 0;
-    transform: translate3d(0, 26px, 0);
+    transform: translate3d(0, calc(var(--scroll-enter-dir, 1) * 26px), 0);
   }
   100% {
     opacity: 1;
@@ -5235,6 +5277,10 @@ html.is-page-entering.is-page-entering-soft .page-transition-panel {
   .about-section.is-about-play .ramon-right .ramon-abstract-text,
   .about-section.is-about-play .ramon-item-list li,
   .about-section.is-about-play .ramon-right > div:last-child,
+  .skills-section.is-skills-play .skills-bg-reticle,
+  .skills-section.is-skills-play .skills-backdrop-word,
+  .skills-section.is-skills-play .skills-top-bar,
+  .skills-section.is-skills-play .orbit-showcase,
   .work-section.is-work-play .work-ambient-bg,
   .work-section.is-work-play .work-header,
   .work-section.is-work-play .portfolio-marquee-viewport,
