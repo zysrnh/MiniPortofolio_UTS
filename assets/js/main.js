@@ -1192,13 +1192,11 @@ function initScrollTopButton() {
 function initBackgroundAudio() {
   const audio = document.getElementById("bgAudio");
   const toggleBtns = document.querySelectorAll(".audio-toggle-btn, .audio-float-btn");
-  const desktopToggleBtn = document.getElementById("audioToggleBtn");
-  const hintBtn = document.getElementById("audioHint");
   if (!audio || !toggleBtns.length) return;
 
   const STORAGE_MUTED_KEY = "portfolioAudioMuted";
   const STORAGE_TIME_KEY = "portfolioAudioTime";
-  const DEFAULT_VOLUME = 0.38;
+  const DEFAULT_VOLUME = 0.75;
   const GESTURE_EVENTS = ["pointerdown", "touchend", "click", "keydown"];
 
   const readSession = (key) => {
@@ -1227,6 +1225,7 @@ function initBackgroundAudio() {
 
   if (isReload) {
     writeSession(STORAGE_TIME_KEY, "0");
+    writeSession(STORAGE_MUTED_KEY, "0");
   }
 
   const getAudioAriaLabel = (playing) => {
@@ -1235,27 +1234,7 @@ function initBackgroundAudio() {
     return playing ? dict["audio.pauseAria"] : dict["audio.playAria"];
   };
 
-  const syncHintPosition = () => {
-    if (!hintBtn) return;
-    if (window.innerWidth < 992 || !desktopToggleBtn) {
-      hintBtn.style.top = "";
-      hintBtn.style.right = "";
-      return;
-    }
-    const rect = desktopToggleBtn.getBoundingClientRect();
-    if (rect.width > 0) {
-      hintBtn.style.top = `${Math.round(rect.bottom + 8)}px`;
-      hintBtn.style.right = `${Math.max(12, Math.round(window.innerWidth - rect.right))}px`;
-    }
-  };
-
-  const setHintVisible = (show) => {
-    if (hintBtn) {
-      if (show) syncHintPosition();
-      hintBtn.classList.toggle("is-visible", show);
-      hintBtn.setAttribute("aria-hidden", String(!show));
-      hintBtn.tabIndex = show ? 0 : -1;
-    }
+  const setAwaitingGesture = (show) => {
     toggleBtns.forEach((btn) => {
       btn.classList.toggle("is-awaiting-gesture", show);
     });
@@ -1272,7 +1251,7 @@ function initBackgroundAudio() {
       }
     });
     if (playing) {
-      setHintVisible(false);
+      setAwaitingGesture(false);
     }
   };
 
@@ -1337,7 +1316,7 @@ function initBackgroundAudio() {
     } catch (_) {
       playAttemptPending = false;
       syncButtons(false);
-      setHintVisible(true);
+      setAwaitingGesture(true);
       attachGestureListeners();
       return;
     }
@@ -1352,7 +1331,7 @@ function initBackgroundAudio() {
       .catch(() => {
         playAttemptPending = false;
         syncButtons(false);
-        setHintVisible(true);
+        setAwaitingGesture(true);
         attachGestureListeners();
       });
   }
@@ -1363,7 +1342,7 @@ function initBackgroundAudio() {
         audio.pause();
         writeSession(STORAGE_MUTED_KEY, "1");
         removeGestureListeners();
-        setHintVisible(false);
+        setAwaitingGesture(false);
         syncButtons(false);
       } else {
         writeSession(STORAGE_MUTED_KEY, "0");
@@ -1371,13 +1350,6 @@ function initBackgroundAudio() {
       }
     });
   });
-
-  if (hintBtn) {
-    hintBtn.addEventListener("click", () => {
-      writeSession(STORAGE_MUTED_KEY, "0");
-      tryStartPlayback();
-    });
-  }
 
   let lastSavedAt = 0;
   const savePosition = (force = false) => {
@@ -1403,7 +1375,6 @@ function initBackgroundAudio() {
     }
   });
 
-  window.addEventListener("resize", syncHintPosition, { passive: true });
   window.addEventListener("pagehide", () => savePosition(true));
   window.addEventListener("beforeunload", () => savePosition(true));
   document.addEventListener("visibilitychange", () => {
@@ -1418,7 +1389,7 @@ function initBackgroundAudio() {
     if (!audio.paused) {
       audio.pause();
     }
-    setHintVisible(false);
+    setAwaitingGesture(false);
     syncButtons(false);
   } else if (!audio.paused) {
     writeSession(STORAGE_MUTED_KEY, "0");
@@ -2609,8 +2580,7 @@ const SITE_TRANSLATIONS = {
     "common.scrollTopAria": "Kembali ke atas",
     "audio.toggleAria": "Putar atau bisukan musik latar",
     "audio.playAria": "Putar musik latar",
-    "audio.pauseAria": "Bisukan musik latar",
-    "audio.hint": "Klik di mana saja \u00B7 Musik"
+    "audio.pauseAria": "Bisukan musik latar"
   },
   en: {
     "title.home": "Portfolio — Zaki Yusron Hasyimmi",
@@ -2707,8 +2677,7 @@ const SITE_TRANSLATIONS = {
     "common.scrollTopAria": "Back to top",
     "audio.toggleAria": "Play or mute background audio",
     "audio.playAria": "Play background audio",
-    "audio.pauseAria": "Mute background audio",
-    "audio.hint": "Click anywhere \u00B7 Audio"
+    "audio.pauseAria": "Mute background audio"
   }
 };
 
