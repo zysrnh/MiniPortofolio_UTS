@@ -4884,9 +4884,99 @@ html.is-page-entering.is-page-entering-soft .page-transition-panel {
     padding: 0;
   }
 
-  .work-backdrop-word,
-  .cta-backdrop-word {
+  .work-backdrop-word {
     font-size: clamp(4.2rem, 18vw, 7rem);
+  }
+
+  .cta-backdrop-word {
+    font-size: clamp(3.6rem, 15vw, 5.4rem);
+  }
+
+  .cta-backdrop-word--top {
+    top: 0.35rem;
+  }
+
+  .cta-backdrop-word--bottom {
+    bottom: 0.2rem;
+  }
+
+  .cta-typo-section {
+    padding: 1.8rem 0 1.65rem;
+  }
+
+  .cta-typo-rule {
+    margin-bottom: 0.85rem;
+  }
+
+  .cta-typo-heading {
+    font-size: clamp(1.6rem, 6.4vw, 2.2rem);
+    line-height: 1.12;
+    margin-bottom: 0.65rem !important;
+  }
+
+  .cta-typo-desc {
+    font-size: 0.84rem;
+    line-height: 1.48;
+    margin-bottom: 1.15rem !important;
+  }
+
+  .cta-typo-actions .btn {
+    padding: 0.62rem 1.2rem;
+    font-size: 0.72rem;
+  }
+
+  #contactShell .site-footer {
+    padding-top: 1.1rem !important;
+    padding-bottom: 0.95rem !important;
+  }
+
+  #contactShell .footer-main-row {
+    --bs-gutter-y: 0.9rem;
+    padding-bottom: 0.75rem !important;
+  }
+
+  #contactShell .footer-name {
+    font-size: 0.92rem;
+    margin-bottom: 0.22rem !important;
+  }
+
+  #contactShell .footer-bio {
+    font-size: 0.74rem;
+    line-height: 1.45;
+  }
+
+  #contactShell .footer-col-title {
+    font-size: 0.62rem;
+    margin-bottom: 0.38rem;
+  }
+
+  #contactShell .footer-col-links li {
+    margin-bottom: 0.22rem;
+  }
+
+  #contactShell .footer-col-links a {
+    font-size: 0.75rem;
+  }
+
+  #contactShell .footer-bottom-bar {
+    padding-top: 0.65rem !important;
+    padding-right: 3.1rem;
+    row-gap: 0.2rem !important;
+  }
+
+  .footer-copy {
+    font-size: 0.62rem;
+    line-height: 1.35;
+    letter-spacing: 0.04em;
+  }
+
+  body[data-page="contact"] .site-footer {
+    padding-top: 0.7rem !important;
+    padding-bottom: 0.7rem !important;
+  }
+
+  body[data-page="contact"] .site-footer .d-flex {
+    gap: 0.6rem !important;
   }
 
   .portfolio-card {
