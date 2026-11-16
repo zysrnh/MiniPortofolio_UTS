@@ -4484,22 +4484,39 @@ html.is-page-entering.is-page-entering-soft .page-transition-panel {
     display: grid;
     grid-template-columns: repeat(5, minmax(0, 1fr)) auto;
     align-items: stretch;
-    padding: 0 0.35rem 0 0.2rem;
+    padding: 0 0.65rem 0 0.35rem;
   }
 
   .mobile-app-lang {
+    position: relative;
+    align-self: center;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 3px;
-    padding-left: 0.4rem;
-    margin-left: 0.1rem;
-    border-left: 1px solid var(--line);
+    gap: 2px;
+    padding: 2px;
+    margin-left: 0.45rem;
+    background-color: var(--stone);
+    border: 1px solid rgba(39, 7, 7, 0.18);
+    border-radius: 3px;
+  }
+
+  .mobile-app-lang::before {
+    content: "";
+    position: absolute;
+    left: -0.28rem;
+    top: 4px;
+    bottom: 4px;
+    width: 1px;
+    background-color: var(--line);
   }
 
   .mobile-app-lang .lang-btn {
-    font-size: 0.62rem;
-    padding: 0.24rem 0.42rem;
+    font-size: 0.6rem;
+    min-width: 30px;
+    text-align: center;
+    padding: 0.24rem 0.38rem;
+    border-radius: 2px;
   }
 
   .mobile-app-item {
@@ -4511,17 +4528,18 @@ html.is-page-entering.is-page-entering-soft .page-transition-panel {
     gap: 0.22rem;
     text-decoration: none;
     color: rgba(39, 7, 7, 0.56);
-    padding: 0.35rem 0.2rem;
-    transition: color 0.18s ease, background-color 0.18s ease, transform 0.14s ease;
+    padding: 0.35rem 0.15rem;
+    transition: color 0.18s ease, transform 0.14s ease;
   }
 
   .mobile-app-item::before {
     content: "";
     position: absolute;
     top: 0;
-    left: 22%;
-    right: 22%;
+    left: 28%;
+    right: 28%;
     height: 2.5px;
+    border-radius: 0 0 2px 2px;
     background-color: var(--deep-red);
     transform: scaleX(0);
     transition: transform 0.22s ease;
@@ -4530,6 +4548,7 @@ html.is-page-entering.is-page-entering-soft .page-transition-panel {
   .mobile-app-item i {
     font-size: 1.15rem;
     line-height: 1;
+    transition: transform 0.18s ease;
   }
 
   .mobile-app-label {
@@ -4556,8 +4575,8 @@ html.is-page-entering.is-page-entering-soft .page-transition-panel {
     transform: scaleX(1);
   }
 
-  .mobile-app-item.is-active {
-    background-color: rgba(102, 8, 16, 0.045);
+  .mobile-app-item.is-active i {
+    transform: translateY(-1px);
   }
 
   .mobile-app-item.is-active .mobile-app-label {
@@ -4565,10 +4584,10 @@ html.is-page-entering.is-page-entering-soft .page-transition-panel {
   }
 
   .scroll-top-btn {
-    right: 1rem;
-    bottom: calc(76px + env(safe-area-inset-bottom, 0px));
-    width: 40px;
-    height: 40px;
+    right: 0.75rem;
+    bottom: calc(74px + env(safe-area-inset-bottom, 0px));
+    width: 38px;
+    height: 38px;
   }
 
   .about-section {
@@ -4815,8 +4834,21 @@ html.is-page-entering.is-page-entering-soft .page-transition-panel {
     padding: 1rem 0 !important;
   }
 
+  .hero-section::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 46px;
+    background-color: var(--dark-red);
+    border-top: 1px solid rgba(241, 235, 235, 0.14);
+    z-index: 3;
+    pointer-events: none;
+  }
+
   .hero-inner {
-    padding-bottom: 0.75rem !important;
+    padding-bottom: 0 !important;
   }
 
   .hero-stage {
@@ -4830,7 +4862,8 @@ html.is-page-entering.is-page-entering-soft .page-transition-panel {
   }
 
   .hero-portrait-wrap {
-    height: 88%;
+    bottom: 44px;
+    height: 82%;
     width: 100%;
   }
 
@@ -4846,9 +4879,9 @@ html.is-page-entering.is-page-entering-soft .page-transition-panel {
   }
 
   .hero-inner > .hero-meta:last-child {
-    background-color: rgba(39, 7, 7, 0.78);
-    padding: 0.4rem 0.7rem;
-    border-radius: 2px;
+    min-height: 46px;
+    background-color: transparent;
+    padding: 0;
   }
 
   .work-backdrop-word,
@@ -4910,9 +4943,27 @@ html.is-page-entering.is-page-entering-soft .page-transition-panel {
 }
 
 @media (max-width: 359.98px) {
+  .mobile-app-bar-inner {
+    padding: 0 0.45rem 0 0.25rem;
+  }
+
   .mobile-app-label {
     font-size: 0.54rem;
     letter-spacing: 0.04em;
+  }
+
+  .mobile-app-lang {
+    margin-left: 0.3rem;
+  }
+
+  .mobile-app-lang::before {
+    left: -0.2rem;
+  }
+
+  .mobile-app-lang .lang-btn {
+    min-width: 26px;
+    font-size: 0.56rem;
+    padding: 0.2rem 0.3rem;
   }
 }
 
