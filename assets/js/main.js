@@ -1192,6 +1192,7 @@ function initScrollTopButton() {
 function initBackgroundAudio() {
   const audio = document.getElementById("bgAudio");
   const toggleBtns = document.querySelectorAll(".audio-toggle-btn, .audio-float-btn");
+  const desktopToggleBtn = document.getElementById("audioToggleBtn");
   const hintBtn = document.getElementById("audioHint");
   if (!audio || !toggleBtns.length) return;
 
@@ -1216,17 +1217,48 @@ function initBackgroundAudio() {
     }
   };
 
+  const navEntry =
+    window.performance && window.performance.getEntriesByType
+      ? window.performance.getEntriesByType("navigation")[0]
+      : null;
+  const isReload =
+    (navEntry && navEntry.type === "reload") ||
+    (window.performance && window.performance.navigation && window.performance.navigation.type === 1);
+
+  if (isReload) {
+    writeSession(STORAGE_TIME_KEY, "0");
+  }
+
   const getAudioAriaLabel = (playing) => {
     const lang = document.documentElement.lang === "en" ? "en" : "id";
     const dict = SITE_TRANSLATIONS[lang] || SITE_TRANSLATIONS.id;
     return playing ? dict["audio.pauseAria"] : dict["audio.playAria"];
   };
 
-  const setHintVisible = (show) => {
+  const syncHintPosition = () => {
     if (!hintBtn) return;
-    hintBtn.classList.toggle("is-visible", show);
-    hintBtn.setAttribute("aria-hidden", String(!show));
-    hintBtn.tabIndex = show ? 0 : -1;
+    if (window.innerWidth < 992 || !desktopToggleBtn) {
+      hintBtn.style.top = "";
+      hintBtn.style.right = "";
+      return;
+    }
+    const rect = desktopToggleBtn.getBoundingClientRect();
+    if (rect.width > 0) {
+      hintBtn.style.top = `${Math.round(rect.bottom + 8)}px`;
+      hintBtn.style.right = `${Math.max(12, Math.round(window.innerWidth - rect.right))}px`;
+    }
+  };
+
+  const setHintVisible = (show) => {
+    if (hintBtn) {
+      if (show) syncHintPosition();
+      hintBtn.classList.toggle("is-visible", show);
+      hintBtn.setAttribute("aria-hidden", String(!show));
+      hintBtn.tabIndex = show ? 0 : -1;
+    }
+    toggleBtns.forEach((btn) => {
+      btn.classList.toggle("is-awaiting-gesture", show);
+    });
   };
 
   const syncButtons = (playing) => {
@@ -1247,19 +1279,23 @@ function initBackgroundAudio() {
   const isMutedByUser = () => readSession(STORAGE_MUTED_KEY) === "1";
 
   const applySavedTime = () => {
+    if (isReload) return;
     const rawTime = Number.parseFloat(readSession(STORAGE_TIME_KEY) || "0");
     if (!Number.isFinite(rawTime) || rawTime <= 0) return;
     const duration = audio.duration;
-    audio.currentTime = Number.isFinite(duration) && duration > 0 ? rawTime % duration : rawTime;
+    if (Number.isFinite(duration) && duration > 1.5) {
+      audio.currentTime = rawTime < duration - 1.5 ? rawTime : 0;
+    }
   };
+
+  audio.loop = true;
+  audio.volume = DEFAULT_VOLUME;
 
   if (audio.readyState >= 1) {
     applySavedTime();
   } else {
     audio.addEventListener("loadedmetadata", applySavedTime, { once: true });
   }
-
-  audio.volume = DEFAULT_VOLUME;
 
   let gestureAttached = false;
   let playAttemptPending = false;
@@ -1293,6 +1329,7 @@ function initBackgroundAudio() {
     if (playAttemptPending) return;
     playAttemptPending = true;
     audio.muted = false;
+    audio.loop = true;
 
     let playResult;
     try {
@@ -1354,8 +1391,19 @@ function initBackgroundAudio() {
 
   audio.addEventListener("timeupdate", () => savePosition(false));
   audio.addEventListener("play", () => syncButtons(true));
-  audio.addEventListener("pause", () => syncButtons(false));
+  audio.addEventListener("pause", () => {
+    if (!audio.ended) {
+      syncButtons(false);
+    }
+  });
+  audio.addEventListener("ended", () => {
+    if (!isMutedByUser()) {
+      audio.currentTime = 0;
+      tryStartPlayback();
+    }
+  });
 
+  window.addEventListener("resize", syncHintPosition, { passive: true });
   window.addEventListener("pagehide", () => savePosition(true));
   window.addEventListener("beforeunload", () => savePosition(true));
   document.addEventListener("visibilitychange", () => {
@@ -2562,7 +2610,7 @@ const SITE_TRANSLATIONS = {
     "audio.toggleAria": "Putar atau bisukan musik latar",
     "audio.playAria": "Putar musik latar",
     "audio.pauseAria": "Bisukan musik latar",
-    "audio.hint": "Ketuk untuk musik"
+    "audio.hint": "Klik di mana saja \u00B7 Musik"
   },
   en: {
     "title.home": "Portfolio — Zaki Yusron Hasyimmi",
@@ -2660,7 +2708,7 @@ const SITE_TRANSLATIONS = {
     "audio.toggleAria": "Play or mute background audio",
     "audio.playAria": "Play background audio",
     "audio.pauseAria": "Mute background audio",
-    "audio.hint": "Tap for audio"
+    "audio.hint": "Click anywhere \u00B7 Audio"
   }
 };
 

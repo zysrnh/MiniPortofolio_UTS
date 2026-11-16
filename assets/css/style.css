@@ -634,6 +634,26 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
   }
 }
 
+@keyframes audioAwaitRing {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(102, 8, 16, 0.32);
+  }
+  50% {
+    box-shadow: 0 0 0 4px rgba(102, 8, 16, 0.12);
+  }
+}
+
+.audio-toggle-btn.is-awaiting-gesture:not(.is-playing) {
+  border-color: var(--deep-red);
+  animation: audioAwaitRing 2.1s ease-in-out infinite;
+}
+
+.audio-float-btn.is-awaiting-gesture:not(.is-playing) {
+  border-color: var(--stone);
+  animation: audioAwaitRing 2.1s ease-in-out infinite;
+}
+
 .audio-hint {
   position: fixed;
   top: 76px;
@@ -648,9 +668,9 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
   color: var(--stone);
   border: 1px solid var(--deep-red);
   border-radius: 3px;
-  font-size: 0.66rem;
+  font-size: 0.64rem;
   font-weight: 700;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
   white-space: nowrap;
   box-shadow: var(--shadow-btn);
@@ -5520,7 +5540,9 @@ html.is-page-entering.is-page-entering-soft .page-transition-panel {
   body[data-page="contact"] .contact-big-row,
   body[data-page="contact"] .site-footer,
   .audio-toggle-btn.is-playing .audio-eq span,
-  .audio-float-btn.is-playing .audio-eq span {
+  .audio-float-btn.is-playing .audio-eq span,
+  .audio-toggle-btn.is-awaiting-gesture,
+  .audio-float-btn.is-awaiting-gesture {
     animation: none !important;
   }
 
