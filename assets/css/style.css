@@ -634,7 +634,63 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
   }
 }
 
-html.is-preloading .audio-float-btn {
+.audio-hint {
+  position: fixed;
+  top: 76px;
+  right: 1.5rem;
+  z-index: 1025;
+  height: 28px;
+  padding: 0 0.65rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.42rem;
+  background-color: var(--dark-red);
+  color: var(--stone);
+  border: 1px solid var(--deep-red);
+  border-radius: 3px;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  box-shadow: var(--shadow-btn);
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate3d(0, -6px, 0);
+  transition:
+    opacity 0.22s ease,
+    visibility 0.22s ease,
+    transform 0.24s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.18s ease,
+    color 0.18s ease;
+}
+
+.audio-hint-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--stone);
+  flex-shrink: 0;
+}
+
+.audio-hint.is-visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate3d(0, 0, 0);
+}
+
+.audio-hint:hover,
+.audio-hint:focus-visible {
+  background-color: var(--deep-red);
+  color: var(--white);
+  outline: none;
+}
+
+html.is-preloading .audio-float-btn,
+html.is-preloading .audio-hint {
   opacity: 0 !important;
   visibility: hidden !important;
   pointer-events: none !important;
@@ -4765,6 +4821,19 @@ html.is-page-entering.is-page-entering-soft .page-transition-panel {
     transform: scale(0.94);
   }
 
+  .audio-hint {
+    top: auto;
+    bottom: calc(120px + env(safe-area-inset-bottom, 0px));
+    right: calc(0.75rem + 38px + 0.45rem);
+    height: 38px;
+    border-color: rgba(241, 235, 235, 0.48);
+    transform: translate3d(8px, 0, 0);
+  }
+
+  .audio-hint.is-visible {
+    transform: translate3d(0, 0, 0);
+  }
+
   .about-section {
     min-height: calc(100vh - 64px);
     min-height: calc(100svh - 64px);
@@ -5472,6 +5541,7 @@ html.is-page-entering.is-page-entering-soft .page-transition-panel {
   .editorial-contact-form .btn-solid-dark::before,
   .audio-toggle-btn,
   .audio-float-btn,
+  .audio-hint,
   .scroll-top-btn,
   .scroll-top-btn::before,
   .scroll-top-btn-icon,

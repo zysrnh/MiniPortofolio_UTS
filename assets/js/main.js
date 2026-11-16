@@ -1191,12 +1191,14 @@ function initScrollTopButton() {
  */
 function initBackgroundAudio() {
   const audio = document.getElementById("bgAudio");
-  const toggleBtns = document.querySelectorAll("[data-audio-toggle]");
+  const toggleBtns = document.querySelectorAll(".audio-toggle-btn, .audio-float-btn");
+  const hintBtn = document.getElementById("audioHint");
   if (!audio || !toggleBtns.length) return;
 
   const STORAGE_MUTED_KEY = "portfolioAudioMuted";
   const STORAGE_TIME_KEY = "portfolioAudioTime";
   const DEFAULT_VOLUME = 0.38;
+  const GESTURE_EVENTS = ["pointerdown", "touchend", "click", "keydown"];
 
   const readSession = (key) => {
     try {
@@ -1220,6 +1222,13 @@ function initBackgroundAudio() {
     return playing ? dict["audio.pauseAria"] : dict["audio.playAria"];
   };
 
+  const setHintVisible = (show) => {
+    if (!hintBtn) return;
+    hintBtn.classList.toggle("is-visible", show);
+    hintBtn.setAttribute("aria-hidden", String(!show));
+    hintBtn.tabIndex = show ? 0 : -1;
+  };
+
   const syncButtons = (playing) => {
     const label = getAudioAriaLabel(playing);
     toggleBtns.forEach((btn) => {
@@ -1230,6 +1239,9 @@ function initBackgroundAudio() {
         btn.setAttribute("title", label);
       }
     });
+    if (playing) {
+      setHintVisible(false);
+    }
   };
 
   const isMutedByUser = () => readSession(STORAGE_MUTED_KEY) === "1";
@@ -1250,12 +1262,13 @@ function initBackgroundAudio() {
   audio.volume = DEFAULT_VOLUME;
 
   let gestureAttached = false;
+  let playAttemptPending = false;
+
   const handleFirstGesture = (event) => {
     if (event.target && typeof event.target.closest === "function" && event.target.closest("[data-audio-toggle]")) {
       return;
     }
-    removeGestureListeners();
-    if (!isMutedByUser()) {
+    if (!isMutedByUser() && !playAttemptPending) {
       tryStartPlayback();
     }
   };
@@ -1263,36 +1276,46 @@ function initBackgroundAudio() {
   const attachGestureListeners = () => {
     if (gestureAttached) return;
     gestureAttached = true;
-    document.addEventListener("pointerdown", handleFirstGesture, { passive: true });
-    document.addEventListener("keydown", handleFirstGesture, { passive: true });
+    GESTURE_EVENTS.forEach((eventName) => {
+      document.addEventListener(eventName, handleFirstGesture, { passive: true });
+    });
   };
 
   const removeGestureListeners = () => {
     if (!gestureAttached) return;
     gestureAttached = false;
-    document.removeEventListener("pointerdown", handleFirstGesture);
-    document.removeEventListener("keydown", handleFirstGesture);
+    GESTURE_EVENTS.forEach((eventName) => {
+      document.removeEventListener(eventName, handleFirstGesture);
+    });
   };
 
   function tryStartPlayback() {
+    if (playAttemptPending) return;
+    playAttemptPending = true;
     audio.muted = false;
+
     let playResult;
     try {
       playResult = audio.play();
     } catch (_) {
+      playAttemptPending = false;
       syncButtons(false);
+      setHintVisible(true);
       attachGestureListeners();
       return;
     }
 
     Promise.resolve(playResult)
       .then(() => {
+        playAttemptPending = false;
         writeSession(STORAGE_MUTED_KEY, "0");
         removeGestureListeners();
         syncButtons(!audio.paused);
       })
       .catch(() => {
+        playAttemptPending = false;
         syncButtons(false);
+        setHintVisible(true);
         attachGestureListeners();
       });
   }
@@ -1303,6 +1326,7 @@ function initBackgroundAudio() {
         audio.pause();
         writeSession(STORAGE_MUTED_KEY, "1");
         removeGestureListeners();
+        setHintVisible(false);
         syncButtons(false);
       } else {
         writeSession(STORAGE_MUTED_KEY, "0");
@@ -1310,6 +1334,13 @@ function initBackgroundAudio() {
       }
     });
   });
+
+  if (hintBtn) {
+    hintBtn.addEventListener("click", () => {
+      writeSession(STORAGE_MUTED_KEY, "0");
+      tryStartPlayback();
+    });
+  }
 
   let lastSavedAt = 0;
   const savePosition = (force = false) => {
@@ -1336,7 +1367,14 @@ function initBackgroundAudio() {
   });
 
   if (isMutedByUser()) {
+    if (!audio.paused) {
+      audio.pause();
+    }
+    setHintVisible(false);
     syncButtons(false);
+  } else if (!audio.paused) {
+    writeSession(STORAGE_MUTED_KEY, "0");
+    syncButtons(true);
   } else {
     syncButtons(false);
     tryStartPlayback();
@@ -2523,7 +2561,8 @@ const SITE_TRANSLATIONS = {
     "common.scrollTopAria": "Kembali ke atas",
     "audio.toggleAria": "Putar atau bisukan musik latar",
     "audio.playAria": "Putar musik latar",
-    "audio.pauseAria": "Bisukan musik latar"
+    "audio.pauseAria": "Bisukan musik latar",
+    "audio.hint": "Ketuk untuk musik"
   },
   en: {
     "title.home": "Portfolio — Zaki Yusron Hasyimmi",
@@ -2620,7 +2659,8 @@ const SITE_TRANSLATIONS = {
     "common.scrollTopAria": "Back to top",
     "audio.toggleAria": "Play or mute background audio",
     "audio.playAria": "Play background audio",
-    "audio.pauseAria": "Mute background audio"
+    "audio.pauseAria": "Mute background audio",
+    "audio.hint": "Tap for audio"
   }
 };
 

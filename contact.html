@@ -327,7 +327,19 @@
     <span class="audio-eq" aria-hidden="true"><span></span><span></span><span></span></span>
   </button>
 
-  <audio id="bgAudio" loop preload="metadata" aria-hidden="true">
+  <button
+    type="button"
+    id="audioHint"
+    class="audio-hint"
+    aria-hidden="true"
+    tabindex="-1"
+    data-audio-toggle
+  >
+    <span class="audio-hint-dot" aria-hidden="true"></span>
+    <span data-i18n="audio.hint">Ketuk untuk musik</span>
+  </button>
+
+  <audio id="bgAudio" autoplay loop preload="auto" aria-hidden="true">
     <source src="assets/audio/bgm.m4a" type="audio/mp4" />
   </audio>
 
