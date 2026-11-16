@@ -44,16 +44,26 @@
       var isHeroEntry = isReload || !window.location.hash || window.location.hash === "#home";
       var reducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       var hasTransition = false;
+      var transitionMode = "editorial";
       try {
         hasTransition = window.sessionStorage.getItem("portfolioTransition") === "1";
+        transitionMode = window.sessionStorage.getItem("portfolioTransitionMode") || "editorial";
       } catch (_) {}
       if (!hasTransition && document.referrer) {
-        hasTransition = /\/(?:project|contact)\.html(?:$|[?#])/i.test(document.referrer);
+        if (/\/contact\.html(?:$|[?#])/i.test(document.referrer)) {
+          hasTransition = true;
+          transitionMode = "soft";
+        } else if (/\/project\.html(?:$|[?#])/i.test(document.referrer)) {
+          hasTransition = true;
+        }
       }
       if (isHeroEntry && !reducedMotion) {
         document.documentElement.classList.add("is-preloading");
       } else if (hasTransition && !reducedMotion) {
         document.documentElement.classList.add("is-page-entering");
+        if (transitionMode === "soft") {
+          document.documentElement.classList.add("is-page-entering-soft");
+        }
       }
       if (isHeroEntry) {
         window.scrollTo(0, 0);

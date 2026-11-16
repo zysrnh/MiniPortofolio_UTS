@@ -2902,27 +2902,32 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
   background-color: var(--dark-red);
 }
 
+body[data-page="contact"] .contact-page-shell {
+  min-height: calc(100vh - 70px);
+  min-height: calc(100svh - 70px);
+}
+
 .cta-section {
   background-color: var(--stone);
   flex: 1;
   display: flex;
   align-items: center;
-  padding: 1.75rem 0;
+  padding: 1.15rem 0;
 }
 
 .contact-giant-title {
-  font-size: clamp(2.8rem, 7vw, 5.25rem);
+  font-size: clamp(2.4rem, 5.8vw, 4.55rem);
   font-weight: 800;
   letter-spacing: -0.04em;
   line-height: 0.95;
   color: var(--dark-red);
-  margin: 0 0 1.5rem;
+  margin: 0 0 1.05rem;
 }
 
 .contact-info-stack {
   display: flex;
   flex-direction: column;
-  gap: 1.35rem;
+  gap: 1.1rem;
 }
 
 .contact-info-text {
@@ -2944,7 +2949,51 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
   font-size: 0.72rem;
   font-weight: 700;
   color: var(--dark-red);
-  margin-bottom: 0.35rem;
+  margin-bottom: 0.25rem;
+}
+
+.editorial-contact-form .mb-3 {
+  margin-bottom: 0.72rem !important;
+}
+
+.editorial-contact-form .btn-solid-dark {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  transition: border-color 0.22s ease, color 0.22s ease, transform 0.16s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.editorial-contact-form .btn-solid-dark::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-color: var(--dark-red);
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform 0.34s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.editorial-contact-form .btn-solid-dark > * {
+  position: relative;
+  z-index: 1;
+}
+
+.editorial-contact-form .btn-solid-dark:hover::before,
+.editorial-contact-form .btn-solid-dark:focus-visible::before {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+
+.editorial-contact-form .btn-solid-dark:hover,
+.editorial-contact-form .btn-solid-dark:focus-visible {
+  background-color: var(--deep-red);
+  border-color: var(--dark-red);
+  color: var(--stone);
+}
+
+.editorial-contact-form .btn-solid-dark:active {
+  transform: translateY(1px) scale(0.96);
 }
 
 .editorial-underline-input {
@@ -3055,13 +3104,13 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
 }
 
 .contact-big-row {
-  margin-top: 2rem;
-  padding-top: 1.25rem;
+  margin-top: 1.15rem;
+  padding-top: 0.85rem;
   border-top: 1px solid var(--line);
 }
 
 .contact-big-link {
-  font-size: clamp(1.25rem, 2.5vw, 2rem);
+  font-size: clamp(1.1rem, 2.2vw, 1.65rem);
   font-weight: 800;
   letter-spacing: -0.02em;
   color: var(--dark-red);
@@ -3073,11 +3122,45 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
   color: var(--deep-red);
 }
 
+/* Contact Page Subtle Entrance & Compact Footer Fit */
+@keyframes contactFadeRise {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+body[data-page="contact"] .contact-giant-title {
+  animation: contactFadeRise 0.56s cubic-bezier(0.16, 1, 0.3, 1) 0.04s both;
+}
+
+body[data-page="contact"] .contact-info-stack {
+  animation: contactFadeRise 0.58s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+}
+
+body[data-page="contact"] .editorial-contact-form {
+  animation: contactFadeRise 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.14s both;
+}
+
+body[data-page="contact"] .contact-big-row {
+  animation: contactFadeRise 0.58s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+}
+
 /* ==================== MINIMAL EDITORIAL FOOTER ==================== */
 .site-footer {
   background-color: var(--dark-red);
   color: var(--stone);
   border-top: 3px solid var(--deep-red);
+}
+
+body[data-page="contact"] .site-footer {
+  padding-top: 0.72rem !important;
+  padding-bottom: 0.72rem !important;
+  animation: contactFadeRise 0.54s cubic-bezier(0.16, 1, 0.3, 1) 0.24s both;
 }
 
 .footer-nav-links a {
@@ -3536,6 +3619,21 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
   color: rgba(241, 235, 235, 0.78);
 }
 
+/* Soft Fade Variant (for Contact navigation without Project banner) */
+.page-transition-curtain--soft .page-transition-accent,
+.page-transition-curtain--soft .page-transition-tag,
+html.is-page-entering-soft .page-transition-accent,
+html.is-page-entering-soft .page-transition-tag {
+  display: none;
+}
+
+.page-transition-curtain--soft .page-transition-panel,
+html.is-page-entering-soft .page-transition-panel {
+  background-color: var(--stone);
+  transform: translate3d(0, 0, 0);
+  opacity: 0;
+}
+
 html.is-page-entering .page-transition-curtain {
   visibility: visible;
   pointer-events: auto;
@@ -3544,6 +3642,10 @@ html.is-page-entering .page-transition-curtain {
 html.is-page-entering .page-transition-accent,
 html.is-page-entering .page-transition-panel {
   transform: translate3d(0, 0, 0);
+}
+
+html.is-page-entering.is-page-entering-soft .page-transition-panel {
+  opacity: 1;
 }
 
 .page-transition-curtain.is-curtain-in {
@@ -3559,6 +3661,13 @@ html.is-page-entering .page-transition-panel {
   animation: pageCurtainCover 0.31s cubic-bezier(0.76, 0, 0.24, 1) 0.04s forwards;
 }
 
+.page-transition-curtain.page-transition-curtain--soft.is-curtain-in .page-transition-panel {
+  animation: none;
+  transform: translate3d(0, 0, 0);
+  transition: opacity 0.22s ease;
+  opacity: 1;
+}
+
 .page-transition-curtain.is-curtain-out {
   visibility: visible;
 }
@@ -3569,6 +3678,13 @@ html.is-page-entering .page-transition-panel {
 
 .page-transition-curtain.is-curtain-out .page-transition-accent {
   animation: pageCurtainReveal 0.44s cubic-bezier(0.16, 1, 0.3, 1) 0.05s forwards;
+}
+
+.page-transition-curtain.page-transition-curtain--soft.is-curtain-out .page-transition-panel {
+  animation: none;
+  transform: translate3d(0, 0, 0);
+  transition: opacity 0.32s ease;
+  opacity: 0;
 }
 
 @keyframes pageCurtainCover {
@@ -4904,7 +5020,12 @@ html.is-page-entering .page-transition-panel {
   .project-fullscreen-modal.is-project-switch .project-fullscreen-desc,
   .project-fullscreen-modal.is-project-switch .project-fullscreen-stack-row .slide-stack-tag,
   .page-transition-curtain .page-transition-accent,
-  .page-transition-curtain .page-transition-panel {
+  .page-transition-curtain .page-transition-panel,
+  body[data-page="contact"] .contact-giant-title,
+  body[data-page="contact"] .contact-info-stack,
+  body[data-page="contact"] .editorial-contact-form,
+  body[data-page="contact"] .contact-big-row,
+  body[data-page="contact"] .site-footer {
     animation: none !important;
   }
 
@@ -4922,6 +5043,8 @@ html.is-page-entering .page-transition-panel {
   .project-fullscreen-back::before,
   .project-fullscreen-github-btn::before,
   .cta-typo-actions .btn::before,
+  .editorial-contact-form .btn-solid-dark::before,
+  .page-transition-curtain.page-transition-curtain--soft .page-transition-panel,
   .site-preloader,
   .site-preloader-pane,
   .site-preloader-card,

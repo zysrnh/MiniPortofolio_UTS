@@ -29,7 +29,7 @@
     (function () {
       var reducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       if (!reducedMotion) {
-        document.documentElement.classList.add("is-page-entering");
+        document.documentElement.classList.add("is-page-entering", "is-page-entering-soft");
       }
     })();
   </script>
@@ -89,7 +89,7 @@
     <main class="cta-section">
       <div class="container">
         <!-- Giant Editorial Title -->
-        <h1 class="contact-giant-title">Contact me</h1>
+        <h1 class="contact-giant-title" data-i18n="contact.heading">Contact me</h1>
 
         <!-- 2-Column Middle: Info Left + Underline Form Right -->
         <div class="row g-4 g-lg-5 align-items-start mt-1">
@@ -101,9 +101,9 @@
               </div>
 
               <div class="contact-info-block">
-                <p class="contact-info-muted mb-0">Available hours</p>
-                <p class="contact-info-text mb-0">Monday &ndash; Friday</p>
-                <p class="contact-info-text mb-0">09:00 AM &ndash; 05:00 PM WIB</p>
+                <p class="contact-info-muted mb-0" data-i18n="contact.hoursLabel">Available hours</p>
+                <p class="contact-info-text mb-0" data-i18n="contact.hoursDays">Monday &ndash; Friday</p>
+                <p class="contact-info-text mb-0" data-i18n="contact.hoursTime">09:00 AM &ndash; 05:00 PM WIB</p>
               </div>
             </div>
           </div>
@@ -111,7 +111,7 @@
           <div class="col-lg-7">
             <form id="editorialContactForm" class="editorial-contact-form" novalidate>
               <div class="mb-3">
-                <span class="editorial-field-label">Name (required)</span>
+                <span class="editorial-field-label" data-i18n="contact.nameLabel">Name (required)</span>
                 <div class="row g-3">
                   <div class="col-sm-6">
                     <input
@@ -119,6 +119,7 @@
                       id="edFirstName"
                       class="editorial-underline-input"
                       placeholder="First Name"
+                      data-i18n-placeholder="contact.firstNamePh"
                       required
                     />
                   </div>
@@ -128,13 +129,14 @@
                       id="edLastName"
                       class="editorial-underline-input"
                       placeholder="Last Name"
+                      data-i18n-placeholder="contact.lastNamePh"
                     />
                   </div>
                 </div>
               </div>
 
               <div class="mb-3">
-                <label class="editorial-field-label" id="serviceDropdownLabelText">Service</label>
+                <label class="editorial-field-label" id="serviceDropdownLabelText" data-i18n="contact.serviceLabel">Service</label>
                 <div class="service-dropdown" id="serviceDropdown">
                   <input type="hidden" id="edService" value="Web Development" />
                   <button
@@ -145,31 +147,31 @@
                     aria-expanded="false"
                     aria-labelledby="serviceDropdownLabelText serviceDropdownLabel"
                   >
-                    <span id="serviceDropdownLabel">Web Development</span>
+                    <span id="serviceDropdownLabel" data-i18n="contact.service1">Web Development</span>
                     <i class="bi bi-chevron-down service-dropdown-caret" aria-hidden="true"></i>
                   </button>
                   <ul class="service-dropdown-menu list-unstyled mb-0" role="listbox">
                     <li>
                       <button type="button" class="service-dropdown-item is-selected" data-value="Web Development" role="option" aria-selected="true">
-                        <span>Web Development</span>
+                        <span data-i18n="contact.service1">Web Development</span>
                         <i class="bi bi-check2" aria-hidden="true"></i>
                       </button>
                     </li>
                     <li>
                       <button type="button" class="service-dropdown-item" data-value="UI/UX Design" role="option" aria-selected="false">
-                        <span>UI/UX Design</span>
+                        <span data-i18n="contact.service2">UI/UX Design</span>
                         <i class="bi bi-check2" aria-hidden="true"></i>
                       </button>
                     </li>
                     <li>
                       <button type="button" class="service-dropdown-item" data-value="Fullstack Laravel" role="option" aria-selected="false">
-                        <span>Fullstack Laravel</span>
+                        <span data-i18n="contact.service3">Fullstack Laravel</span>
                         <i class="bi bi-check2" aria-hidden="true"></i>
                       </button>
                     </li>
                     <li>
                       <button type="button" class="service-dropdown-item" data-value="Consultation" role="option" aria-selected="false">
-                        <span>Consultation</span>
+                        <span data-i18n="contact.service4">Consultation</span>
                         <i class="bi bi-check2" aria-hidden="true"></i>
                       </button>
                     </li>
@@ -178,23 +180,25 @@
               </div>
 
               <div class="mb-3">
-                <label for="edEmail" class="editorial-field-label">Email (required)</label>
+                <label for="edEmail" class="editorial-field-label" data-i18n="contact.emailLabel">Email (required)</label>
                 <input
                   type="email"
                   id="edEmail"
                   class="editorial-underline-input"
                   placeholder="you@example.com"
+                  data-i18n-placeholder="contact.emailPh"
                   required
                 />
               </div>
 
               <div class="mb-3">
-                <label for="edProjectDesc" class="editorial-field-label">Project description</label>
+                <label for="edProjectDesc" class="editorial-field-label" data-i18n="contact.descLabel">Project description</label>
                 <input
                   type="text"
                   id="edProjectDesc"
                   class="editorial-underline-input"
                   placeholder="Tell me briefly about your project..."
+                  data-i18n-placeholder="contact.descPh"
                   required
                 />
               </div>
@@ -206,7 +210,7 @@
                 aria-live="polite"
               ></div>
 
-              <button type="submit" class="btn btn-solid-dark mt-1">Submit</button>
+              <button type="submit" class="btn btn-solid-dark mt-1"><span data-i18n="contact.submit">Submit</span></button>
             </form>
           </div>
         </div>
@@ -286,7 +290,7 @@
   </nav>
 
   <!-- ==================== EDITORIAL PAGE TRANSITION CURTAIN ==================== -->
-  <div id="pageTransitionCurtain" class="page-transition-curtain" aria-hidden="true">
+  <div id="pageTransitionCurtain" class="page-transition-curtain page-transition-curtain--soft" aria-hidden="true">
     <div class="page-transition-accent"></div>
     <div class="page-transition-panel">
       <span class="page-transition-tag">PORTFOLIO // 2026</span>

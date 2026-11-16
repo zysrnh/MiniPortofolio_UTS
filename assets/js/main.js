@@ -455,7 +455,8 @@ const PROJECTS_CATALOG = [
 ];
 
 /**
- * Handle smooth two-tone editorial shutter wipe transitions between portfolio and project detail pages.
+ * Handle smooth page transitions: dual-layer editorial curtain for project details,
+ * and soft seamless fade for contact navigation.
  */
 function initPageTransitions() {
   const root = document.documentElement;
@@ -463,21 +464,36 @@ function initPageTransitions() {
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   let isNavigating = false;
 
+  let storedMode = "";
   try {
+    storedMode = window.sessionStorage.getItem("portfolioTransitionMode") || "";
     window.sessionStorage.removeItem("portfolioTransition");
+    window.sessionStorage.removeItem("portfolioTransitionMode");
   } catch (_) {}
 
+  function applyCurtainMode(mode) {
+    if (!curtain) return;
+    curtain.classList.toggle("page-transition-curtain--soft", mode === "soft");
+  }
+
   function revealEnteredPage() {
-    if (!root.classList.contains("is-page-entering")) return;
+    const isEntering = root.classList.contains("is-page-entering");
+    const isSoftEnter = root.classList.contains("is-page-entering-soft") || storedMode === "soft";
+    if (!isEntering) return;
+
     if (!curtain || prefersReducedMotion.matches) {
-      root.classList.remove("is-page-entering");
+      root.classList.remove("is-page-entering", "is-page-entering-soft");
       return;
+    }
+
+    if (isSoftEnter) {
+      applyCurtainMode("soft");
     }
 
     window.requestAnimationFrame(() => {
       window.requestAnimationFrame(() => {
         curtain.classList.add("is-curtain-out");
-        root.classList.remove("is-page-entering");
+        root.classList.remove("is-page-entering", "is-page-entering-soft");
         window.setTimeout(() => {
           curtain.classList.remove("is-curtain-out");
         }, 480);
@@ -487,7 +503,7 @@ function initPageTransitions() {
 
   function resetTransitionState() {
     isNavigating = false;
-    root.classList.remove("is-page-entering");
+    root.classList.remove("is-page-entering", "is-page-entering-soft");
     if (curtain) {
       curtain.classList.remove("is-curtain-in", "is-curtain-out");
     }
@@ -500,45 +516,55 @@ function initPageTransitions() {
 
   if (!curtain) return;
 
-  const transitionLinks = document.querySelectorAll(
-    '.project-detail-btn, #projectBackBtn, a[href="contact.html"], body[data-page="project"] a[href^="index.html"], body[data-page="contact"] a[href^="index.html"]'
+  const projectTransitionLinks = document.querySelectorAll(
+    '.project-detail-btn, #projectBackBtn, body[data-page="project"] a[href^="index.html"]'
+  );
+  const softTransitionLinks = document.querySelectorAll(
+    'a[href="contact.html"], body[data-page="contact"] a[href^="index.html"]'
   );
 
-  transitionLinks.forEach((link) => {
-    link.addEventListener("click", (event) => {
-      if (
-        isNavigating ||
-        prefersReducedMotion.matches ||
-        event.defaultPrevented ||
-        event.button !== 0 ||
-        event.metaKey ||
-        event.ctrlKey ||
-        event.shiftKey ||
-        event.altKey ||
-        link.target === "_blank"
-      ) {
-        return;
-      }
+  function bindTransition(links, mode, delayMs) {
+    links.forEach((link) => {
+      link.addEventListener("click", (event) => {
+        if (
+          isNavigating ||
+          prefersReducedMotion.matches ||
+          event.defaultPrevented ||
+          event.button !== 0 ||
+          event.metaKey ||
+          event.ctrlKey ||
+          event.shiftKey ||
+          event.altKey ||
+          link.target === "_blank"
+        ) {
+          return;
+        }
 
-      const href = link.getAttribute("href");
-      if (!href) return;
+        const href = link.getAttribute("href");
+        if (!href) return;
 
-      event.preventDefault();
-      isNavigating = true;
+        event.preventDefault();
+        isNavigating = true;
 
-      try {
-        window.sessionStorage.setItem("portfolioTransition", "1");
-      } catch (_) {}
+        try {
+          window.sessionStorage.setItem("portfolioTransition", "1");
+          window.sessionStorage.setItem("portfolioTransitionMode", mode);
+        } catch (_) {}
 
-      curtain.classList.remove("is-curtain-out");
-      void curtain.offsetWidth;
-      curtain.classList.add("is-curtain-in");
+        applyCurtainMode(mode);
+        curtain.classList.remove("is-curtain-out");
+        void curtain.offsetWidth;
+        curtain.classList.add("is-curtain-in");
 
-      window.setTimeout(() => {
-        window.location.href = href;
-      }, 320);
+        window.setTimeout(() => {
+          window.location.href = href;
+        }, delayMs);
+      });
     });
-  });
+  }
+
+  bindTransition(projectTransitionLinks, "editorial", 320);
+  bindTransition(softTransitionLinks, "soft", 210);
 }
 
 /**
@@ -784,7 +810,9 @@ function initContactForm() {
     if (!form || !feedback) return;
 
     const submitBtn = form.querySelector('button[type="submit"]');
-    const defaultSubmitText = submitBtn ? submitBtn.textContent : "";
+    const submitLabelEl = submitBtn ? submitBtn.querySelector("[data-i18n]") || submitBtn : null;
+    const submitI18nKey = submitLabelEl?.dataset?.i18n || "";
+    const defaultSubmitText = submitLabelEl ? submitLabelEl.textContent : "";
 
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
@@ -822,9 +850,9 @@ function initContactForm() {
         return;
       }
 
-      if (submitBtn) {
+      if (submitBtn && submitLabelEl) {
         submitBtn.disabled = true;
-        submitBtn.textContent = copyText.sending;
+        submitLabelEl.textContent = copyText.sending;
       }
 
       try {
@@ -865,10 +893,16 @@ function initContactForm() {
         feedback.classList.add("text-danger");
         showFallbackLink(feedback, copyText.failedPrefix, copyText.failedLink, mailtoUrl);
       } finally {
-        if (submitBtn) {
+        if (submitBtn && submitLabelEl) {
           submitBtn.disabled = false;
-          const isModalBtn = submitBtn.dataset.i18n === "modal.submit";
-          submitBtn.textContent = isModalBtn ? getLangCopy().submitIdle : defaultSubmitText;
+          const activeLang = document.documentElement.lang === "en" ? "en" : "id";
+          const dict = SITE_TRANSLATIONS[activeLang] || SITE_TRANSLATIONS.id;
+          if (submitI18nKey && dict[submitI18nKey]) {
+            submitLabelEl.textContent = dict[submitI18nKey];
+          } else {
+            submitLabelEl.textContent =
+              submitI18nKey === "modal.submit" ? getLangCopy().submitIdle : defaultSubmitText;
+          }
         }
       }
     });
@@ -905,6 +939,33 @@ function initServiceDropdown() {
 
   const items = dropdown.querySelectorAll(".service-dropdown-item");
 
+  const getItemDisplayText = (item) => {
+    const labelSpan = item.querySelector("span");
+    return (labelSpan ? labelSpan.textContent : item.dataset.value || "").trim();
+  };
+
+  const applySelection = (targetItem) => {
+    if (!targetItem) return;
+    hiddenInput.value = targetItem.dataset.value || "";
+    label.textContent = getItemDisplayText(targetItem);
+
+    items.forEach((el) => {
+      const selected = el === targetItem;
+      el.classList.toggle("is-selected", selected);
+      el.setAttribute("aria-selected", String(selected));
+    });
+  };
+
+  const syncSelectedDisplay = () => {
+    const currentItem =
+      Array.from(items).find((el) => el.dataset.value === hiddenInput.value) ||
+      dropdown.querySelector(".service-dropdown-item.is-selected") ||
+      items[0];
+    if (currentItem) {
+      applySelection(currentItem);
+    }
+  };
+
   const closeMenu = () => {
     dropdown.classList.remove("is-open");
     trigger.setAttribute("aria-expanded", "false");
@@ -918,18 +979,21 @@ function initServiceDropdown() {
 
   items.forEach((item) => {
     item.addEventListener("click", () => {
-      const val = item.dataset.value || "";
-      hiddenInput.value = val;
-      label.textContent = val;
-
-      items.forEach((el) => {
-        const selected = el === item;
-        el.classList.toggle("is-selected", selected);
-        el.setAttribute("aria-selected", String(selected));
-      });
+      applySelection(item);
       closeMenu();
     });
   });
+
+  window.addEventListener("portfolio:langchange", syncSelectedDisplay);
+  const parentForm = dropdown.closest("form");
+  if (parentForm) {
+    parentForm.addEventListener("reset", () => {
+      window.requestAnimationFrame(() => {
+        syncSelectedDisplay();
+      });
+    });
+  }
+  syncSelectedDisplay();
 
   document.addEventListener("click", (event) => {
     if (!dropdown.contains(event.target)) {
@@ -2145,7 +2209,24 @@ const SITE_TRANSLATIONS = {
     "work.p6.cat": "Aplikasi Web",
     "work.p6.title": "SaaS Analytics Portal",
     "work.p6.desc": "Portal laporan aktivitas dengan kartu ringkasan KPI, grafik terfilter, dan tabel log yang rapi.",
-    "work.p6.detail": "Portal pelaporan terintegrasi API untuk memantau metrik KPI, grafik yang dapat difilter, serta tabel log aktivitas yang siap diekspor."
+    "work.p6.detail": "Portal pelaporan terintegrasi API untuk memantau metrik KPI, grafik yang dapat difilter, serta tabel log aktivitas yang siap diekspor.",
+    "contact.heading": "Hubungi saya",
+    "contact.hoursLabel": "Jam tersedia",
+    "contact.hoursDays": "Senin \u2013 Jumat",
+    "contact.hoursTime": "09:00 \u2013 17:00 WIB",
+    "contact.nameLabel": "Nama (wajib)",
+    "contact.firstNamePh": "Nama Depan",
+    "contact.lastNamePh": "Nama Belakang",
+    "contact.serviceLabel": "Layanan",
+    "contact.service1": "Pengembangan Web",
+    "contact.service2": "Desain UI/UX",
+    "contact.service3": "Fullstack Laravel",
+    "contact.service4": "Konsultasi",
+    "contact.emailLabel": "Email (wajib)",
+    "contact.emailPh": "anda@contoh.com",
+    "contact.descLabel": "Deskripsi proyek",
+    "contact.descPh": "Ceritakan singkat tentang proyek Anda...",
+    "contact.submit": "Kirim"
   },
   en: {
     "title.home": "Portfolio — Zaki Yusron Hasyimmi",
@@ -2221,7 +2302,24 @@ const SITE_TRANSLATIONS = {
     "work.p6.cat": "Web Application",
     "work.p6.title": "SaaS Analytics Portal",
     "work.p6.desc": "Clean reporting portal with KPI summary cards, filterable charts, and exportable logs.",
-    "work.p6.detail": "API-driven analytics portal delivering KPI summary cards, filterable charts, and clean exportable activity tables."
+    "work.p6.detail": "API-driven analytics portal delivering KPI summary cards, filterable charts, and clean exportable activity tables.",
+    "contact.heading": "Contact me",
+    "contact.hoursLabel": "Available hours",
+    "contact.hoursDays": "Monday \u2013 Friday",
+    "contact.hoursTime": "09:00 AM \u2013 05:00 PM WIB",
+    "contact.nameLabel": "Name (required)",
+    "contact.firstNamePh": "First Name",
+    "contact.lastNamePh": "Last Name",
+    "contact.serviceLabel": "Service",
+    "contact.service1": "Web Development",
+    "contact.service2": "UI/UX Design",
+    "contact.service3": "Fullstack Laravel",
+    "contact.service4": "Consultation",
+    "contact.emailLabel": "Email (required)",
+    "contact.emailPh": "you@example.com",
+    "contact.descLabel": "Project description",
+    "contact.descPh": "Tell me briefly about your project...",
+    "contact.submit": "Submit"
   }
 };
 
