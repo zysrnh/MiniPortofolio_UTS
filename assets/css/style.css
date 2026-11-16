@@ -3115,12 +3115,69 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
 }
 
 /* ==================== INDEX CTA & 3-COLUMN FOOTER ==================== */
+.contact-page-shell .site-footer {
+  border-top: 1px solid rgba(241, 235, 235, 0.14);
+}
+
 .cta-typo-section {
-  background-color: var(--deep-red);
+  position: relative;
+  overflow: hidden;
+  background-color: var(--dark-red);
   flex: 1;
   display: flex;
   align-items: center;
-  padding: 2.5rem 0;
+  padding: 2.75rem 0;
+}
+
+.cta-ambient-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.cta-backdrop-word {
+  position: absolute;
+  font-family: var(--font-display);
+  font-size: clamp(4.8rem, 11.5vw, 10rem);
+  line-height: 0.82;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  user-select: none;
+  color: rgba(241, 235, 235, 0.025);
+  -webkit-text-stroke: 1.5px rgba(241, 235, 235, 0.085);
+}
+
+.cta-backdrop-word--top {
+  top: 0.55rem;
+  left: 3.5%;
+}
+
+.cta-backdrop-word--bottom {
+  bottom: 0.25rem;
+  right: 3.5%;
+}
+
+.cta-bg-reticle {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.cta-container {
+  position: relative;
+  z-index: 1;
+}
+
+.cta-typo-rule {
+  width: 52px;
+  height: 2px;
+  background-color: var(--deep-red);
+  margin: 0 auto 1.35rem;
+  transform-origin: center center;
 }
 
 .cta-typo-heading {
@@ -3135,8 +3192,40 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
 .cta-typo-desc {
   font-size: 0.95rem;
   line-height: 1.6;
-  color: rgba(241, 235, 235, 0.85);
+  color: rgba(241, 235, 235, 0.78);
   max-width: 520px;
+}
+
+.cta-typo-actions .btn {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  transition: border-color 0.24s ease, color 0.24s ease, transform 0.16s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.cta-typo-actions .btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform 0.34s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cta-typo-actions .btn > * {
+  position: relative;
+  z-index: 1;
+}
+
+.cta-typo-actions .btn:hover::before,
+.cta-typo-actions .btn:focus-visible::before {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+
+.cta-typo-actions .btn:active {
+  transform: translateY(2px) scale(0.96);
 }
 
 .cta-typo-section .btn-solid-dark {
@@ -3145,23 +3234,79 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
   color: var(--dark-red);
 }
 
+.cta-typo-section .btn-solid-dark::before {
+  background-color: var(--deep-red);
+}
+
 .cta-typo-section .btn-solid-dark:hover,
 .cta-typo-section .btn-solid-dark:focus-visible {
-  background-color: var(--white);
-  border-color: var(--white);
-  color: var(--dark-red);
+  background-color: var(--stone);
+  border-color: var(--deep-red);
+  color: var(--white);
 }
 
 .cta-typo-section .btn-outline-dark-custom {
   color: var(--stone);
-  border-color: var(--stone);
+  border-color: rgba(241, 235, 235, 0.42);
+}
+
+.cta-typo-section .btn-outline-dark-custom::before {
+  background-color: var(--stone);
 }
 
 .cta-typo-section .btn-outline-dark-custom:hover,
 .cta-typo-section .btn-outline-dark-custom:focus-visible {
-  background-color: var(--dark-red);
-  border-color: var(--dark-red);
-  color: var(--stone);
+  background-color: transparent;
+  border-color: var(--stone);
+  color: var(--dark-red);
+}
+
+/* Scroll-triggered entrance for bottom CTA + Footer shell */
+.contact-page-shell.is-contact-ready:not(.is-contact-play) .cta-ambient-bg,
+.contact-page-shell.is-contact-ready:not(.is-contact-play) .cta-typo-rule,
+.contact-page-shell.is-contact-ready:not(.is-contact-play) .cta-typo-heading,
+.contact-page-shell.is-contact-ready:not(.is-contact-play) .cta-typo-desc,
+.contact-page-shell.is-contact-ready:not(.is-contact-play) .cta-typo-actions,
+.contact-page-shell.is-contact-ready:not(.is-contact-play) .site-footer .footer-main-row > div,
+.contact-page-shell.is-contact-ready:not(.is-contact-play) .site-footer .footer-bottom-bar {
+  opacity: 0;
+}
+
+.contact-page-shell.is-contact-play .cta-ambient-bg {
+  animation: aboutBgReveal 0.72s ease 0s backwards;
+}
+
+.contact-page-shell.is-contact-play .cta-typo-rule {
+  animation: projectRuleGrow 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.06s backwards;
+}
+
+.contact-page-shell.is-contact-play .cta-typo-heading {
+  will-change: clip-path, transform, opacity;
+  animation: projectTitleCurtain 0.72s cubic-bezier(0.16, 1, 0.3, 1) 0.1s backwards;
+}
+
+.contact-page-shell.is-contact-play .cta-typo-desc {
+  animation: projectEnterRise 0.56s cubic-bezier(0.16, 1, 0.3, 1) 0.22s backwards;
+}
+
+.contact-page-shell.is-contact-play .cta-typo-actions {
+  animation: projectEnterRise 0.54s cubic-bezier(0.16, 1, 0.3, 1) 0.3s backwards;
+}
+
+.contact-page-shell.is-contact-play .site-footer .footer-main-row > div:nth-child(1) {
+  animation: projectEnterRise 0.52s cubic-bezier(0.16, 1, 0.3, 1) 0.34s backwards;
+}
+
+.contact-page-shell.is-contact-play .site-footer .footer-main-row > div:nth-child(2) {
+  animation: projectEnterRise 0.52s cubic-bezier(0.16, 1, 0.3, 1) 0.41s backwards;
+}
+
+.contact-page-shell.is-contact-play .site-footer .footer-main-row > div:nth-child(3) {
+  animation: projectEnterRise 0.52s cubic-bezier(0.16, 1, 0.3, 1) 0.48s backwards;
+}
+
+.contact-page-shell.is-contact-play .site-footer .footer-bottom-bar {
+  animation: aboutBgReveal 0.55s ease 0.54s backwards;
 }
 
 .footer-main-row {
@@ -4455,7 +4600,8 @@ html.is-page-entering .page-transition-panel {
     border-radius: 2px;
   }
 
-  .work-backdrop-word {
+  .work-backdrop-word,
+  .cta-backdrop-word {
     font-size: clamp(4.2rem, 18vw, 7rem);
   }
 
@@ -4701,6 +4847,13 @@ html.is-page-entering .page-transition-panel {
   .work-section.is-work-play .work-header,
   .work-section.is-work-play .portfolio-marquee-viewport,
   .work-section.is-work-play .portfolio-dots,
+  .contact-page-shell.is-contact-play .cta-ambient-bg,
+  .contact-page-shell.is-contact-play .cta-typo-rule,
+  .contact-page-shell.is-contact-play .cta-typo-heading,
+  .contact-page-shell.is-contact-play .cta-typo-desc,
+  .contact-page-shell.is-contact-play .cta-typo-actions,
+  .contact-page-shell.is-contact-play .site-footer .footer-main-row > div,
+  .contact-page-shell.is-contact-play .site-footer .footer-bottom-bar,
   .project-fullscreen-modal.is-project-enter .project-fullscreen-reticle,
   .project-fullscreen-modal.is-project-enter .project-fullscreen-topbar,
   .project-fullscreen-modal.is-project-enter .project-fullscreen-preview,
@@ -4737,6 +4890,7 @@ html.is-page-entering .page-transition-panel {
   .work-section .project-detail-btn::before,
   .project-fullscreen-back::before,
   .project-fullscreen-github-btn::before,
+  .cta-typo-actions .btn::before,
   .site-preloader,
   .site-preloader-pane,
   .site-preloader-card,

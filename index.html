@@ -48,7 +48,7 @@
         hasTransition = window.sessionStorage.getItem("portfolioTransition") === "1";
       } catch (_) {}
       if (!hasTransition && document.referrer) {
-        hasTransition = /\/project\.html(?:$|[?#])/i.test(document.referrer);
+        hasTransition = /\/(?:project|contact)\.html(?:$|[?#])/i.test(document.referrer);
       }
       if (isHeroEntry && !reducedMotion) {
         document.documentElement.classList.add("is-preloading");
@@ -1324,10 +1324,29 @@
   </main>
 
   <!-- ==================== CONTACT & FOOTER SHELL (1-Screen Fit) ==================== -->
-  <div class="contact-page-shell">
+  <div class="contact-page-shell" id="contactShell">
     <!-- ==================== CONTACT CTA SECTION ==================== -->
     <section id="contact" class="cta-typo-section">
-      <div class="container text-center">
+      <div class="cta-ambient-bg" aria-hidden="true">
+        <span class="cta-backdrop-word cta-backdrop-word--top">COLLAB</span>
+        <span class="cta-backdrop-word cta-backdrop-word--bottom">CONTACT</span>
+        <svg class="cta-bg-reticle" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <pattern id="ctaGridPattern" width="64" height="64" patternUnits="userSpaceOnUse">
+              <path d="M 64 0 L 0 0 0 64" fill="none" stroke="rgba(241, 235, 235, 0.045)" stroke-width="1" />
+              <path d="M 61 0 L 67 0 M 64 -3 L 64 3" fill="none" stroke="rgba(241, 235, 235, 0.09)" stroke-width="1" />
+            </pattern>
+          </defs>
+          <rect width="1200" height="600" fill="url(#ctaGridPattern)" />
+          <path d="M24 58 L24 24 L58 24" fill="none" stroke="rgba(241, 235, 235, 0.22)" stroke-width="1.5" />
+          <path d="M1142 24 L1176 24 L1176 58" fill="none" stroke="rgba(241, 235, 235, 0.22)" stroke-width="1.5" />
+          <path d="M24 542 L24 576 L58 576" fill="none" stroke="rgba(241, 235, 235, 0.22)" stroke-width="1.5" />
+          <path d="M1142 576 L1176 576 L1176 542" fill="none" stroke="rgba(241, 235, 235, 0.22)" stroke-width="1.5" />
+        </svg>
+      </div>
+
+      <div class="container text-center cta-container">
+        <div class="cta-typo-rule" aria-hidden="true"></div>
         <h2 class="cta-typo-heading mx-auto mb-3">
           Have a Project in Mind?<br class="d-none d-md-inline" />
           Let&rsquo;s Build Something Great.
@@ -1335,9 +1354,9 @@
         <p class="cta-typo-desc mx-auto mb-4">
           Open for freelance web development, UI engineering, and fullstack collaboration.
         </p>
-        <div class="d-flex justify-content-center flex-wrap gap-3">
-          <a href="contact.html" class="btn btn-solid-dark">CONTACT ME</a>
-          <a href="#work" class="btn btn-outline-dark-custom">VIEW MY WORK</a>
+        <div class="d-flex justify-content-center flex-wrap gap-3 cta-typo-actions">
+          <a href="contact.html" class="btn btn-solid-dark"><span>CONTACT ME</span></a>
+          <a href="#work" class="btn btn-outline-dark-custom"><span>VIEW MY WORK</span></a>
         </div>
       </div>
     </section>
@@ -1381,7 +1400,7 @@
           </div>
         </div>
 
-        <div class="d-flex flex-wrap justify-content-between align-items-center pt-3 gap-2">
+        <div class="d-flex flex-wrap justify-content-between align-items-center pt-3 gap-2 footer-bottom-bar">
           <span class="footer-copy">&copy; 2026 Zaki Yusron Hasyimmi. ALL RIGHTS RESERVED.</span>
           <span class="footer-copy">BUILT WITH HTML5, CSS3 &amp; BOOTSTRAP 5</span>
         </div>

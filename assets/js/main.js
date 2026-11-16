@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initWorkStackIcons();
   initPortfolioAutoCarousel();
   initProjectPage();
+  initSectionEntrance("contactShell", "is-contact-ready", "is-contact-play", 0.08, 0.9);
   initContactForm();
   initServiceDropdown();
   initMobileNavClose();
@@ -500,7 +501,7 @@ function initPageTransitions() {
   if (!curtain) return;
 
   const transitionLinks = document.querySelectorAll(
-    '.project-detail-btn, #projectBackBtn, body[data-page="project"] a[href^="index.html"]'
+    '.project-detail-btn, #projectBackBtn, a[href="contact.html"], body[data-page="project"] a[href^="index.html"], body[data-page="contact"] a[href^="index.html"]'
   );
 
   transitionLinks.forEach((link) => {
