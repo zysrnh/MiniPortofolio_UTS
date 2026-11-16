@@ -537,6 +537,109 @@ html.is-preloading .hero-section.is-hero-play .hero-bg-rings {
   color: var(--white);
 }
 
+/* ==================== BACKGROUND AUDIO TOGGLE ==================== */
+.audio-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 29px;
+  min-width: 34px;
+  padding: 0 0.5rem;
+  background-color: var(--stone);
+  border: 1px solid rgba(39, 7, 7, 0.22);
+  border-radius: 2px;
+  color: var(--dark-red);
+  cursor: pointer;
+  transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease, transform 0.14s ease;
+}
+
+.audio-toggle-btn:hover,
+.audio-toggle-btn:focus-visible {
+  background-color: rgba(102, 8, 16, 0.09);
+  border-color: var(--deep-red);
+  outline: none;
+}
+
+.audio-toggle-btn.is-playing {
+  background-color: var(--deep-red);
+  border-color: var(--deep-red);
+  color: var(--white);
+}
+
+.audio-toggle-btn.is-playing:hover,
+.audio-toggle-btn.is-playing:focus-visible {
+  background-color: var(--dark-red);
+  border-color: var(--dark-red);
+}
+
+.audio-toggle-btn:active {
+  transform: scale(0.95);
+}
+
+.audio-float-btn {
+  display: none;
+}
+
+.audio-eq {
+  display: inline-flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 2.5px;
+  height: 12px;
+}
+
+.audio-eq span {
+  display: block;
+  width: 2px;
+  background-color: currentColor;
+  border-radius: 1px;
+  transform-origin: bottom center;
+}
+
+.audio-eq span:nth-child(1) {
+  height: 5px;
+}
+
+.audio-eq span:nth-child(2) {
+  height: 10px;
+}
+
+.audio-eq span:nth-child(3) {
+  height: 7px;
+}
+
+.audio-toggle-btn.is-playing .audio-eq span,
+.audio-float-btn.is-playing .audio-eq span {
+  animation: audioEqPulse 0.85s ease-in-out infinite alternate;
+}
+
+.audio-toggle-btn.is-playing .audio-eq span:nth-child(2),
+.audio-float-btn.is-playing .audio-eq span:nth-child(2) {
+  animation-duration: 0.62s;
+  animation-delay: -0.25s;
+}
+
+.audio-toggle-btn.is-playing .audio-eq span:nth-child(3),
+.audio-float-btn.is-playing .audio-eq span:nth-child(3) {
+  animation-duration: 0.98s;
+  animation-delay: -0.45s;
+}
+
+@keyframes audioEqPulse {
+  0% {
+    height: 3px;
+  }
+  100% {
+    height: 12px;
+  }
+}
+
+html.is-preloading .audio-float-btn {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
 .mobile-app-bar {
   display: none;
 }
@@ -4632,6 +4735,36 @@ html.is-page-entering.is-page-entering-soft .page-transition-panel {
     height: 38px;
   }
 
+  .audio-float-btn {
+    position: fixed;
+    right: 0.75rem;
+    bottom: calc(120px + env(safe-area-inset-bottom, 0px));
+    z-index: 1025;
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    background-color: var(--dark-red);
+    color: var(--stone);
+    border: 1.5px solid rgba(241, 235, 235, 0.72);
+    box-shadow: var(--shadow-btn);
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.14s ease;
+  }
+
+  .audio-float-btn.is-playing {
+    background-color: var(--deep-red);
+    color: var(--white);
+    border-color: var(--stone);
+  }
+
+  .audio-float-btn:active {
+    transform: scale(0.94);
+  }
+
   .about-section {
     min-height: calc(100vh - 64px);
     min-height: calc(100svh - 64px);
@@ -5316,7 +5449,9 @@ html.is-page-entering.is-page-entering-soft .page-transition-panel {
   body[data-page="contact"] .contact-info-stack,
   body[data-page="contact"] .editorial-contact-form,
   body[data-page="contact"] .contact-big-row,
-  body[data-page="contact"] .site-footer {
+  body[data-page="contact"] .site-footer,
+  .audio-toggle-btn.is-playing .audio-eq span,
+  .audio-float-btn.is-playing .audio-eq span {
     animation: none !important;
   }
 
@@ -5335,6 +5470,8 @@ html.is-page-entering.is-page-entering-soft .page-transition-panel {
   .project-fullscreen-github-btn::before,
   .cta-typo-actions .btn::before,
   .editorial-contact-form .btn-solid-dark::before,
+  .audio-toggle-btn,
+  .audio-float-btn,
   .scroll-top-btn,
   .scroll-top-btn::before,
   .scroll-top-btn-icon,

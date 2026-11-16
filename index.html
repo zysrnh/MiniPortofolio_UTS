@@ -148,9 +148,22 @@
               <a class="nav-link" href="#contact" data-i18n="nav.contact">KONTAK</a>
             </li>
             <li class="nav-item ms-lg-2 pt-2 pt-lg-0">
-              <div class="lang-switcher" role="group" aria-label="Pilih bahasa" data-i18n-aria="lang.groupAria">
-                <button type="button" class="lang-btn is-active" data-lang="id" aria-pressed="true">ID</button>
-                <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+              <div class="d-flex align-items-center gap-2">
+                <div class="lang-switcher" role="group" aria-label="Pilih bahasa" data-i18n-aria="lang.groupAria">
+                  <button type="button" class="lang-btn is-active" data-lang="id" aria-pressed="true">ID</button>
+                  <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+                </div>
+                <button
+                  type="button"
+                  id="audioToggleBtn"
+                  class="audio-toggle-btn"
+                  aria-label="Putar atau bisukan musik latar"
+                  aria-pressed="false"
+                  data-i18n-aria="audio.toggleAria"
+                  data-audio-toggle
+                >
+                  <span class="audio-eq" aria-hidden="true"><span></span><span></span><span></span></span>
+                </button>
               </div>
             </li>
           </ul>
@@ -1547,6 +1560,23 @@
     <span class="scroll-top-btn-progress" aria-hidden="true"></span>
     <i class="bi bi-arrow-up scroll-top-btn-icon" aria-hidden="true"></i>
   </button>
+
+  <!-- ==================== MOBILE FLOATING AUDIO TOGGLE ==================== -->
+  <button
+    type="button"
+    id="audioFloatBtn"
+    class="audio-float-btn"
+    aria-label="Putar atau bisukan musik latar"
+    aria-pressed="false"
+    data-i18n-aria="audio.toggleAria"
+    data-audio-toggle
+  >
+    <span class="audio-eq" aria-hidden="true"><span></span><span></span><span></span></span>
+  </button>
+
+  <audio id="bgAudio" loop preload="metadata" aria-hidden="true">
+    <source src="assets/audio/bgm.m4a" type="audio/mp4" />
+  </audio>
 
   <!-- ==================== EDITORIAL PAGE TRANSITION CURTAIN ==================== -->
   <div id="pageTransitionCurtain" class="page-transition-curtain" aria-hidden="true">

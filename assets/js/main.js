@@ -18,6 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initMobileNavClose();
   initAppBottomBar();
   initScrollTopButton();
+  initBackgroundAudio();
 });
 
 const scrollDirectionState = {
@@ -1183,6 +1184,163 @@ function initScrollTopButton() {
   window.addEventListener("scroll", scheduleUpdate, { passive: true });
   window.addEventListener("resize", scheduleUpdate, { passive: true });
   updateState();
+}
+
+/**
+ * Background music controller with cross-page time persistence and autoplay fallback.
+ */
+function initBackgroundAudio() {
+  const audio = document.getElementById("bgAudio");
+  const toggleBtns = document.querySelectorAll("[data-audio-toggle]");
+  if (!audio || !toggleBtns.length) return;
+
+  const STORAGE_MUTED_KEY = "portfolioAudioMuted";
+  const STORAGE_TIME_KEY = "portfolioAudioTime";
+  const DEFAULT_VOLUME = 0.38;
+
+  const readSession = (key) => {
+    try {
+      return window.sessionStorage.getItem(key);
+    } catch (_) {
+      return null;
+    }
+  };
+
+  const writeSession = (key, value) => {
+    try {
+      window.sessionStorage.setItem(key, value);
+    } catch (_) {
+      // Ignore storage failures in restricted file contexts.
+    }
+  };
+
+  const getAudioAriaLabel = (playing) => {
+    const lang = document.documentElement.lang === "en" ? "en" : "id";
+    const dict = SITE_TRANSLATIONS[lang] || SITE_TRANSLATIONS.id;
+    return playing ? dict["audio.pauseAria"] : dict["audio.playAria"];
+  };
+
+  const syncButtons = (playing) => {
+    const label = getAudioAriaLabel(playing);
+    toggleBtns.forEach((btn) => {
+      btn.classList.toggle("is-playing", playing);
+      btn.setAttribute("aria-pressed", String(playing));
+      if (label) {
+        btn.setAttribute("aria-label", label);
+        btn.setAttribute("title", label);
+      }
+    });
+  };
+
+  const isMutedByUser = () => readSession(STORAGE_MUTED_KEY) === "1";
+
+  const applySavedTime = () => {
+    const rawTime = Number.parseFloat(readSession(STORAGE_TIME_KEY) || "0");
+    if (!Number.isFinite(rawTime) || rawTime <= 0) return;
+    const duration = audio.duration;
+    audio.currentTime = Number.isFinite(duration) && duration > 0 ? rawTime % duration : rawTime;
+  };
+
+  if (audio.readyState >= 1) {
+    applySavedTime();
+  } else {
+    audio.addEventListener("loadedmetadata", applySavedTime, { once: true });
+  }
+
+  audio.volume = DEFAULT_VOLUME;
+
+  let gestureAttached = false;
+  const handleFirstGesture = (event) => {
+    if (event.target && typeof event.target.closest === "function" && event.target.closest("[data-audio-toggle]")) {
+      return;
+    }
+    removeGestureListeners();
+    if (!isMutedByUser()) {
+      tryStartPlayback();
+    }
+  };
+
+  const attachGestureListeners = () => {
+    if (gestureAttached) return;
+    gestureAttached = true;
+    document.addEventListener("pointerdown", handleFirstGesture, { passive: true });
+    document.addEventListener("keydown", handleFirstGesture, { passive: true });
+  };
+
+  const removeGestureListeners = () => {
+    if (!gestureAttached) return;
+    gestureAttached = false;
+    document.removeEventListener("pointerdown", handleFirstGesture);
+    document.removeEventListener("keydown", handleFirstGesture);
+  };
+
+  function tryStartPlayback() {
+    audio.muted = false;
+    let playResult;
+    try {
+      playResult = audio.play();
+    } catch (_) {
+      syncButtons(false);
+      attachGestureListeners();
+      return;
+    }
+
+    Promise.resolve(playResult)
+      .then(() => {
+        writeSession(STORAGE_MUTED_KEY, "0");
+        removeGestureListeners();
+        syncButtons(!audio.paused);
+      })
+      .catch(() => {
+        syncButtons(false);
+        attachGestureListeners();
+      });
+  }
+
+  toggleBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      if (!audio.paused) {
+        audio.pause();
+        writeSession(STORAGE_MUTED_KEY, "1");
+        removeGestureListeners();
+        syncButtons(false);
+      } else {
+        writeSession(STORAGE_MUTED_KEY, "0");
+        tryStartPlayback();
+      }
+    });
+  });
+
+  let lastSavedAt = 0;
+  const savePosition = (force = false) => {
+    const now = Date.now();
+    if (!force && now - lastSavedAt < 900) return;
+    lastSavedAt = now;
+    if (Number.isFinite(audio.currentTime) && audio.currentTime > 0) {
+      writeSession(STORAGE_TIME_KEY, audio.currentTime.toFixed(2));
+    }
+  };
+
+  audio.addEventListener("timeupdate", () => savePosition(false));
+  audio.addEventListener("play", () => syncButtons(true));
+  audio.addEventListener("pause", () => syncButtons(false));
+
+  window.addEventListener("pagehide", () => savePosition(true));
+  window.addEventListener("beforeunload", () => savePosition(true));
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) savePosition(true);
+  });
+
+  window.addEventListener("portfolio:langchange", () => {
+    syncButtons(!audio.paused && !audio.muted);
+  });
+
+  if (isMutedByUser()) {
+    syncButtons(false);
+  } else {
+    syncButtons(false);
+    tryStartPlayback();
+  }
 }
 
 /**
@@ -2362,7 +2520,10 @@ const SITE_TRANSLATIONS = {
     "contact.descLabel": "Deskripsi proyek",
     "contact.descPh": "Ceritakan singkat tentang proyek Anda...",
     "contact.submit": "Kirim",
-    "common.scrollTopAria": "Kembali ke atas"
+    "common.scrollTopAria": "Kembali ke atas",
+    "audio.toggleAria": "Putar atau bisukan musik latar",
+    "audio.playAria": "Putar musik latar",
+    "audio.pauseAria": "Bisukan musik latar"
   },
   en: {
     "title.home": "Portfolio — Zaki Yusron Hasyimmi",
@@ -2456,7 +2617,10 @@ const SITE_TRANSLATIONS = {
     "contact.descLabel": "Project description",
     "contact.descPh": "Tell me briefly about your project...",
     "contact.submit": "Submit",
-    "common.scrollTopAria": "Back to top"
+    "common.scrollTopAria": "Back to top",
+    "audio.toggleAria": "Play or mute background audio",
+    "audio.playAria": "Play background audio",
+    "audio.pauseAria": "Mute background audio"
   }
 };
 
