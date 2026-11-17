@@ -481,7 +481,7 @@ const PROJECTS_CATALOG = [
     highlights: ["work.p1.h1", "work.p1.h2", "work.p1.h3"],
     stack: ["Laravel", "Blade", "Tailwind CSS", "MySQL"],
     github: "https://github.com/zysrnh/POKJA_ProjectHima",
-    liveUrl: "",
+    liveUrl: "https://pokja.hmif-lpkia.my.id/",
   },
   {
     key: "p2",
@@ -521,7 +521,7 @@ const PROJECTS_CATALOG = [
     ],
     stack: ["Laravel", "Blade", "JavaScript", "Chart.js", "REST API"],
     github: "https://github.com/zysrnh/Smadiment_ProjectCyberlabs",
-    liveUrl: "",
+    liveUrl: "https://smadiment-v1.alcomedia.id/",
   },
   {
     key: "p4",
@@ -537,7 +537,7 @@ const PROJECTS_CATALOG = [
     highlights: ["work.p4.h1", "work.p4.h2", "work.p4.h3"],
     stack: ["Laravel", "Blade", "MySQL", "Leaflet", "REST API"],
     github: "https://github.com/zysrnh/Patenpakminko_Cyberlabs",
-    liveUrl: "",
+    liveUrl: "https://patenpakmiko.com/",
   },
   {
     key: "p5",
