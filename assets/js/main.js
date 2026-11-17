@@ -483,10 +483,23 @@ const PROJECTS_CATALOG = [
   {
     key: "p2",
     index: "02",
-    categoryGroup: "web",
-    image: "ref/SMART%20MOVES%E2%84%A2%20_%20UI_UX%20Design%20for%20trading%20course%20-%20Diana%20Malook.jpg",
-    stack: ["Bootstrap 5", "JavaScript", "CSS3"],
-    github: "https://github.com/zysrnh",
+    categoryGroup: "fullstack",
+    badgeKey: "work.p2.badge",
+    image: "assets/portofolio/kasly/Kasly.png",
+    gallery: [
+      { src: "assets/portofolio/kasly/Kasly.png", labelKey: "work.p2.shot1" },
+      { src: "assets/portofolio/kasly/Kasly2.png", labelKey: "work.p2.shot2" },
+      { src: "assets/portofolio/kasly/Kasly3.png", labelKey: "work.p2.shot3" },
+      { src: "assets/portofolio/kasly/Kasly4.png", labelKey: "work.p2.shot4" },
+    ],
+    highlights: ["work.p2.h1", "work.p2.h2", "work.p2.h3"],
+    collaborators: [
+      { name: "Agna", handle: "@arrxz", url: "https://github.com/arrxz" },
+      { name: "Enzi", handle: "@kenzro", url: "https://github.com/kenzro" },
+    ],
+    stack: ["Laravel", "Blade", "Tailwind CSS", "MySQL", "REST API"],
+    github: "https://github.com/zysrnh/Himtech_Project",
+    liveUrl: "",
   },
   {
     key: "p3",
@@ -810,6 +823,8 @@ function initProjectPage() {
   const descEl = document.getElementById("projectDetailDesc");
   const highlightsBlockEl = document.getElementById("projectHighlightsBlock");
   const highlightsListEl = document.getElementById("projectDetailHighlights");
+  const collabBlockEl = document.getElementById("projectCollabBlock");
+  const collabRowEl = document.getElementById("projectDetailCollab");
   const stackEl = document.getElementById("projectDetailStack");
   const githubBtnEl = document.getElementById("projectGithubBtn");
   const liveBtnEl = document.getElementById("projectLiveBtn");
@@ -996,6 +1011,43 @@ function initProjectPage() {
     });
   }
 
+  function renderCollaborators(project) {
+    if (!collabBlockEl || !collabRowEl) return;
+    const list = Array.isArray(project.collaborators) ? project.collaborators : [];
+    collabRowEl.innerHTML = "";
+
+    if (!list.length) {
+      collabBlockEl.hidden = true;
+      return;
+    }
+
+    collabBlockEl.hidden = false;
+    list.forEach((member) => {
+      const link = document.createElement("a");
+      link.href = member.url || "#";
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.className = "project-collab-chip";
+
+      const icon = document.createElement("i");
+      icon.className = "bi bi-github";
+      icon.setAttribute("aria-hidden", "true");
+
+      const nameSpan = document.createElement("span");
+      nameSpan.textContent = member.name || "";
+
+      link.append(icon, nameSpan);
+      if (member.handle) {
+        const handleSpan = document.createElement("span");
+        handleSpan.className = "project-collab-handle";
+        handleSpan.textContent = member.handle;
+        link.appendChild(handleSpan);
+      }
+
+      collabRowEl.appendChild(link);
+    });
+  }
+
   function syncLightbox() {
     if (!lightboxEl || lightboxEl.hidden) return;
     const project = PROJECTS_CATALOG[activeIndex];
@@ -1079,11 +1131,14 @@ function initProjectPage() {
 
     const dict = getActiveDict();
     const category = dict[`work.${project.key}.cat`] || "";
+    const badge = project.badgeKey ? dict[project.badgeKey] || "" : "";
     const title = dict[`work.${project.key}.title`] || "";
     const desc = dict[`work.${project.key}.detail`] || dict[`work.${project.key}.desc`] || "";
 
     if (metaEl) {
-      metaEl.textContent = category ? `${project.index} // ${category}` : project.index;
+      const parts = [project.index, category].filter(Boolean);
+      const baseMeta = parts.join(" // ");
+      metaEl.textContent = badge ? `${baseMeta} · ${badge}` : baseMeta;
     }
     if (titleEl) {
       titleEl.textContent = title;
@@ -1113,6 +1168,7 @@ function initProjectPage() {
     renderGalleryThumbs(project, dict);
     renderActiveShot(activeShotIndex);
     renderHighlights(project, dict);
+    renderCollaborators(project);
 
     if (stackEl) {
       stackEl.innerHTML = "";
@@ -3041,6 +3097,7 @@ const SITE_TRANSLATIONS = {
     "projectsPage.filterWeb": "Frontend & UI",
     "projectsPage.githubAria": "Buka repository GitHub",
     "work.highlightsTitle": "FITUR UTAMA",
+    "work.collaboratorsTitle": "KOLABORATOR TIM",
     "work.livePreview": "BUKA LIVE",
     "work.zoomAria": "Perbesar pratinjau",
     "work.galleryAria": "Galeri pratinjau proyek",
@@ -3062,10 +3119,18 @@ const SITE_TRANSLATIONS = {
     "work.p1.h1": "Aktivasi akun mahasiswa via QR tiket & login NIM",
     "work.p1.h2": "Presensi QR real-time proyektor & scanner HP",
     "work.p1.h3": "Leaderboard poin keaktifan, kelompok & kuesioner",
-    "work.p2.cat": "Pengembangan Web",
-    "work.p2.title": "E-Commerce Catalog UI",
-    "work.p2.desc": "Antarmuka katalog produk dengan filter kategori dinamis dan pratinjau modal detail cepat.",
-    "work.p2.detail": "Etalase katalog produk dengan kartu grid presisi, penyaringan kategori interaktif, serta modal pratinjau cepat yang ringan.",
+    "work.p2.badge": "Project Lomba",
+    "work.p2.cat": "Fullstack SaaS",
+    "work.p2.title": "Kasly — Kas Ormawa",
+    "work.p2.desc": "Platform SaaS multi-tenant untuk manajemen kas, penagihan iuran berkala, dan pembayaran otomatis Midtrans organisasi mahasiswa.",
+    "work.p2.detail": "Aplikasi web lomba fullstack berbasis Laravel 13 dan Tailwind v4 untuk tata kelola keuangan Ormawa—menghadirkan isolasi multi-tenant, buku kas anti-manipulasi (Locked Ledger), metrik kepatuhan bayar, registrasi QR anggota, pembayaran Midtrans (QRIS/VA/E-Wallet), serta notifikasi WhatsApp OTP via Fonnte API.",
+    "work.p2.shot1": "Landing Page",
+    "work.p2.shot2": "Dashboard Admin",
+    "work.p2.shot3": "Dashboard Anggota",
+    "work.p2.shot4": "Metode Pembayaran",
+    "work.p2.h1": "Arsitektur multi-tenant & buku kas terkunci (Locked Ledger)",
+    "work.p2.h2": "Pembayaran Midtrans QRIS/VA & verifikasi kas tunai bendahara",
+    "work.p2.h3": "Skor kepatuhan iuran, pendaftaran QR & WhatsApp OTP (Fonnte)",
     "work.p3.cat": "Fullstack / UI",
     "work.p3.title": "Admin Dashboard System",
     "work.p3.desc": "Dashboard manajemen internal dengan tabel data terstruktur, ringkasan metrik, dan navigasi peran.",
@@ -3168,6 +3233,7 @@ const SITE_TRANSLATIONS = {
     "projectsPage.filterWeb": "Frontend & UI",
     "projectsPage.githubAria": "Open GitHub repository",
     "work.highlightsTitle": "KEY FEATURES",
+    "work.collaboratorsTitle": "COLLABORATORS",
     "work.livePreview": "LIVE PREVIEW",
     "work.zoomAria": "Expand preview",
     "work.galleryAria": "Project preview gallery",
@@ -3189,10 +3255,18 @@ const SITE_TRANSLATIONS = {
     "work.p1.h1": "Student activation via QR ticket & NIM login",
     "work.p1.h2": "Real-time projector QR & mobile scanner attendance",
     "work.p1.h3": "Activity-point leaderboard, team setup & surveys",
-    "work.p2.cat": "Web Development",
-    "work.p2.title": "E-Commerce Catalog UI",
-    "work.p2.desc": "Clean product catalog storefront with category filtering and quick-view modal preview.",
-    "work.p2.detail": "Product catalog storefront featuring sharp grid cards, dynamic category filtering, and lightweight quick-view modal previews.",
+    "work.p2.badge": "Competition Project",
+    "work.p2.cat": "Fullstack SaaS",
+    "work.p2.title": "Kasly — Treasury SaaS",
+    "work.p2.desc": "Multi-tenant SaaS platform for student organization treasury, scheduled dues billing, and automated Midtrans payments.",
+    "work.p2.detail": "Competition fullstack Laravel 13 and Tailwind v4 web platform for student organization finances—featuring multi-tenant isolation, tamper-proof Locked Ledger bookkeeping, on-time compliance scoring, QR member registration, Midtrans (QRIS/VA/E-Wallet) checkout, and Fonnte WhatsApp OTP alerts.",
+    "work.p2.shot1": "Landing Page",
+    "work.p2.shot2": "Admin Dashboard",
+    "work.p2.shot3": "Member Dashboard",
+    "work.p2.shot4": "Payment Methods",
+    "work.p2.h1": "Multi-tenant isolation & tamper-proof Locked Ledger",
+    "work.p2.h2": "Midtrans QRIS/VA checkout & treasurer cash verification",
+    "work.p2.h3": "On-time payment scoring, QR sign-up & Fonnte WhatsApp OTP",
     "work.p3.cat": "Fullstack / UI",
     "work.p3.title": "Admin Dashboard System",
     "work.p3.desc": "Internal management dashboard with clean data tables, metric widgets, and role navigation.",
