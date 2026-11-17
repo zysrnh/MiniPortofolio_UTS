@@ -1197,7 +1197,7 @@ function initBackgroundAudio() {
   const STORAGE_MUTED_KEY = "portfolioAudioMuted";
   const STORAGE_TIME_KEY = "portfolioAudioTime";
   const DEFAULT_VOLUME = 0.75;
-  const GESTURE_EVENTS = ["pointerdown", "mousedown", "touchend", "click", "keydown"];
+  const GESTURE_EVENTS = ["pointerdown", "mousedown", "pointerup", "touchend", "click", "keydown"];
 
   const readSession = (key) => {
     try {
@@ -1278,13 +1278,10 @@ function initBackgroundAudio() {
 
   let gestureAttached = false;
   let playAttemptPending = false;
+  let autoplayBlocked = false;
 
   const handleFirstGesture = (event) => {
-    if (
-      event.target &&
-      typeof event.target.closest === "function" &&
-      (event.target.closest("[data-audio-toggle]") || event.target.closest("#sitePreloader.is-awaiting-enter"))
-    ) {
+    if (event.target && typeof event.target.closest === "function" && event.target.closest("[data-audio-toggle]")) {
       return;
     }
     if (!isMutedByUser() && !playAttemptPending) {
@@ -1317,8 +1314,9 @@ function initBackgroundAudio() {
     let playResult;
     try {
       playResult = audio.play();
-    } catch (_) {
+    } catch (err) {
       playAttemptPending = false;
+      autoplayBlocked = Boolean(err && err.name === "NotAllowedError");
       syncButtons(false);
       setAwaitingGesture(true);
       attachGestureListeners();
@@ -1328,12 +1326,14 @@ function initBackgroundAudio() {
     Promise.resolve(playResult)
       .then(() => {
         playAttemptPending = false;
+        autoplayBlocked = false;
         writeSession(STORAGE_MUTED_KEY, "0");
         removeGestureListeners();
         syncButtons(!audio.paused);
       })
-      .catch(() => {
+      .catch((err) => {
         playAttemptPending = false;
+        autoplayBlocked = Boolean(err && err.name === "NotAllowedError");
         syncButtons(false);
         setAwaitingGesture(true);
         attachGestureListeners();
@@ -1365,6 +1365,11 @@ function initBackgroundAudio() {
     }
   };
 
+  audio.addEventListener("canplay", () => {
+    if (!isMutedByUser() && audio.paused && !playAttemptPending && !autoplayBlocked) {
+      tryStartPlayback();
+    }
+  });
   audio.addEventListener("timeupdate", () => savePosition(false));
   audio.addEventListener("play", () => {
     writeSession(STORAGE_MUTED_KEY, "0");
@@ -2586,8 +2591,6 @@ const SITE_TRANSLATIONS = {
     "contact.descLabel": "Deskripsi proyek",
     "contact.descPh": "Ceritakan singkat tentang proyek Anda...",
     "contact.submit": "Kirim",
-    "preloader.enter": "MASUK",
-    "preloader.kickerReady": "SIAP DIPUTAR",
     "common.scrollTopAria": "Kembali ke atas",
     "audio.toggleAria": "Putar atau bisukan musik latar",
     "audio.playAria": "Putar musik latar",
@@ -2685,8 +2688,6 @@ const SITE_TRANSLATIONS = {
     "contact.descLabel": "Project description",
     "contact.descPh": "Tell me briefly about your project...",
     "contact.submit": "Submit",
-    "preloader.enter": "ENTER",
-    "preloader.kickerReady": "READY WITH AUDIO",
     "common.scrollTopAria": "Back to top",
     "audio.toggleAria": "Play or mute background audio",
     "audio.playAria": "Play background audio",
@@ -2781,14 +2782,11 @@ function initLanguageSwitcher() {
 function initSitePreloader() {
   const root = document.documentElement;
   const preloader = document.getElementById("sitePreloader");
-  const kickerEl = document.getElementById("sitePreloaderKicker");
   const textWrap = document.getElementById("sitePreloaderText");
-  const enterBtn = document.getElementById("sitePreloaderEnterBtn");
   const progressBar = document.getElementById("sitePreloaderBar");
   const seamFill = document.getElementById("sitePreloaderSeam");
   const percentEl = document.getElementById("sitePreloaderPercent");
   const topPane = preloader ? preloader.querySelector(".site-preloader-pane--top") : null;
-  const bgAudio = document.getElementById("bgAudio");
 
   if (!preloader || !root.classList.contains("is-preloading")) {
     root.classList.remove("is-preloading");
@@ -2828,86 +2826,14 @@ function initSitePreloader() {
 
   let assetsReady = false;
   let typingDone = false;
-  let awaitingEnter = false;
   let dismissed = false;
-  let audioErrored = false;
 
-  const isUserMuted = () => {
-    try {
-      return window.sessionStorage.getItem("portfolioAudioMuted") === "1";
-    } catch (_) {
-      return false;
-    }
-  };
-
-  const syncAwaitingText = () => {
-    const lang = document.documentElement.lang === "en" ? "en" : "id";
-    const dict = typeof SITE_TRANSLATIONS !== "undefined" ? SITE_TRANSLATIONS[lang] || SITE_TRANSLATIONS.id : null;
-    if (kickerEl && dict && dict["preloader.kickerReady"]) {
-      kickerEl.textContent = dict["preloader.kickerReady"];
-    }
-    if (enterBtn && dict && dict["preloader.enter"]) {
-      const enterLabel = enterBtn.querySelector("[data-i18n='preloader.enter']");
-      if (enterLabel) {
-        enterLabel.textContent = dict["preloader.enter"];
-      }
-    }
-  };
-
-  const needsAudioUnlock = () => {
-    if (!bgAudio || !enterBtn || audioErrored || bgAudio.error) return false;
-    if (isUserMuted()) return false;
-    return bgAudio.paused;
-  };
-
-  const handleDocumentKeyDown = (event) => {
-    if (event.key === "Enter" || event.key === " " || event.code === "Space") {
-      event.preventDefault();
-      handlePreloaderEnter();
-    }
-  };
-
-  const handleEarlyAudioPlay = () => {
-    if (awaitingEnter && !dismissed) {
-      openCurtain(false);
-    }
-  };
-
-  const handleAudioError = () => {
-    audioErrored = true;
-    if (awaitingEnter && !dismissed) {
-      openCurtain(false);
-    }
-  };
-
-  const detachAwaitingListeners = () => {
-    preloader.removeEventListener("click", handlePreloaderEnter);
-    document.removeEventListener("keydown", handleDocumentKeyDown);
-    if (bgAudio) {
-      bgAudio.removeEventListener("play", handleEarlyAudioPlay);
-      bgAudio.removeEventListener("error", handleAudioError);
-    }
-  };
-
-  if (bgAudio) {
-    bgAudio.addEventListener("play", handleEarlyAudioPlay, { once: true });
-    bgAudio.addEventListener("error", handleAudioError, { once: true });
-  }
-
-  function openCurtain(immediate = false) {
-    if (dismissed) return;
+  const maybeDismiss = () => {
+    if (dismissed || !assetsReady || !typingDone) return;
     dismissed = true;
-    awaitingEnter = false;
-    detachAwaitingListeners();
     setProgress(1);
 
-    preloader.classList.remove("is-awaiting-enter");
-    if (enterBtn) {
-      enterBtn.setAttribute("aria-hidden", "true");
-      enterBtn.tabIndex = -1;
-    }
-
-    const runExit = () => {
+    window.setTimeout(() => {
       preloader.classList.add("is-card-exit");
 
       window.setTimeout(() => {
@@ -2931,8 +2857,7 @@ function initSitePreloader() {
         const cleanup = () => {
           if (cleaned) return;
           cleaned = true;
-          detachAwaitingListeners();
-          preloader.classList.remove("is-active", "is-card-exit", "is-splitting", "is-awaiting-enter");
+          preloader.classList.remove("is-active", "is-card-exit", "is-splitting");
           preloader.remove();
         };
 
@@ -2945,73 +2870,7 @@ function initSitePreloader() {
 
         window.setTimeout(cleanup, 950);
       }, 150);
-    };
-
-    if (immediate) {
-      runExit();
-    } else {
-      window.setTimeout(runExit, 160);
-    }
-  }
-
-  function handlePreloaderEnter(event) {
-    if (event && typeof event.preventDefault === "function") {
-      event.preventDefault();
-    }
-    if (dismissed) return;
-
-    if (bgAudio && !audioErrored && !bgAudio.error) {
-      try {
-        window.sessionStorage.setItem("portfolioAudioMuted", "0");
-      } catch (_) {
-        // Ignore storage failures in restricted file contexts.
-      }
-      bgAudio.muted = false;
-      bgAudio.loop = true;
-      bgAudio.volume = 0.75;
-      try {
-        Promise.resolve(bgAudio.play()).catch(() => {});
-      } catch (_) {
-        // Proceed with opening the site if audio playback is rejected.
-      }
-    }
-
-    openCurtain(true);
-  }
-
-  const enterAwaitingState = () => {
-    if (dismissed || awaitingEnter) return;
-    awaitingEnter = true;
-    setProgress(1);
-    syncAwaitingText();
-    preloader.classList.add("is-awaiting-enter");
-
-    if (enterBtn) {
-      enterBtn.setAttribute("aria-hidden", "false");
-      enterBtn.tabIndex = 0;
-      window.requestAnimationFrame(() => {
-        if (!dismissed && awaitingEnter && typeof enterBtn.focus === "function") {
-          try {
-            enterBtn.focus({ preventScroll: true });
-          } catch (_) {
-            enterBtn.focus();
-          }
-        }
-      });
-    }
-
-    preloader.addEventListener("click", handlePreloaderEnter);
-    document.addEventListener("keydown", handleDocumentKeyDown);
-  };
-
-  const maybeDismiss = () => {
-    if (dismissed || awaitingEnter || !assetsReady || !typingDone) return;
-    setProgress(1);
-    if (needsAudioUnlock()) {
-      enterAwaitingState();
-    } else {
-      openCurtain(false);
-    }
+    }, 160);
   };
 
   const typeStep = (index) => {

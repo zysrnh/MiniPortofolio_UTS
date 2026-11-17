@@ -301,59 +301,6 @@ html.is-preloading .site-preloader,
   }
 }
 
-.site-preloader-enter {
-  display: none;
-  width: 100%;
-  margin-top: 0.55rem;
-  padding: 0.58rem 0.95rem;
-  background-color: var(--deep-red);
-  color: var(--white);
-  border: 1.5px solid var(--dark-red);
-  border-radius: 2px;
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  cursor: pointer;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-  transition: background-color 0.18s ease, color 0.18s ease, transform 0.14s ease;
-}
-
-.site-preloader-enter:hover,
-.site-preloader-enter:focus-visible {
-  background-color: var(--dark-red);
-  color: var(--stone);
-  transform: translateY(-1px);
-  outline: none;
-}
-
-.site-preloader-enter:active {
-  transform: translateY(1px) scale(0.98);
-}
-
-.site-preloader.is-awaiting-enter .site-preloader-enter {
-  display: inline-flex;
-  animation: preloaderEnterPop 0.34s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-.site-preloader.is-awaiting-enter .site-preloader-caret {
-  animation: none;
-  opacity: 0;
-}
-
-@keyframes preloaderEnterPop {
-  0% {
-    opacity: 0;
-    transform: translate3d(0, 8px, 0);
-  }
-  100% {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-}
-
 .site-preloader-card-track {
   position: absolute;
   left: 0;
@@ -5555,7 +5502,6 @@ html.is-page-entering.is-page-entering-soft .page-transition-panel {
   .site-preloader,
   .site-preloader-pane,
   .site-preloader-card,
-  .site-preloader-enter,
   .site-preloader-seam {
     transition: none !important;
   }
