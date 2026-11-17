@@ -4256,8 +4256,43 @@ html.is-page-entering.is-page-entering-soft .page-transition-panel {
   color: var(--white);
 }
 
-.project-preview-zoom-btn[hidden] {
+.project-preview-zoom-btn[hidden],
+.project-preview-nav-btn[hidden] {
   display: none !important;
+}
+
+.project-preview-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(25, 4, 4, 0.88);
+  border: 1px solid rgba(241, 235, 235, 0.34);
+  border-radius: 2px;
+  color: var(--stone);
+  font-size: 0.86rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.project-preview-nav-btn--prev {
+  left: 0.65rem;
+}
+
+.project-preview-nav-btn--next {
+  right: 0.65rem;
+}
+
+.project-preview-nav-btn:hover,
+.project-preview-nav-btn:focus-visible {
+  background-color: var(--deep-red);
+  border-color: var(--stone);
+  color: var(--white);
 }
 
 .project-shot-placeholder {
@@ -4336,8 +4371,8 @@ html.is-page-entering.is-page-entering-soft .page-transition-panel {
 }
 
 .project-gallery-tab-thumb {
-  width: 48px;
-  height: 30px;
+  width: 40px;
+  height: 26px;
   flex-shrink: 0;
   overflow: hidden;
   border-radius: 1px;
@@ -4362,13 +4397,13 @@ html.is-page-entering.is-page-entering-soft .page-transition-panel {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 0.06rem;
+  gap: 0.08rem;
   min-width: 0;
   flex: 1;
 }
 
 .project-gallery-tab-num {
-  font-size: 0.58rem;
+  font-size: 0.56rem;
   font-weight: 800;
   letter-spacing: 0.1em;
   line-height: 1;
@@ -4378,13 +4413,14 @@ html.is-page-entering.is-page-entering-soft .page-transition-panel {
 
 .project-gallery-tab-label {
   width: 100%;
-  font-size: 0.66rem;
+  font-size: 0.62rem;
   font-weight: 600;
-  line-height: 1.2;
-  color: rgba(241, 235, 235, 0.86);
-  white-space: nowrap;
+  line-height: 1.15;
+  color: rgba(241, 235, 235, 0.88);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .project-fullscreen-info {
@@ -6106,6 +6142,7 @@ html.is-page-entering.is-page-entering-soft .page-transition-panel {
   .project-fullscreen-live-btn,
   .project-gallery-tab,
   .project-preview-zoom-btn,
+  .project-preview-nav-btn,
   .project-lightbox-btn,
   .cta-typo-actions .btn::before,
   .editorial-contact-form .btn-solid-dark::before,

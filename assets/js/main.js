@@ -803,6 +803,8 @@ function initProjectPage() {
   const emptyShotEl = document.getElementById("projectEmptyShot");
   const emptyShotNumEl = document.getElementById("projectEmptyShotNum");
   const emptyShotTitleEl = document.getElementById("projectEmptyShotTitle");
+  const shotPrevBtn = document.getElementById("projectShotPrevBtn");
+  const shotNextBtn = document.getElementById("projectShotNextBtn");
   const zoomBtnEl = document.getElementById("projectZoomBtn");
   const thumbsWrapEl = document.getElementById("projectGalleryThumbs");
   const descEl = document.getElementById("projectDetailDesc");
@@ -898,6 +900,10 @@ function initProjectPage() {
         emptyShotTitleEl.textContent = shotLabel;
       }
     }
+
+    const hideShotNav = gallery.length <= 1;
+    if (shotPrevBtn) shotPrevBtn.hidden = hideShotNav;
+    if (shotNextBtn) shotNextBtn.hidden = hideShotNav;
 
     if (zoomBtnEl) {
       zoomBtnEl.hidden = !hasSrc;
@@ -1137,6 +1143,29 @@ function initProjectPage() {
     nextBtn.addEventListener("click", () => {
       closeLightbox();
       renderProject(activeIndex + 1, "next", true);
+    });
+  }
+
+  function stepGalleryShot(direction) {
+    const project = PROJECTS_CATALOG[activeIndex];
+    if (!project) return;
+    const gallery = resolveProjectGallery(project);
+    if (gallery.length <= 1) return;
+    const nextIdx = (activeShotIndex + direction + gallery.length) % gallery.length;
+    renderActiveShot(nextIdx, true, direction);
+  }
+
+  if (shotPrevBtn) {
+    shotPrevBtn.addEventListener("click", (event) => {
+      event.stopPropagation();
+      stepGalleryShot(-1);
+    });
+  }
+
+  if (shotNextBtn) {
+    shotNextBtn.addEventListener("click", (event) => {
+      event.stopPropagation();
+      stepGalleryShot(1);
     });
   }
 
@@ -3023,13 +3052,13 @@ const SITE_TRANSLATIONS = {
     "work.shot2Default": "Tampilan Fitur",
     "work.shot3Default": "Tampilan Lanjutan",
     "work.p1.cat": "Fullstack Web",
-    "work.p1.title": "Portal POKJA HIMA IF",
+    "work.p1.title": "Pokja Hima Informatika",
     "work.p1.desc": "Portal terpadu pendaftaran, aktivasi & presensi QR, poin keaktifan, dan manajemen kelompok acara HIMA Informatika.",
     "work.p1.detail": "Aplikasi web fullstack berbasis Laravel 13 dan MySQL untuk acara HIMA Informatika—mencakup pendaftaran peserta, aktivasi akun via QR tiket, presensi QR (layar proyektor & scanner HP), leaderboard poin keaktifan, manajemen kelompok, serta rekap kuesioner admin.",
-    "work.p1.shot1": "Portal Login & Acara",
-    "work.p1.shot2": "Admin Panel & Pendaftar",
-    "work.p1.shot3": "Portal Mahasiswa & Presensi",
-    "work.p1.shot4": "Leaderboard & PointKu",
+    "work.p1.shot1": "Login Page",
+    "work.p1.shot2": "Dashboard Admin",
+    "work.p1.shot3": "Dashboard Mahasiswa",
+    "work.p1.shot4": "Leaderboard Mahasiswa",
     "work.p1.h1": "Aktivasi akun mahasiswa via QR tiket & login NIM",
     "work.p1.h2": "Presensi QR real-time proyektor & scanner HP",
     "work.p1.h3": "Leaderboard poin keaktifan, kelompok & kuesioner",
@@ -3150,13 +3179,13 @@ const SITE_TRANSLATIONS = {
     "work.shot2Default": "Feature View",
     "work.shot3Default": "Secondary View",
     "work.p1.cat": "Fullstack Web",
-    "work.p1.title": "POKJA HIMA IF Portal",
+    "work.p1.title": "Pokja Hima Informatika",
     "work.p1.desc": "Integrated portal for registration, QR ticket activation & attendance, activity points, and group management for HIMA Informatics.",
     "work.p1.detail": "Fullstack Laravel 13 and MySQL web application built for HIMA Informatics events—covering participant registration, QR-ticket account activation, QR attendance (projector display & mobile scanner), activity-point leaderboard, team management, and admin questionnaire analytics.",
-    "work.p1.shot1": "Login & Event Portal",
-    "work.p1.shot2": "Admin Panel & Registrants",
-    "work.p1.shot3": "Student Portal & Attendance",
-    "work.p1.shot4": "Leaderboard & Points",
+    "work.p1.shot1": "Login Page",
+    "work.p1.shot2": "Admin Dashboard",
+    "work.p1.shot3": "Student Dashboard",
+    "work.p1.shot4": "Student Leaderboard",
     "work.p1.h1": "Student activation via QR ticket & NIM login",
     "work.p1.h2": "Real-time projector QR & mobile scanner attendance",
     "work.p1.h3": "Activity-point leaderboard, team setup & surveys",
