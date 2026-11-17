@@ -156,16 +156,43 @@
       <div class="project-fullscreen-body">
         <div class="container">
           <div class="project-fullscreen-grid">
-            <div class="project-fullscreen-preview">
-              <img
-                id="projectPreviewImg"
-                src="assets/portofolio/Pokja.png"
-                alt="Portal POKJA HIMA IF preview"
-                class="project-fullscreen-img"
-              />
+            <div class="project-fullscreen-gallery">
+              <div class="project-fullscreen-preview" id="projectPreviewBox">
+                <img
+                  id="projectPreviewImg"
+                  src="assets/portofolio/Pokja.png"
+                  alt="Portal POKJA HIMA IF preview"
+                  class="project-fullscreen-img"
+                />
+                <div id="projectEmptyShot" class="project-shot-placeholder" hidden>
+                  <span class="project-shot-placeholder-num" id="projectEmptyShotNum">02 // 03</span>
+                  <strong class="project-shot-placeholder-title" id="projectEmptyShotTitle">Dashboard Mahasiswa</strong>
+                  <span class="project-shot-placeholder-note" id="projectEmptyShotNote" data-i18n="work.pendingShot">
+                    Slot screenshot siap ditambahkan
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  id="projectZoomBtn"
+                  class="project-preview-zoom-btn"
+                  aria-label="Perbesar pratinjau"
+                  data-i18n-aria="work.zoomAria"
+                >
+                  <i class="bi bi-arrows-fullscreen" aria-hidden="true"></i>
+                </button>
+              </div>
+
+              <div
+                id="projectGalleryThumbs"
+                class="project-gallery-thumbs"
+                role="group"
+                aria-label="Galeri pratinjau proyek"
+                data-i18n-aria="work.galleryAria"
+              ></div>
             </div>
 
             <div class="project-fullscreen-info">
+              <div id="projectDetailMeta" class="project-fullscreen-meta">01 // FULLSTACK WEB</div>
               <h1 class="project-fullscreen-title" id="projectDetailTitle" data-i18n="work.p1.title">
                 Portal POKJA HIMA IF
               </h1>
@@ -173,6 +200,11 @@
               <p id="projectDetailDesc" class="project-fullscreen-desc" data-i18n="work.p1.detail">
                 Aplikasi web fullstack berbasis Laravel 13 dan MySQL untuk acara HIMA Informatika—mencakup pendaftaran peserta, aktivasi akun via QR tiket, presensi QR (layar proyektor &amp; scanner HP), leaderboard poin keaktifan, manajemen kelompok, serta rekap kuesioner admin.
               </p>
+
+              <div id="projectHighlightsBlock" class="project-fullscreen-highlights-block">
+                <div class="project-fullscreen-stack-label" data-i18n="work.highlightsTitle">FITUR UTAMA</div>
+                <ul id="projectDetailHighlights" class="project-highlights-list"></ul>
+              </div>
 
               <div class="project-fullscreen-stack-block">
                 <div class="project-fullscreen-stack-label" data-i18n="work.modalStack">TECH STACK</div>
@@ -191,12 +223,70 @@
                   <span data-i18n="work.modalGithub">LIHAT DI GITHUB</span>
                   <i class="bi bi-box-arrow-up-right project-github-ext" aria-hidden="true"></i>
                 </a>
+                <a
+                  id="projectLiveBtn"
+                  href="#"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="project-fullscreen-live-btn"
+                  hidden
+                >
+                  <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i>
+                  <span data-i18n="work.livePreview">BUKA LIVE</span>
+                </a>
               </div>
             </div>
           </div>
         </div>
       </div>
     </main>
+  </div>
+
+  <!-- ==================== PROJECT SCREENSHOT LIGHTBOX ==================== -->
+  <div
+    id="projectLightbox"
+    class="project-lightbox"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="projectLightboxCaption"
+    aria-hidden="true"
+    hidden
+  >
+    <div class="project-lightbox-topbar">
+      <span id="projectLightboxCaption" class="project-lightbox-caption">01 / 03</span>
+      <div class="project-lightbox-controls">
+        <button
+          type="button"
+          id="projectLightboxPrevBtn"
+          class="project-lightbox-btn"
+          aria-label="Screenshot sebelumnya"
+          data-i18n-aria="work.shotPrevAria"
+        >
+          <i class="bi bi-chevron-left" aria-hidden="true"></i>
+        </button>
+        <button
+          type="button"
+          id="projectLightboxNextBtn"
+          class="project-lightbox-btn"
+          aria-label="Screenshot berikutnya"
+          data-i18n-aria="work.shotNextAria"
+        >
+          <i class="bi bi-chevron-right" aria-hidden="true"></i>
+        </button>
+        <button
+          type="button"
+          id="projectLightboxCloseBtn"
+          class="project-lightbox-btn project-lightbox-close"
+          aria-label="Tutup pratinjau"
+          data-i18n-aria="work.lightboxCloseAria"
+        >
+          <i class="bi bi-x-lg" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+    <div class="project-lightbox-stage">
+      <img id="projectLightboxImg" src="" alt="" class="project-lightbox-img" />
+    </div>
   </div>
 
   <!-- ==================== MOBILE APP BOTTOM TOOLBAR ==================== -->

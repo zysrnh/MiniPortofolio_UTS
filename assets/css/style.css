@@ -2956,19 +2956,18 @@ html.is-preloading .scroll-top-btn {
 
 .portfolio-card-preview {
   overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.5rem;
+  padding: 0;
   background-color: var(--stone);
   border-bottom: 1px solid rgba(39, 7, 7, 0.12);
 }
 
 .portfolio-card-img {
   width: 100%;
-  height: clamp(210px, 31vh, 295px);
-  object-fit: contain;
-  object-position: center;
+  aspect-ratio: 16 / 10;
+  height: auto;
+  max-height: clamp(230px, 35vh, 320px);
+  object-fit: cover;
+  object-position: top center;
   display: block;
   transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -2978,7 +2977,7 @@ html.is-preloading .scroll-top-btn {
 }
 
 .portfolio-card-body {
-  padding: 1.15rem 1.25rem 1.25rem;
+  padding: 0.95rem 1.15rem 1.05rem;
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -3018,9 +3017,9 @@ html.is-preloading .scroll-top-btn {
 
 .portfolio-card-desc {
   font-size: 0.84rem;
-  line-height: 1.55;
+  line-height: 1.5;
   color: var(--muted);
-  margin: 0 0 0.9rem;
+  margin: 0 0 0.72rem;
   flex: 1;
 }
 
@@ -3028,7 +3027,7 @@ html.is-preloading .scroll-top-btn {
   display: flex;
   flex-wrap: wrap;
   gap: 0.42rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.8rem;
 }
 
 .slide-stack-tag {
@@ -3063,7 +3062,7 @@ html.is-preloading .scroll-top-btn {
 
 .portfolio-card-footer {
   border-top: 1px solid rgba(39, 7, 7, 0.1);
-  padding-top: 0.85rem;
+  padding-top: 0.72rem;
   margin-top: auto;
   display: flex;
   align-items: center;
@@ -4135,23 +4134,35 @@ html.is-page-entering.is-page-entering-soft .page-transition-panel {
   flex: 1;
   display: flex;
   align-items: center;
-  padding: 1.75rem 0 2.25rem;
+  padding: 1.35rem 0 1.85rem;
 }
 
 .project-fullscreen-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.22fr) minmax(0, 0.95fr);
-  gap: clamp(1.75rem, 4vw, 3.75rem);
-  align-items: center;
+  grid-template-columns: minmax(0, 1.46fr) minmax(0, 0.88fr);
+  gap: clamp(1.5rem, 3.6vw, 3.25rem);
+  align-items: start;
+}
+
+.project-fullscreen-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 0.72rem;
 }
 
 .project-fullscreen-preview {
   position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
   background-color: #190404;
-  border: 1px solid rgba(241, 235, 235, 0.2);
+  border: 1px solid rgba(241, 235, 235, 0.22);
   border-radius: 2px;
-  padding: 0.7rem;
+  padding: 0;
   overflow: hidden;
+}
+
+.project-fullscreen-preview.is-zoomable {
+  cursor: zoom-in;
 }
 
 .project-fullscreen-preview::after {
@@ -4167,10 +4178,158 @@ html.is-page-entering.is-page-entering-soft .page-transition-panel {
 
 .project-fullscreen-img {
   width: 100%;
-  height: clamp(270px, 52vh, 455px);
-  object-fit: contain;
+  height: 100%;
+  object-fit: cover;
   object-position: center;
   display: block;
+}
+
+.project-preview-zoom-btn {
+  position: absolute;
+  top: 0.65rem;
+  right: 0.65rem;
+  z-index: 3;
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(25, 4, 4, 0.88);
+  border: 1px solid rgba(241, 235, 235, 0.34);
+  border-radius: 2px;
+  color: var(--stone);
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.project-preview-zoom-btn:hover,
+.project-preview-zoom-btn:focus-visible {
+  background-color: var(--deep-red);
+  border-color: var(--stone);
+  color: var(--white);
+}
+
+.project-preview-zoom-btn[hidden] {
+  display: none !important;
+}
+
+.project-shot-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.42rem;
+  padding: 1.5rem;
+  text-align: center;
+  background-color: #190404;
+  color: var(--stone);
+}
+
+.project-shot-placeholder[hidden] {
+  display: none !important;
+}
+
+.project-shot-placeholder-num {
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #fca5a5;
+  padding: 0.24rem 0.56rem;
+  border: 1px solid rgba(241, 235, 235, 0.2);
+  border-radius: 2px;
+}
+
+.project-shot-placeholder-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.project-shot-placeholder-note {
+  font-size: 0.78rem;
+  color: rgba(241, 235, 235, 0.64);
+}
+
+.project-gallery-thumbs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+.project-gallery-tab {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 0.42rem;
+  border: 1px solid rgba(241, 235, 235, 0.18);
+  border-radius: 2px;
+  background-color: rgba(241, 235, 235, 0.04);
+  color: var(--stone);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.16s ease;
+}
+
+.project-gallery-tab:hover,
+.project-gallery-tab:focus-visible {
+  border-color: rgba(241, 235, 235, 0.48);
+  background-color: rgba(241, 235, 235, 0.08);
+}
+
+.project-gallery-tab.is-active {
+  border-color: var(--stone);
+  background-color: rgba(102, 8, 16, 0.55);
+}
+
+.project-gallery-tab-thumb {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 1px;
+  background-color: #190404;
+  border: 1px solid rgba(241, 235, 235, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(241, 235, 235, 0.48);
+  font-size: 0.9rem;
+}
+
+.project-gallery-tab-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.project-gallery-tab-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.project-gallery-tab-num {
+  font-size: 0.64rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #fca5a5;
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+}
+
+.project-gallery-tab-label {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: rgba(241, 235, 235, 0.84);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .project-fullscreen-info {
@@ -4178,8 +4337,17 @@ html.is-page-entering.is-page-entering-soft .page-transition-panel {
   flex-direction: column;
 }
 
+.project-fullscreen-meta {
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #fca5a5;
+  margin-bottom: 0.5rem;
+}
+
 .project-fullscreen-title {
-  font-size: clamp(1.85rem, 3.3vw, 2.75rem);
+  font-size: clamp(1.75rem, 3.1vw, 2.55rem);
   font-weight: 800;
   letter-spacing: -0.025em;
   line-height: 1.08;
@@ -4192,19 +4360,57 @@ html.is-page-entering.is-page-entering-soft .page-transition-panel {
   height: 2px;
   background-color: var(--deep-red);
   transform-origin: left center;
-  margin: 1.2rem 0;
+  margin: 1rem 0;
 }
 
 .project-fullscreen-desc {
-  font-size: 0.96rem;
-  line-height: 1.72;
-  color: rgba(241, 235, 235, 0.8);
-  margin: 0 0 1.55rem;
+  font-size: 0.92rem;
+  line-height: 1.66;
+  color: rgba(241, 235, 235, 0.82);
+  margin: 0 0 1.25rem;
+}
+
+.project-fullscreen-highlights-block {
+  border-top: 1px solid rgba(241, 235, 235, 0.14);
+  padding-top: 0.95rem;
+  margin-bottom: 1.1rem;
+}
+
+.project-fullscreen-highlights-block[hidden] {
+  display: none !important;
+}
+
+.project-highlights-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.project-highlights-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  font-size: 0.82rem;
+  line-height: 1.48;
+  color: rgba(241, 235, 235, 0.86);
+}
+
+.project-highlights-list li::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  margin-top: 0.45rem;
+  background-color: var(--deep-red);
+  border: 1px solid rgba(241, 235, 235, 0.45);
+  flex-shrink: 0;
 }
 
 .project-fullscreen-stack-block {
   border-top: 1px solid rgba(241, 235, 235, 0.14);
-  padding-top: 1.15rem;
+  padding-top: 0.95rem;
 }
 
 .project-fullscreen-stack-label {
@@ -4248,7 +4454,118 @@ html.is-page-entering.is-page-entering-soft .page-transition-panel {
 }
 
 .project-fullscreen-actions {
-  margin-top: 1.55rem;
+  margin-top: 1.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.project-fullscreen-live-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  border: 1px solid var(--deep-red);
+  border-radius: 2px;
+  background-color: var(--deep-red);
+  color: var(--white);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 0.68rem 1.15rem;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.project-fullscreen-live-btn:hover,
+.project-fullscreen-live-btn:focus-visible {
+  background-color: var(--stone);
+  border-color: var(--stone);
+  color: var(--dark-red);
+}
+
+.project-fullscreen-live-btn[hidden] {
+  display: none !important;
+}
+
+/* Flat Fullscreen Lightbox for Project Screenshots */
+.project-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 10020;
+  background-color: rgba(25, 4, 4, 0.96);
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 1.25rem 1.4rem;
+}
+
+.project-lightbox[hidden] {
+  display: none !important;
+}
+
+.project-lightbox-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid rgba(241, 235, 235, 0.14);
+}
+
+.project-lightbox-caption {
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--stone);
+}
+
+.project-lightbox-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.project-lightbox-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 2px;
+  border: 1px solid rgba(241, 235, 235, 0.24);
+  background-color: rgba(241, 235, 235, 0.06);
+  color: var(--stone);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+}
+
+.project-lightbox-btn:hover,
+.project-lightbox-btn:focus-visible {
+  background-color: var(--deep-red);
+  border-color: var(--stone);
+  color: var(--white);
+}
+
+.project-lightbox-stage {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 1rem;
+}
+
+.project-lightbox-img {
+  max-width: min(1160px, 100%);
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border: 1px solid rgba(241, 235, 235, 0.22);
+  border-radius: 2px;
+  background-color: #190404;
 }
 
 .project-fullscreen-github-btn {
@@ -4336,7 +4653,8 @@ html.is-page-entering.is-page-entering-soft .page-transition-panel {
   animation: projectImgZoomSettle 0.92s cubic-bezier(0.16, 1, 0.3, 1) 0.12s backwards;
 }
 
-.project-fullscreen-modal.is-project-enter .project-fullscreen-title {
+.project-fullscreen-modal.is-project-enter .project-fullscreen-title,
+.project-fullscreen-modal.is-project-enter .project-fullscreen-meta {
   will-change: clip-path, transform, opacity;
   animation: projectTitleCurtain 0.68s cubic-bezier(0.16, 1, 0.3, 1) 0.18s backwards;
 }
@@ -4349,7 +4667,9 @@ html.is-page-entering.is-page-entering-soft .page-transition-panel {
   animation: projectEnterRise 0.58s cubic-bezier(0.16, 1, 0.3, 1) 0.3s backwards;
 }
 
-.project-fullscreen-modal.is-project-enter .project-fullscreen-stack-block {
+.project-fullscreen-modal.is-project-enter .project-fullscreen-highlights-block,
+.project-fullscreen-modal.is-project-enter .project-fullscreen-stack-block,
+.project-fullscreen-modal.is-project-enter .project-gallery-thumbs {
   animation: projectEnterRise 0.52s cubic-bezier(0.16, 1, 0.3, 1) 0.34s backwards;
 }
 
@@ -4953,6 +5273,11 @@ html.is-page-entering.is-page-entering-soft .page-transition-panel {
     flex: 1 1 auto !important;
     padding: 1.25rem;
   }
+
+  .project-fullscreen-grid {
+    grid-template-columns: 1fr;
+    gap: 1.75rem;
+  }
 }
 
 @media (max-width: 767.98px) {
@@ -5183,15 +5508,17 @@ html.is-page-entering.is-page-entering-soft .page-transition-panel {
   }
 
   .portfolio-card-preview {
-    padding: 0.4rem;
+    padding: 0;
   }
 
   .portfolio-card-img {
-    height: 200px;
+    aspect-ratio: 16 / 10;
+    height: auto;
+    max-height: 235px;
   }
 
   .portfolio-card-body {
-    padding: 1rem 1.05rem 1.1rem;
+    padding: 0.95rem 1rem 1.05rem;
   }
 
   .project-fullscreen-body {
@@ -5205,11 +5532,24 @@ html.is-page-entering.is-page-entering-soft .page-transition-panel {
   }
 
   .project-fullscreen-preview {
-    padding: 0.45rem;
+    padding: 0;
   }
 
   .project-fullscreen-img {
-    height: clamp(185px, 29vh, 240px);
+    width: 100%;
+    height: 100%;
+  }
+
+  .project-gallery-thumbs {
+    gap: 0.45rem;
+  }
+
+  .project-gallery-tab {
+    padding: 0.32rem;
+  }
+
+  .project-lightbox {
+    padding: 0.85rem;
   }
 
   .project-fullscreen-rule {
@@ -5459,9 +5799,12 @@ html.is-page-entering.is-page-entering-soft .page-transition-panel {
   .project-fullscreen-modal.is-project-enter .project-fullscreen-preview::after,
   .project-fullscreen-modal.is-project-enter .project-fullscreen-img,
   .project-fullscreen-modal.is-project-enter .project-fullscreen-title,
+  .project-fullscreen-modal.is-project-enter .project-fullscreen-meta,
   .project-fullscreen-modal.is-project-enter .project-fullscreen-rule,
   .project-fullscreen-modal.is-project-enter .project-fullscreen-desc,
+  .project-fullscreen-modal.is-project-enter .project-fullscreen-highlights-block,
   .project-fullscreen-modal.is-project-enter .project-fullscreen-stack-block,
+  .project-fullscreen-modal.is-project-enter .project-gallery-thumbs,
   .project-fullscreen-modal.is-project-enter .project-fullscreen-stack-row .slide-stack-tag,
   .project-fullscreen-modal.is-project-enter .project-fullscreen-actions,
   .project-fullscreen-modal.is-project-switch .project-fullscreen-counter,
@@ -5498,6 +5841,10 @@ html.is-page-entering.is-page-entering-soft .page-transition-panel {
   .work-section .project-detail-btn::before,
   .project-fullscreen-back::before,
   .project-fullscreen-github-btn::before,
+  .project-fullscreen-live-btn,
+  .project-gallery-tab,
+  .project-preview-zoom-btn,
+  .project-lightbox-btn,
   .cta-typo-actions .btn::before,
   .editorial-contact-form .btn-solid-dark::before,
   .audio-toggle-btn,

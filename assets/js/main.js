@@ -467,8 +467,15 @@ const PROJECTS_CATALOG = [
     key: "p1",
     index: "01",
     image: "assets/portofolio/Pokja.png",
+    gallery: [
+      { src: "assets/portofolio/Pokja.png", labelKey: "work.p1.shot1" },
+      { src: "", labelKey: "work.p1.shot2" },
+      { src: "", labelKey: "work.p1.shot3" },
+    ],
+    highlights: ["work.p1.h1", "work.p1.h2", "work.p1.h3"],
     stack: ["Laravel", "Blade", "Tailwind CSS", "MySQL"],
     github: "https://github.com/zysrnh/POKJA_ProjectHima",
+    liveUrl: "",
   },
   {
     key: "p2",
@@ -621,27 +628,72 @@ function initPageTransitions() {
 }
 
 /**
- * Populate and control the standalone 1-screen dark editorial project detail page.
+ * Normalize a project's gallery into a fixed 3-screenshot slot structure.
+ *
+ * @param {object} project Catalog entry for a portfolio project.
+ * @returns {Array<{src: string, labelKey: string}>} Three normalized screenshot slots.
+ */
+function resolveProjectGallery(project) {
+  const defaultLabels = ["work.shot1Default", "work.shot2Default", "work.shot3Default"];
+  const source = Array.isArray(project.gallery) ? project.gallery : [];
+  return [0, 1, 2].map((slotIdx) => {
+    const entry = source[slotIdx];
+    if (entry) {
+      return {
+        src: entry.src || "",
+        labelKey: entry.labelKey || defaultLabels[slotIdx],
+      };
+    }
+    return {
+      src: slotIdx === 0 ? project.image || "" : "",
+      labelKey: defaultLabels[slotIdx],
+    };
+  });
+}
+
+/**
+ * Populate and control the standalone editorial project detail showcase page.
  */
 function initProjectPage() {
   const stageEl = document.getElementById("projectStage");
   if (!stageEl || !PROJECTS_CATALOG.length) return;
 
+  const metaEl = document.getElementById("projectDetailMeta");
   const titleEl = document.getElementById("projectDetailTitle");
   const counterEl = document.getElementById("projectDetailCounter");
   const prevBtn = document.getElementById("projectPrevBtn");
   const nextBtn = document.getElementById("projectNextBtn");
-  const previewWrap = stageEl.querySelector(".project-fullscreen-preview");
+  const previewWrap = document.getElementById("projectPreviewBox") || stageEl.querySelector(".project-fullscreen-preview");
   const previewImgEl = document.getElementById("projectPreviewImg");
+  const emptyShotEl = document.getElementById("projectEmptyShot");
+  const emptyShotNumEl = document.getElementById("projectEmptyShotNum");
+  const emptyShotTitleEl = document.getElementById("projectEmptyShotTitle");
+  const zoomBtnEl = document.getElementById("projectZoomBtn");
+  const thumbsWrapEl = document.getElementById("projectGalleryThumbs");
   const descEl = document.getElementById("projectDetailDesc");
+  const highlightsBlockEl = document.getElementById("projectHighlightsBlock");
+  const highlightsListEl = document.getElementById("projectDetailHighlights");
   const stackEl = document.getElementById("projectDetailStack");
   const githubBtnEl = document.getElementById("projectGithubBtn");
+  const liveBtnEl = document.getElementById("projectLiveBtn");
+  const lightboxEl = document.getElementById("projectLightbox");
+  const lightboxImgEl = document.getElementById("projectLightboxImg");
+  const lightboxCaptionEl = document.getElementById("projectLightboxCaption");
+  const lightboxPrevBtn = document.getElementById("projectLightboxPrevBtn");
+  const lightboxNextBtn = document.getElementById("projectLightboxNextBtn");
+  const lightboxCloseBtn = document.getElementById("projectLightboxCloseBtn");
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
   const urlParams = new URLSearchParams(window.location.search);
   const requestedKey = (urlParams.get("project") || window.location.hash.replace(/^#/, "")).trim().toLowerCase();
   const initialIndex = PROJECTS_CATALOG.findIndex((item) => item.key === requestedKey);
   let activeIndex = initialIndex >= 0 ? initialIndex : 0;
+  let activeShotIndex = 0;
+
+  function getActiveDict() {
+    const lang = document.documentElement.lang === "en" ? "en" : "id";
+    return SITE_TRANSLATIONS[lang] || SITE_TRANSLATIONS.id;
+  }
 
   function syncUrlParam(projectKey) {
     try {
@@ -668,17 +720,206 @@ function initProjectPage() {
     stageEl.classList.add("is-project-switch");
   }
 
+  function renderActiveShot(shotIdx) {
+    const project = PROJECTS_CATALOG[activeIndex];
+    if (!project) return;
+    const dict = getActiveDict();
+    const gallery = resolveProjectGallery(project);
+    activeShotIndex = Math.max(0, Math.min(gallery.length - 1, shotIdx));
+
+    const shot = gallery[activeShotIndex];
+    const projectTitle = dict[`work.${project.key}.title`] || "";
+    const shotLabel = dict[shot.labelKey] || `Screenshot ${activeShotIndex + 1}`;
+    const hasSrc = Boolean(shot.src);
+
+    if (previewImgEl) {
+      if (hasSrc) {
+        previewImgEl.setAttribute("src", shot.src);
+        previewImgEl.setAttribute("alt", `${projectTitle} — ${shotLabel}`);
+        previewImgEl.hidden = false;
+      } else {
+        previewImgEl.removeAttribute("src");
+        previewImgEl.setAttribute("alt", "");
+        previewImgEl.hidden = true;
+      }
+    }
+
+    if (emptyShotEl) {
+      emptyShotEl.hidden = hasSrc;
+      if (emptyShotNumEl) {
+        emptyShotNumEl.textContent = `${String(activeShotIndex + 1).padStart(2, "0")} // ${String(gallery.length).padStart(2, "0")}`;
+      }
+      if (emptyShotTitleEl) {
+        emptyShotTitleEl.textContent = shotLabel;
+      }
+    }
+
+    if (zoomBtnEl) {
+      zoomBtnEl.hidden = !hasSrc;
+    }
+
+    if (previewWrap) {
+      previewWrap.hidden = false;
+      previewWrap.classList.toggle("is-zoomable", hasSrc);
+    }
+
+    if (thumbsWrapEl) {
+      thumbsWrapEl.querySelectorAll(".project-gallery-tab").forEach((tabBtn, idx) => {
+        const isCurrent = idx === activeShotIndex;
+        tabBtn.classList.toggle("is-active", isCurrent);
+        tabBtn.setAttribute("aria-pressed", String(isCurrent));
+      });
+    }
+  }
+
+  function renderGalleryThumbs(project, dict) {
+    if (!thumbsWrapEl) return;
+    const gallery = resolveProjectGallery(project);
+    const projectTitle = dict[`work.${project.key}.title`] || "";
+    thumbsWrapEl.innerHTML = "";
+
+    gallery.forEach((shot, idx) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = `project-gallery-tab${idx === activeShotIndex ? " is-active" : ""}`;
+      btn.setAttribute("aria-pressed", String(idx === activeShotIndex));
+
+      const thumbBox = document.createElement("span");
+      thumbBox.className = "project-gallery-tab-thumb";
+      if (shot.src) {
+        const img = document.createElement("img");
+        img.src = shot.src;
+        img.alt = `${projectTitle} ${idx + 1}`;
+        thumbBox.appendChild(img);
+      } else {
+        const icon = document.createElement("i");
+        icon.className = "bi bi-image";
+        icon.setAttribute("aria-hidden", "true");
+        thumbBox.appendChild(icon);
+      }
+
+      const metaRow = document.createElement("span");
+      metaRow.className = "project-gallery-tab-meta";
+
+      const numSpan = document.createElement("span");
+      numSpan.className = "project-gallery-tab-num";
+      numSpan.textContent = String(idx + 1).padStart(2, "0");
+
+      const labelSpan = document.createElement("span");
+      labelSpan.className = "project-gallery-tab-label";
+      labelSpan.textContent = dict[shot.labelKey] || `View ${idx + 1}`;
+
+      metaRow.append(numSpan, labelSpan);
+      btn.append(thumbBox, metaRow);
+      btn.addEventListener("click", () => {
+        renderActiveShot(idx);
+      });
+      thumbsWrapEl.appendChild(btn);
+    });
+  }
+
+  function renderHighlights(project, dict) {
+    if (!highlightsBlockEl || !highlightsListEl) return;
+    const keys = Array.isArray(project.highlights) ? project.highlights : [];
+    const items = keys.map((key) => dict[key]).filter(Boolean);
+    highlightsListEl.innerHTML = "";
+
+    if (!items.length) {
+      highlightsBlockEl.hidden = true;
+      return;
+    }
+
+    highlightsBlockEl.hidden = false;
+    items.forEach((text) => {
+      const li = document.createElement("li");
+      li.textContent = text;
+      highlightsListEl.appendChild(li);
+    });
+  }
+
+  function syncLightbox() {
+    if (!lightboxEl || lightboxEl.hidden) return;
+    const project = PROJECTS_CATALOG[activeIndex];
+    if (!project) return;
+    const dict = getActiveDict();
+    const gallery = resolveProjectGallery(project);
+    const shot = gallery[activeShotIndex];
+    if (!shot || !shot.src) {
+      closeLightbox();
+      return;
+    }
+
+    const projectTitle = dict[`work.${project.key}.title`] || "";
+    const shotLabel = dict[shot.labelKey] || "";
+    const loadedCount = gallery.filter((item) => Boolean(item.src)).length;
+
+    if (lightboxImgEl) {
+      lightboxImgEl.setAttribute("src", shot.src);
+      lightboxImgEl.setAttribute("alt", `${projectTitle} — ${shotLabel}`);
+    }
+    if (lightboxCaptionEl) {
+      const numLabel = `${String(activeShotIndex + 1).padStart(2, "0")} / ${String(gallery.length).padStart(2, "0")}`;
+      lightboxCaptionEl.textContent = shotLabel ? `${numLabel} — ${projectTitle} · ${shotLabel}` : `${numLabel} — ${projectTitle}`;
+    }
+    if (lightboxPrevBtn) lightboxPrevBtn.hidden = loadedCount <= 1;
+    if (lightboxNextBtn) lightboxNextBtn.hidden = loadedCount <= 1;
+  }
+
+  function openLightbox() {
+    if (!lightboxEl) return;
+    const project = PROJECTS_CATALOG[activeIndex];
+    const gallery = project ? resolveProjectGallery(project) : [];
+    const shot = gallery[activeShotIndex];
+    if (!shot || !shot.src) return;
+
+    lightboxEl.hidden = false;
+    lightboxEl.setAttribute("aria-hidden", "false");
+    syncLightbox();
+  }
+
+  function closeLightbox() {
+    if (!lightboxEl || lightboxEl.hidden) return;
+    lightboxEl.hidden = true;
+    lightboxEl.setAttribute("aria-hidden", "true");
+    if (lightboxImgEl) {
+      lightboxImgEl.removeAttribute("src");
+    }
+  }
+
+  function stepLightbox(direction) {
+    const project = PROJECTS_CATALOG[activeIndex];
+    if (!project) return;
+    const gallery = resolveProjectGallery(project);
+    const loadedIndices = gallery
+      .map((item, idx) => (item.src ? idx : -1))
+      .filter((idx) => idx >= 0);
+    if (loadedIndices.length <= 1) return;
+
+    const currentPos = Math.max(0, loadedIndices.indexOf(activeShotIndex));
+    const nextIdx = loadedIndices[(currentPos + direction + loadedIndices.length) % loadedIndices.length];
+    renderActiveShot(nextIdx);
+    syncLightbox();
+  }
+
   function renderProject(idx, mode = "enter", shouldSyncUrl = true) {
     const total = PROJECTS_CATALOG.length;
+    const prevProjectIndex = activeIndex;
     activeIndex = ((idx % total) + total) % total;
+    if (mode !== "static" || prevProjectIndex !== activeIndex) {
+      activeShotIndex = 0;
+    }
+
     const project = PROJECTS_CATALOG[activeIndex];
     if (!project) return;
 
-    const lang = document.documentElement.lang === "en" ? "en" : "id";
-    const dict = SITE_TRANSLATIONS[lang] || SITE_TRANSLATIONS.id;
+    const dict = getActiveDict();
+    const category = dict[`work.${project.key}.cat`] || "";
     const title = dict[`work.${project.key}.title`] || "";
     const desc = dict[`work.${project.key}.detail`] || dict[`work.${project.key}.desc`] || "";
 
+    if (metaEl) {
+      metaEl.textContent = category ? `${project.index} // ${category}` : project.index;
+    }
     if (titleEl) {
       titleEl.textContent = title;
     }
@@ -694,17 +935,19 @@ function initProjectPage() {
     if (githubBtnEl) {
       githubBtnEl.setAttribute("href", project.github || "https://github.com/zysrnh");
     }
-
-    if (previewImgEl && previewWrap) {
-      if (project.image) {
-        previewImgEl.setAttribute("src", project.image);
-        previewImgEl.setAttribute("alt", `${title} preview`);
-        previewWrap.hidden = false;
+    if (liveBtnEl) {
+      if (project.liveUrl) {
+        liveBtnEl.setAttribute("href", project.liveUrl);
+        liveBtnEl.hidden = false;
       } else {
-        previewImgEl.removeAttribute("src");
-        previewWrap.hidden = true;
+        liveBtnEl.setAttribute("href", "#");
+        liveBtnEl.hidden = true;
       }
     }
+
+    renderGalleryThumbs(project, dict);
+    renderActiveShot(activeShotIndex);
+    renderHighlights(project, dict);
 
     if (stackEl) {
       stackEl.innerHTML = "";
@@ -715,6 +958,8 @@ function initProjectPage() {
       });
     }
 
+    syncLightbox();
+
     if (shouldSyncUrl) {
       syncUrlParam(project.key);
     }
@@ -724,19 +969,64 @@ function initProjectPage() {
 
   if (prevBtn) {
     prevBtn.addEventListener("click", () => {
+      closeLightbox();
       renderProject(activeIndex - 1, "prev", true);
     });
   }
 
   if (nextBtn) {
     nextBtn.addEventListener("click", () => {
+      closeLightbox();
       renderProject(activeIndex + 1, "next", true);
+    });
+  }
+
+  if (previewImgEl) {
+    previewImgEl.addEventListener("click", openLightbox);
+  }
+
+  if (zoomBtnEl) {
+    zoomBtnEl.addEventListener("click", openLightbox);
+  }
+
+  if (lightboxPrevBtn) {
+    lightboxPrevBtn.addEventListener("click", () => stepLightbox(-1));
+  }
+
+  if (lightboxNextBtn) {
+    lightboxNextBtn.addEventListener("click", () => stepLightbox(1));
+  }
+
+  if (lightboxCloseBtn) {
+    lightboxCloseBtn.addEventListener("click", closeLightbox);
+  }
+
+  if (lightboxEl) {
+    lightboxEl.addEventListener("click", (event) => {
+      if (event.target === lightboxEl || event.target.classList.contains("project-lightbox-stage")) {
+        closeLightbox();
+      }
     });
   }
 
   document.addEventListener("keydown", (event) => {
     const tag = event.target && event.target.tagName ? event.target.tagName.toLowerCase() : "";
     if (tag === "input" || tag === "textarea" || tag === "select") return;
+
+    if (lightboxEl && !lightboxEl.hidden) {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        closeLightbox();
+      } else if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        stepLightbox(-1);
+      } else if (event.key === "ArrowRight") {
+        event.preventDefault();
+        stepLightbox(1);
+      }
+      return;
+    }
+
     if (event.key === "ArrowLeft") {
       event.preventDefault();
       renderProject(activeIndex - 1, "prev", true);
@@ -2550,10 +2840,27 @@ const SITE_TRANSLATIONS = {
     "work.modalPrevAria": "Proyek sebelumnya",
     "work.modalNextAria": "Proyek berikutnya",
     "work.modalGithub": "LIHAT DI GITHUB",
+    "work.highlightsTitle": "FITUR UTAMA",
+    "work.livePreview": "BUKA LIVE",
+    "work.zoomAria": "Perbesar pratinjau",
+    "work.galleryAria": "Galeri pratinjau proyek",
+    "work.pendingShot": "Slot screenshot siap ditambahkan",
+    "work.shotPrevAria": "Screenshot sebelumnya",
+    "work.shotNextAria": "Screenshot berikutnya",
+    "work.lightboxCloseAria": "Tutup pratinjau",
+    "work.shot1Default": "Tampilan Utama",
+    "work.shot2Default": "Tampilan Fitur",
+    "work.shot3Default": "Tampilan Lanjutan",
     "work.p1.cat": "Fullstack Web",
     "work.p1.title": "Portal POKJA HIMA IF",
     "work.p1.desc": "Portal terpadu pendaftaran, aktivasi & presensi QR, poin keaktifan, dan manajemen kelompok acara HIMA Informatika.",
     "work.p1.detail": "Aplikasi web fullstack berbasis Laravel 13 dan MySQL untuk acara HIMA Informatika—mencakup pendaftaran peserta, aktivasi akun via QR tiket, presensi QR (layar proyektor & scanner HP), leaderboard poin keaktifan, manajemen kelompok, serta rekap kuesioner admin.",
+    "work.p1.shot1": "Portal Login & Acara",
+    "work.p1.shot2": "Dashboard Mahasiswa",
+    "work.p1.shot3": "Presensi QR & Admin",
+    "work.p1.h1": "Aktivasi akun mahasiswa via QR tiket & login NIM",
+    "work.p1.h2": "Presensi QR real-time proyektor & scanner HP",
+    "work.p1.h3": "Leaderboard poin keaktifan, kelompok & kuesioner",
     "work.p2.cat": "Pengembangan Web",
     "work.p2.title": "E-Commerce Catalog UI",
     "work.p2.desc": "Antarmuka katalog produk dengan filter kategori dinamis dan pratinjau modal detail cepat.",
@@ -2647,10 +2954,27 @@ const SITE_TRANSLATIONS = {
     "work.modalPrevAria": "Previous project",
     "work.modalNextAria": "Next project",
     "work.modalGithub": "VIEW ON GITHUB",
+    "work.highlightsTitle": "KEY FEATURES",
+    "work.livePreview": "LIVE PREVIEW",
+    "work.zoomAria": "Expand preview",
+    "work.galleryAria": "Project preview gallery",
+    "work.pendingShot": "Screenshot slot ready to attach",
+    "work.shotPrevAria": "Previous screenshot",
+    "work.shotNextAria": "Next screenshot",
+    "work.lightboxCloseAria": "Close preview",
+    "work.shot1Default": "Main View",
+    "work.shot2Default": "Feature View",
+    "work.shot3Default": "Secondary View",
     "work.p1.cat": "Fullstack Web",
     "work.p1.title": "POKJA HIMA IF Portal",
     "work.p1.desc": "Integrated portal for registration, QR ticket activation & attendance, activity points, and group management for HIMA Informatics.",
     "work.p1.detail": "Fullstack Laravel 13 and MySQL web application built for HIMA Informatics events—covering participant registration, QR-ticket account activation, QR attendance (projector display & mobile scanner), activity-point leaderboard, team management, and admin questionnaire analytics.",
+    "work.p1.shot1": "Login & Event Portal",
+    "work.p1.shot2": "Student Dashboard",
+    "work.p1.shot3": "QR Attendance & Admin",
+    "work.p1.h1": "Student activation via QR ticket & NIM login",
+    "work.p1.h2": "Real-time projector QR & mobile scanner attendance",
+    "work.p1.h3": "Activity-point leaderboard, team setup & surveys",
     "work.p2.cat": "Web Development",
     "work.p2.title": "E-Commerce Catalog UI",
     "work.p2.desc": "Clean product catalog storefront with category filtering and quick-view modal preview.",
