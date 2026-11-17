@@ -472,7 +472,8 @@ const PROJECTS_CATALOG = [
     gallery: [
       { src: "assets/portofolio/pokja/Pokja.png", labelKey: "work.p1.shot1" },
       { src: "assets/portofolio/pokja/Pokja2.png", labelKey: "work.p1.shot2" },
-      { src: "", labelKey: "work.p1.shot3" },
+      { src: "assets/portofolio/pokja/Pokja3.png", labelKey: "work.p1.shot3" },
+      { src: "assets/portofolio/pokja/Pokja4.png", labelKey: "work.p1.shot4" },
     ],
     highlights: ["work.p1.h1", "work.p1.h2", "work.p1.h3"],
     stack: ["Laravel", "Blade", "Tailwind CSS", "MySQL"],
@@ -773,19 +774,16 @@ function initPageTransitions() {
 function resolveProjectGallery(project) {
   const defaultLabels = ["work.shot1Default", "work.shot2Default", "work.shot3Default"];
   const source = Array.isArray(project.gallery) ? project.gallery : [];
-  return [0, 1, 2].map((slotIdx) => {
-    const entry = source[slotIdx];
-    if (entry) {
-      return {
-        src: entry.src || "",
-        labelKey: entry.labelKey || defaultLabels[slotIdx],
-      };
-    }
-    return {
-      src: slotIdx === 0 ? project.image || "" : "",
-      labelKey: defaultLabels[slotIdx],
-    };
-  });
+  if (source.length) {
+    return source.map((entry, slotIdx) => ({
+      src: entry.src || "",
+      labelKey: entry.labelKey || defaultLabels[slotIdx % defaultLabels.length],
+    }));
+  }
+  return [0, 1, 2].map((slotIdx) => ({
+    src: slotIdx === 0 ? project.image || "" : "",
+    labelKey: defaultLabels[slotIdx],
+  }));
 }
 
 /**
@@ -857,11 +855,21 @@ function initProjectPage() {
     stageEl.classList.add("is-project-switch");
   }
 
-  function renderActiveShot(shotIdx) {
+  function triggerShotAnimation(direction) {
+    if (!previewWrap || prefersReducedMotion.matches) return;
+    stageEl.classList.remove("is-project-enter", "is-project-switch");
+    previewWrap.classList.remove("is-shot-switch");
+    previewWrap.style.setProperty("--slide-dir", direction < 0 ? "-1" : "1");
+    void previewWrap.offsetWidth;
+    previewWrap.classList.add("is-shot-switch");
+  }
+
+  function renderActiveShot(shotIdx, animate = false, directionHint = 0) {
     const project = PROJECTS_CATALOG[activeIndex];
     if (!project) return;
     const dict = getActiveDict();
     const gallery = resolveProjectGallery(project);
+    const prevShotIndex = activeShotIndex;
     activeShotIndex = Math.max(0, Math.min(gallery.length - 1, shotIdx));
 
     const shot = gallery[activeShotIndex];
@@ -898,6 +906,12 @@ function initProjectPage() {
     if (previewWrap) {
       previewWrap.hidden = false;
       previewWrap.classList.toggle("is-zoomable", hasSrc);
+      if (!animate) {
+        previewWrap.classList.remove("is-shot-switch");
+      } else if (activeShotIndex !== prevShotIndex || directionHint !== 0) {
+        const dir = directionHint || (activeShotIndex > prevShotIndex ? 1 : -1);
+        triggerShotAnimation(dir);
+      }
     }
 
     if (thumbsWrapEl) {
@@ -913,6 +927,7 @@ function initProjectPage() {
     if (!thumbsWrapEl) return;
     const gallery = resolveProjectGallery(project);
     const projectTitle = dict[`work.${project.key}.title`] || "";
+    thumbsWrapEl.style.setProperty("--gallery-cols", String(Math.max(1, Math.min(4, gallery.length))));
     thumbsWrapEl.innerHTML = "";
 
     gallery.forEach((shot, idx) => {
@@ -949,7 +964,8 @@ function initProjectPage() {
       metaRow.append(numSpan, labelSpan);
       btn.append(thumbBox, metaRow);
       btn.addEventListener("click", () => {
-        renderActiveShot(idx);
+        if (idx === activeShotIndex) return;
+        renderActiveShot(idx, true);
       });
       thumbsWrapEl.appendChild(btn);
     });
@@ -1034,8 +1050,14 @@ function initProjectPage() {
 
     const currentPos = Math.max(0, loadedIndices.indexOf(activeShotIndex));
     const nextIdx = loadedIndices[(currentPos + direction + loadedIndices.length) % loadedIndices.length];
-    renderActiveShot(nextIdx);
+    renderActiveShot(nextIdx, true, direction);
     syncLightbox();
+    if (lightboxImgEl && !prefersReducedMotion.matches) {
+      lightboxImgEl.classList.remove("is-lightbox-switch");
+      lightboxImgEl.style.setProperty("--slide-dir", direction < 0 ? "-1" : "1");
+      void lightboxImgEl.offsetWidth;
+      lightboxImgEl.classList.add("is-lightbox-switch");
+    }
   }
 
   function renderProject(idx, mode = "enter", shouldSyncUrl = true) {
@@ -3006,7 +3028,8 @@ const SITE_TRANSLATIONS = {
     "work.p1.detail": "Aplikasi web fullstack berbasis Laravel 13 dan MySQL untuk acara HIMA Informatika—mencakup pendaftaran peserta, aktivasi akun via QR tiket, presensi QR (layar proyektor & scanner HP), leaderboard poin keaktifan, manajemen kelompok, serta rekap kuesioner admin.",
     "work.p1.shot1": "Portal Login & Acara",
     "work.p1.shot2": "Admin Panel & Pendaftar",
-    "work.p1.shot3": "Dashboard Mahasiswa & QR",
+    "work.p1.shot3": "Portal Mahasiswa & Presensi",
+    "work.p1.shot4": "Leaderboard & PointKu",
     "work.p1.h1": "Aktivasi akun mahasiswa via QR tiket & login NIM",
     "work.p1.h2": "Presensi QR real-time proyektor & scanner HP",
     "work.p1.h3": "Leaderboard poin keaktifan, kelompok & kuesioner",
@@ -3132,7 +3155,8 @@ const SITE_TRANSLATIONS = {
     "work.p1.detail": "Fullstack Laravel 13 and MySQL web application built for HIMA Informatics events—covering participant registration, QR-ticket account activation, QR attendance (projector display & mobile scanner), activity-point leaderboard, team management, and admin questionnaire analytics.",
     "work.p1.shot1": "Login & Event Portal",
     "work.p1.shot2": "Admin Panel & Registrants",
-    "work.p1.shot3": "Student Dashboard & QR",
+    "work.p1.shot3": "Student Portal & Attendance",
+    "work.p1.shot4": "Leaderboard & Points",
     "work.p1.h1": "Student activation via QR ticket & NIM login",
     "work.p1.h2": "Real-time projector QR & mobile scanner attendance",
     "work.p1.h3": "Activity-point leaderboard, team setup & surveys",

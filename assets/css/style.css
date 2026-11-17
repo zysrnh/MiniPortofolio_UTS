@@ -3091,18 +3091,20 @@ html.is-preloading .scroll-top-btn {
   position: relative;
   overflow: hidden;
   isolation: isolate;
+  width: 34px;
+  height: 34px;
+  padding: 0;
   background-color: var(--deep-red);
   border: 1px solid var(--deep-red);
   color: var(--white);
   border-radius: 2px;
-  font-size: 0.72rem;
+  font-size: 0.92rem;
   font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 0.48rem 0.95rem;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   text-decoration: none;
+  flex-shrink: 0;
   transition: border-color 0.25s ease, color 0.25s ease, transform 0.16s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -3140,7 +3142,7 @@ html.is-preloading .scroll-top-btn {
 }
 
 .work-section .project-detail-btn:hover .bi {
-  transform: translateX(5px);
+  transform: translateX(3px);
 }
 
 .work-section .project-detail-btn:active {
@@ -4302,8 +4304,8 @@ html.is-page-entering.is-page-entering-soft .page-transition-panel {
   width: min(100%, calc((100vh - 205px) * 1.6));
   margin-inline: auto;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.5rem;
+  grid-template-columns: repeat(var(--gallery-cols, 3), minmax(0, 1fr));
+  gap: 0.45rem;
 }
 
 .project-gallery-tab {
@@ -4908,6 +4910,21 @@ html.is-page-entering.is-page-entering-soft .page-transition-panel {
 .project-fullscreen-modal.is-project-switch .project-fullscreen-img {
   will-change: clip-path, transform, opacity;
   animation: projectMediaSlide 0.56s cubic-bezier(0.16, 1, 0.3, 1) 0.04s backwards;
+}
+
+/* Directional gallery screenshot switch animation */
+.project-fullscreen-preview.is-shot-switch::after {
+  animation: projectShutterSwitch 0.44s cubic-bezier(0.76, 0, 0.24, 1) both;
+}
+
+.project-fullscreen-preview.is-shot-switch .project-fullscreen-img,
+.project-fullscreen-preview.is-shot-switch .project-shot-placeholder {
+  will-change: clip-path, transform, opacity;
+  animation: projectMediaSlide 0.48s cubic-bezier(0.16, 1, 0.3, 1) 0.04s backwards;
+}
+
+.project-lightbox-img.is-lightbox-switch {
+  animation: projectMediaSlide 0.38s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .project-fullscreen-modal.is-project-switch .project-fullscreen-title {
@@ -5764,6 +5781,7 @@ html.is-page-entering.is-page-entering-soft .page-transition-panel {
   }
 
   .project-gallery-thumbs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0.4rem;
   }
 
@@ -6044,6 +6062,10 @@ html.is-page-entering.is-page-entering-soft .page-transition-panel {
   .project-fullscreen-modal.is-project-switch .project-fullscreen-counter,
   .project-fullscreen-modal.is-project-switch .project-fullscreen-preview::after,
   .project-fullscreen-modal.is-project-switch .project-fullscreen-img,
+  .project-fullscreen-preview.is-shot-switch::after,
+  .project-fullscreen-preview.is-shot-switch .project-fullscreen-img,
+  .project-fullscreen-preview.is-shot-switch .project-shot-placeholder,
+  .project-lightbox-img.is-lightbox-switch,
   .project-fullscreen-modal.is-project-switch .project-fullscreen-title,
   .project-fullscreen-modal.is-project-switch .project-fullscreen-rule,
   .project-fullscreen-modal.is-project-switch .project-fullscreen-desc,
