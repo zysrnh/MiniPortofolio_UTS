@@ -100,10 +100,20 @@
 
     <!-- Center Overlapping Stamp Card (Ramon / Swiss Frame) -->
     <div class="site-preloader-card">
-      <span class="site-preloader-kicker" aria-hidden="true">INITIALIZING</span>
+      <span class="site-preloader-kicker" id="sitePreloaderKicker" aria-hidden="true">INITIALIZING</span>
       <div class="site-preloader-word" aria-label="z.ysrnh">
         <span class="site-preloader-text" id="sitePreloaderText" aria-hidden="true"></span><span class="site-preloader-caret" aria-hidden="true"></span>
       </div>
+      <button
+        type="button"
+        id="sitePreloaderEnterBtn"
+        class="site-preloader-enter"
+        aria-hidden="true"
+        tabindex="-1"
+      >
+        <span data-i18n="preloader.enter">MASUK</span>
+        <i class="bi bi-volume-up-fill" aria-hidden="true"></i>
+      </button>
       <div class="site-preloader-card-track" aria-hidden="true">
         <div class="site-preloader-card-bar" id="sitePreloaderBar"></div>
       </div>
