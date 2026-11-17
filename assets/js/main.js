@@ -513,6 +513,9 @@ const PROJECTS_CATALOG = [
       { src: "assets/portofolio/smadiment/Sma4.png", labelKey: "work.p3.shot4" },
     ],
     highlights: ["work.p3.h1", "work.p3.h2", "work.p3.h3"],
+    collaborators: [
+      { name: "Hilmy", handle: "@hilmywashil", url: "https://github.com/hilmywashil" },
+    ],
     stack: ["Laravel", "Blade", "JavaScript", "Chart.js", "REST API"],
     github: "https://github.com/zysrnh/Smadiment_ProjectCyberlabs",
     liveUrl: "",
