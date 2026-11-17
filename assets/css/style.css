@@ -2956,6 +2956,10 @@ html.is-preloading .scroll-top-btn {
 
 .portfolio-card-preview {
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
   background-color: var(--stone);
   border-bottom: 1px solid rgba(39, 7, 7, 0.12);
 }
@@ -2963,14 +2967,14 @@ html.is-preloading .scroll-top-btn {
 .portfolio-card-img {
   width: 100%;
   height: clamp(210px, 31vh, 295px);
-  object-fit: cover;
-  object-position: top center;
+  object-fit: contain;
+  object-position: center;
   display: block;
   transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .portfolio-card:hover .portfolio-card-img {
-  transform: scale(1.025);
+  transform: scale(1.02);
 }
 
 .portfolio-card-body {
@@ -4164,8 +4168,8 @@ html.is-page-entering.is-page-entering-soft .page-transition-panel {
 .project-fullscreen-img {
   width: 100%;
   height: clamp(270px, 52vh, 455px);
-  object-fit: cover;
-  object-position: top center;
+  object-fit: contain;
+  object-position: center;
   display: block;
 }
 
@@ -5178,8 +5182,12 @@ html.is-page-entering.is-page-entering-soft .page-transition-panel {
     flex: 0 0 100%;
   }
 
+  .portfolio-card-preview {
+    padding: 0.4rem;
+  }
+
   .portfolio-card-img {
-    height: 180px;
+    height: 200px;
   }
 
   .portfolio-card-body {
