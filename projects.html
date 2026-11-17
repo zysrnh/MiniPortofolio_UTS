@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title data-i18n="projectsPage.title">Semua Proyek — Zaki Yusron Hasyimmi</title>
+
+  <!-- Google Fonts: Bebas Neue (Display) & Plus Jakarta Sans (Clean Body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Bootstrap 5 CSS & Bootstrap Icons -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    rel="stylesheet"
+  />
+
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <script>
+    (function () {
+      var reducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (!reducedMotion) {
+        document.documentElement.classList.add("is-page-entering", "is-page-entering-soft");
+      }
+    })();
+  </script>
+</head>
+<body data-page="projects">
+  <!-- ==================== NAVBAR ==================== -->
+  <header class="site-header sticky-top">
+    <nav class="navbar navbar-expand-lg py-3">
+      <div class="container">
+        <a class="navbar-brand fw-extrabold tracking-wide" href="index.html#home">
+          Zaki Yusron Hasyimmi
+        </a>
+
+        <button
+          class="navbar-toggler border-0 shadow-none"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#mainNavbar"
+          aria-controls="mainNavbar"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="mainNavbar">
+          <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-4 mt-3 mt-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html#home" data-i18n="nav.home">BERANDA</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="index.html#about" data-i18n="nav.about">TENTANG</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="index.html#skills" data-i18n="nav.skills">TECH STACK</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="projects.html" data-i18n="nav.work">KARYA</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="contact.html" data-i18n="nav.contact">KONTAK</a>
+            </li>
+            <li class="nav-item ms-lg-2 pt-2 pt-lg-0">
+              <div class="d-flex align-items-center gap-2">
+                <div class="lang-switcher" role="group" aria-label="Pilih bahasa" data-i18n-aria="lang.groupAria">
+                  <button type="button" class="lang-btn is-active" data-lang="id" aria-pressed="true">ID</button>
+                  <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+                </div>
+                <button
+                  type="button"
+                  id="audioToggleBtn"
+                  class="audio-toggle-btn"
+                  aria-label="Putar atau bisukan musik latar"
+                  aria-pressed="false"
+                  data-i18n-aria="audio.toggleAria"
+                  data-audio-toggle
+                >
+                  <span class="audio-eq" aria-hidden="true"><span></span><span></span><span></span></span>
+                </button>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ==================== ALL PROJECTS ARCHIVE PAGE ==================== -->
+  <div class="projects-page-shell">
+    <main class="projects-archive-section">
+      <div class="work-ambient-bg" aria-hidden="true">
+        <div class="work-backdrop-word work-backdrop-word--top">ARCHIVE</div>
+        <div class="work-backdrop-word work-backdrop-word--bottom">PROJECTS</div>
+      </div>
+
+      <div class="container position-relative work-container">
+        <div class="projects-archive-topbar">
+          <a href="index.html#work" class="projects-archive-back">
+            <i class="bi bi-arrow-left" aria-hidden="true"></i>
+            <span data-i18n="projectsPage.backHome">BERANDA</span>
+          </a>
+          <span class="portfolio-counter" id="projectsArchiveCounter">06 PROYEK</span>
+        </div>
+
+        <div class="projects-archive-header d-flex flex-wrap justify-content-between align-items-end gap-3">
+          <div>
+            <div class="projects-archive-kicker" data-i18n="projectsPage.kicker">ARSIP KARYA // 2026</div>
+            <h1 class="skills-section-title mb-2" data-i18n="projectsPage.heading">SEMUA PROYEK.</h1>
+            <p class="projects-archive-subtitle mb-0" data-i18n="projectsPage.subtitle">
+              Kumpulan aplikasi web, sistem fullstack, dan eksplorasi antarmuka yang telah dibangun.
+            </p>
+          </div>
+
+          <div
+            class="projects-filter-group"
+            id="projectsFilterGroup"
+            role="group"
+            aria-label="Filter kategori proyek"
+            data-i18n-aria="projectsPage.filterAria"
+          >
+            <button type="button" class="projects-filter-btn is-active" data-project-filter="all" aria-pressed="true" data-i18n="projectsPage.filterAll">
+              Semua
+            </button>
+            <button type="button" class="projects-filter-btn" data-project-filter="fullstack" aria-pressed="false" data-i18n="projectsPage.filterFullstack">
+              Fullstack
+            </button>
+            <button type="button" class="projects-filter-btn" data-project-filter="web" aria-pressed="false" data-i18n="projectsPage.filterWeb">
+              Frontend &amp; UI
+            </button>
+          </div>
+        </div>
+
+        <div id="projectsArchiveGrid" class="projects-archive-grid"></div>
+      </div>
+    </main>
+
+    <!-- ==================== MINIMAL EDITORIAL FOOTER ==================== -->
+    <footer class="site-footer py-3">
+      <div class="container">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+          <span class="footer-copy">&copy; 2026 Zaki Yusron Hasyimmi. ALL RIGHTS RESERVED.</span>
+
+          <div class="d-flex align-items-center gap-3 footer-social-icons">
+            <a href="https://github.com/zysrnh" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+              <i class="bi bi-github"></i>
+            </a>
+            <a
+              href="https://www.instagram.com/yrsnhh_?cplk=MWlnZGRrOWpvcnQ5Yw=="
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram"
+            >
+              <i class="bi bi-instagram"></i>
+            </a>
+            <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+              <i class="bi bi-whatsapp"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ==================== MOBILE APP BOTTOM TOOLBAR ==================== -->
+  <nav class="mobile-app-bar" id="mobileAppBar" aria-label="Navigasi Seluler" data-i18n-aria="nav.mobileAria">
+    <div class="mobile-app-bar-inner">
+      <a href="index.html#home" class="mobile-app-item">
+        <i class="bi bi-house" aria-hidden="true"></i>
+        <span class="mobile-app-label" data-i18n="mobile.home">Beranda</span>
+      </a>
+      <a href="index.html#about" class="mobile-app-item">
+        <i class="bi bi-person" aria-hidden="true"></i>
+        <span class="mobile-app-label" data-i18n="mobile.about">Tentang</span>
+      </a>
+      <a href="index.html#skills" class="mobile-app-item">
+        <i class="bi bi-layers" aria-hidden="true"></i>
+        <span class="mobile-app-label" data-i18n="mobile.stack">Stack</span>
+      </a>
+      <a href="projects.html" class="mobile-app-item is-active" aria-current="page">
+        <i class="bi bi-grid" aria-hidden="true"></i>
+        <span class="mobile-app-label" data-i18n="mobile.work">Karya</span>
+      </a>
+      <a href="contact.html" class="mobile-app-item">
+        <i class="bi bi-envelope" aria-hidden="true"></i>
+        <span class="mobile-app-label" data-i18n="mobile.contact">Kontak</span>
+      </a>
+      <div class="mobile-app-lang" role="group" aria-label="Pilih bahasa" data-i18n-aria="lang.groupAria">
+        <button type="button" class="lang-btn is-active" data-lang="id" aria-pressed="true">ID</button>
+        <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ==================== BACK TO TOP BUTTON ==================== -->
+  <button
+    type="button"
+    id="scrollTopBtn"
+    class="scroll-top-btn"
+    aria-label="Kembali ke atas"
+    data-i18n-aria="common.scrollTopAria"
+  >
+    <span class="scroll-top-btn-progress" aria-hidden="true"></span>
+    <i class="bi bi-arrow-up scroll-top-btn-icon" aria-hidden="true"></i>
+  </button>
+
+  <!-- ==================== MOBILE FLOATING AUDIO TOGGLE ==================== -->
+  <button
+    type="button"
+    id="audioFloatBtn"
+    class="audio-float-btn"
+    aria-label="Putar atau bisukan musik latar"
+    aria-pressed="false"
+    data-i18n-aria="audio.toggleAria"
+    data-audio-toggle
+  >
+    <span class="audio-eq" aria-hidden="true"><span></span><span></span><span></span></span>
+  </button>
+
+  <audio id="bgAudio" autoplay loop preload="auto" aria-hidden="true">
+    <source src="assets/audio/bgm.m4a" type="audio/mp4" />
+  </audio>
+
+  <!-- ==================== EDITORIAL PAGE TRANSITION CURTAIN ==================== -->
+  <div id="pageTransitionCurtain" class="page-transition-curtain page-transition-curtain--soft" aria-hidden="true">
+    <div class="page-transition-accent"></div>
+    <div class="page-transition-panel">
+      <span class="page-transition-tag">PORTFOLIO // 2026</span>
+    </div>
+  </div>
+
+  <!-- Bootstrap 5 JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Custom Script -->
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

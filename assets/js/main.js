@@ -1,8 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
   initTopOnRefresh();
   initSitePreloader();
-  initPageTransitions();
   initLanguageSwitcher();
+  initProjectsArchivePage();
+  initPageTransitions();
   initHeroEntrance();
   initSectionEntrance("about", "is-about-ready", "is-about-play", 0.16, 0.82);
   initAboutCarousel();
@@ -466,10 +467,11 @@ const PROJECTS_CATALOG = [
   {
     key: "p1",
     index: "01",
-    image: "assets/portofolio/Pokja.png",
+    categoryGroup: "fullstack",
+    image: "assets/portofolio/pokja/Pokja.png",
     gallery: [
-      { src: "assets/portofolio/Pokja.png", labelKey: "work.p1.shot1" },
-      { src: "", labelKey: "work.p1.shot2" },
+      { src: "assets/portofolio/pokja/Pokja.png", labelKey: "work.p1.shot1" },
+      { src: "assets/portofolio/pokja/Pokja2.png", labelKey: "work.p1.shot2" },
       { src: "", labelKey: "work.p1.shot3" },
     ],
     highlights: ["work.p1.h1", "work.p1.h2", "work.p1.h3"],
@@ -480,6 +482,7 @@ const PROJECTS_CATALOG = [
   {
     key: "p2",
     index: "02",
+    categoryGroup: "web",
     image: "ref/SMART%20MOVES%E2%84%A2%20_%20UI_UX%20Design%20for%20trading%20course%20-%20Diana%20Malook.jpg",
     stack: ["Bootstrap 5", "JavaScript", "CSS3"],
     github: "https://github.com/zysrnh",
@@ -487,6 +490,7 @@ const PROJECTS_CATALOG = [
   {
     key: "p3",
     index: "03",
+    categoryGroup: "fullstack",
     image: "ref/SMART%20MOVES%E2%84%A2%20_%20UI_UX%20Design%20for%20trading%20course%20-%20Diana%20Malook.jpg",
     stack: ["Laravel", "Bootstrap 5", "Chart.js"],
     github: "https://github.com/zysrnh",
@@ -494,6 +498,7 @@ const PROJECTS_CATALOG = [
   {
     key: "p4",
     index: "04",
+    categoryGroup: "web",
     image: "ref/SMART%20MOVES%E2%84%A2%20_%20UI_UX%20Design%20for%20trading%20course%20-%20Diana%20Malook.jpg",
     stack: ["Figma", "Design System", "Wireframing"],
     github: "https://github.com/zysrnh",
@@ -501,6 +506,7 @@ const PROJECTS_CATALOG = [
   {
     key: "p5",
     index: "05",
+    categoryGroup: "web",
     image: "ref/SMART%20MOVES%E2%84%A2%20_%20UI_UX%20Design%20for%20trading%20course%20-%20Diana%20Malook.jpg",
     stack: ["HTML5", "JavaScript", "Bootstrap 5"],
     github: "https://github.com/zysrnh",
@@ -508,11 +514,142 @@ const PROJECTS_CATALOG = [
   {
     key: "p6",
     index: "06",
+    categoryGroup: "fullstack",
     image: "ref/SMART%20MOVES%E2%84%A2%20_%20UI_UX%20Design%20for%20trading%20course%20-%20Diana%20Malook.jpg",
     stack: ["Laravel", "REST API", "Bootstrap 5", "Chart.js"],
     github: "https://github.com/zysrnh",
   },
 ];
+
+/**
+ * Populate and filter the dedicated all-projects archive page (projects.html).
+ */
+function initProjectsArchivePage() {
+  const gridEl = document.getElementById("projectsArchiveGrid");
+  if (!gridEl || !PROJECTS_CATALOG.length) return;
+
+  const counterEl = document.getElementById("projectsArchiveCounter");
+  const filterButtons = document.querySelectorAll("[data-project-filter]");
+  let activeFilter = "all";
+
+  function buildArchiveCard(project, dict) {
+    const title = dict[`work.${project.key}.title`] || "";
+    const category = dict[`work.${project.key}.cat`] || "";
+    const desc = dict[`work.${project.key}.desc`] || "";
+    const gallery = resolveProjectGallery(project);
+    const previewSrc = (gallery[0] && gallery[0].src) || project.image || "";
+
+    const card = document.createElement("article");
+    card.className = "projects-archive-card";
+
+    const preview = document.createElement("div");
+    preview.className = "portfolio-card-preview";
+    if (previewSrc) {
+      const img = document.createElement("img");
+      img.src = previewSrc;
+      img.alt = title;
+      img.className = "portfolio-card-img";
+      preview.appendChild(img);
+    }
+
+    const body = document.createElement("div");
+    body.className = "portfolio-card-body";
+
+    const meta = document.createElement("div");
+    meta.className = "portfolio-card-meta";
+    const idxSpan = document.createElement("span");
+    idxSpan.className = "portfolio-card-index";
+    idxSpan.textContent = project.index;
+    const sepSpan = document.createElement("span");
+    sepSpan.className = "portfolio-card-sep";
+    sepSpan.setAttribute("aria-hidden", "true");
+    sepSpan.textContent = "//";
+    const catSpan = document.createElement("span");
+    catSpan.className = "portfolio-card-category";
+    catSpan.textContent = category;
+    meta.append(idxSpan, sepSpan, catSpan);
+
+    const heading = document.createElement("h2");
+    heading.className = "portfolio-card-title";
+    heading.textContent = title;
+
+    const summary = document.createElement("p");
+    summary.className = "portfolio-card-desc";
+    summary.textContent = desc;
+
+    const footer = document.createElement("div");
+    footer.className = "portfolio-card-footer";
+
+    const stackRow = document.createElement("div");
+    stackRow.className = "slide-stack-row";
+    project.stack.forEach((tech) => {
+      stackRow.appendChild(createStackChip(tech, "slide-stack-tag"));
+    });
+
+    const actions = document.createElement("div");
+    actions.className = "projects-archive-actions";
+
+    const ghLink = document.createElement("a");
+    ghLink.href = project.github || "https://github.com/zysrnh";
+    ghLink.target = "_blank";
+    ghLink.rel = "noopener noreferrer";
+    ghLink.className = "projects-archive-gh";
+    ghLink.setAttribute("aria-label", `${dict["projectsPage.githubAria"] || "GitHub"} — ${title}`);
+    const ghIcon = document.createElement("i");
+    ghIcon.className = "bi bi-github";
+    ghIcon.setAttribute("aria-hidden", "true");
+    ghLink.appendChild(ghIcon);
+
+    const detailLink = document.createElement("a");
+    detailLink.href = `project.html?project=${project.key}`;
+    detailLink.className = "btn btn-solid-dark btn-sm project-detail-btn";
+    const detailText = document.createElement("span");
+    detailText.textContent = dict["work.viewDetails"] || "SELENGKAPNYA";
+    const detailArrow = document.createElement("i");
+    detailArrow.className = "bi bi-arrow-right ms-1";
+    detailArrow.setAttribute("aria-hidden", "true");
+    detailLink.append(detailText, detailArrow);
+
+    actions.append(ghLink, detailLink);
+    footer.append(stackRow, actions);
+    body.append(meta, heading, summary, footer);
+    card.append(preview, body);
+    return card;
+  }
+
+  function renderArchive() {
+    const lang = document.documentElement.lang === "en" ? "en" : "id";
+    const dict = SITE_TRANSLATIONS[lang] || SITE_TRANSLATIONS.id;
+    const items = activeFilter === "all"
+      ? PROJECTS_CATALOG
+      : PROJECTS_CATALOG.filter((item) => item.categoryGroup === activeFilter);
+
+    gridEl.innerHTML = "";
+    items.forEach((project) => {
+      gridEl.appendChild(buildArchiveCard(project, dict));
+    });
+
+    if (counterEl) {
+      const suffix = dict["projectsPage.countSuffix"] || "PROYEK";
+      counterEl.textContent = `${String(items.length).padStart(2, "0")} ${suffix}`;
+    }
+  }
+
+  filterButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      activeFilter = btn.dataset.projectFilter || "all";
+      filterButtons.forEach((other) => {
+        const selected = other === btn;
+        other.classList.toggle("is-active", selected);
+        other.setAttribute("aria-pressed", String(selected));
+      });
+      renderArchive();
+    });
+  });
+
+  window.addEventListener("portfolio:langchange", renderArchive);
+  renderArchive();
+}
 
 /**
  * Handle smooth page transitions: dual-layer editorial curtain for project details,
@@ -576,55 +713,55 @@ function initPageTransitions() {
 
   if (!curtain) return;
 
-  const projectTransitionLinks = document.querySelectorAll(
-    '.project-detail-btn, #projectBackBtn, body[data-page="project"] a[href^="index.html"]'
-  );
-  const softTransitionLinks = document.querySelectorAll(
-    'a[href="contact.html"], body[data-page="contact"] a[href^="index.html"]'
-  );
+  const projectSelector = '.project-detail-btn, #projectBackBtn, body[data-page="project"] a[href^="index.html"]';
+  const softSelector =
+    'a[href="contact.html"], a[href="projects.html"], #projectAllBtn, body[data-page="contact"] a[href^="index.html"], body[data-page="projects"] a[href^="index.html"]';
 
-  function bindTransition(links, mode, delayMs) {
-    links.forEach((link) => {
-      link.addEventListener("click", (event) => {
-        if (
-          isNavigating ||
-          prefersReducedMotion.matches ||
-          event.defaultPrevented ||
-          event.button !== 0 ||
-          event.metaKey ||
-          event.ctrlKey ||
-          event.shiftKey ||
-          event.altKey ||
-          link.target === "_blank"
-        ) {
-          return;
-        }
+  document.addEventListener("click", (event) => {
+    if (
+      isNavigating ||
+      prefersReducedMotion.matches ||
+      event.defaultPrevented ||
+      event.button !== 0 ||
+      event.metaKey ||
+      event.ctrlKey ||
+      event.shiftKey ||
+      event.altKey
+    ) {
+      return;
+    }
 
-        const href = link.getAttribute("href");
-        if (!href) return;
+    const targetEl = event.target && typeof event.target.closest === "function" ? event.target : null;
+    if (!targetEl) return;
 
-        event.preventDefault();
-        isNavigating = true;
+    const projectLink = targetEl.closest(projectSelector);
+    const softLink = projectLink ? null : targetEl.closest(softSelector);
+    const link = projectLink || softLink;
+    if (!link || link.target === "_blank") return;
 
-        try {
-          window.sessionStorage.setItem("portfolioTransition", "1");
-          window.sessionStorage.setItem("portfolioTransitionMode", mode);
-        } catch (_) {}
+    const href = link.getAttribute("href");
+    if (!href) return;
 
-        applyCurtainMode(mode);
-        curtain.classList.remove("is-curtain-out");
-        void curtain.offsetWidth;
-        curtain.classList.add("is-curtain-in");
+    const mode = projectLink ? "editorial" : "soft";
+    const delayMs = projectLink ? 320 : 210;
 
-        window.setTimeout(() => {
-          window.location.href = href;
-        }, delayMs);
-      });
-    });
-  }
+    event.preventDefault();
+    isNavigating = true;
 
-  bindTransition(projectTransitionLinks, "editorial", 320);
-  bindTransition(softTransitionLinks, "soft", 210);
+    try {
+      window.sessionStorage.setItem("portfolioTransition", "1");
+      window.sessionStorage.setItem("portfolioTransitionMode", mode);
+    } catch (_) {}
+
+    applyCurtainMode(mode);
+    curtain.classList.remove("is-curtain-out");
+    void curtain.offsetWidth;
+    curtain.classList.add("is-curtain-in");
+
+    window.setTimeout(() => {
+      window.location.href = href;
+    }, delayMs);
+  });
 }
 
 /**
@@ -2840,6 +2977,18 @@ const SITE_TRANSLATIONS = {
     "work.modalPrevAria": "Proyek sebelumnya",
     "work.modalNextAria": "Proyek berikutnya",
     "work.modalGithub": "LIHAT DI GITHUB",
+    "work.allProjects": "SEMUA PROYEK",
+    "projectsPage.title": "Semua Proyek — Zaki Yusron Hasyimmi",
+    "projectsPage.backHome": "BERANDA",
+    "projectsPage.kicker": "ARSIP KARYA // 2026",
+    "projectsPage.heading": "SEMUA PROYEK.",
+    "projectsPage.subtitle": "Kumpulan aplikasi web, sistem fullstack, dan eksplorasi antarmuka yang telah dibangun.",
+    "projectsPage.countSuffix": "PROYEK",
+    "projectsPage.filterAria": "Filter kategori proyek",
+    "projectsPage.filterAll": "Semua",
+    "projectsPage.filterFullstack": "Fullstack",
+    "projectsPage.filterWeb": "Frontend & UI",
+    "projectsPage.githubAria": "Buka repository GitHub",
     "work.highlightsTitle": "FITUR UTAMA",
     "work.livePreview": "BUKA LIVE",
     "work.zoomAria": "Perbesar pratinjau",
@@ -2856,8 +3005,8 @@ const SITE_TRANSLATIONS = {
     "work.p1.desc": "Portal terpadu pendaftaran, aktivasi & presensi QR, poin keaktifan, dan manajemen kelompok acara HIMA Informatika.",
     "work.p1.detail": "Aplikasi web fullstack berbasis Laravel 13 dan MySQL untuk acara HIMA Informatika—mencakup pendaftaran peserta, aktivasi akun via QR tiket, presensi QR (layar proyektor & scanner HP), leaderboard poin keaktifan, manajemen kelompok, serta rekap kuesioner admin.",
     "work.p1.shot1": "Portal Login & Acara",
-    "work.p1.shot2": "Dashboard Mahasiswa",
-    "work.p1.shot3": "Presensi QR & Admin",
+    "work.p1.shot2": "Admin Panel & Pendaftar",
+    "work.p1.shot3": "Dashboard Mahasiswa & QR",
     "work.p1.h1": "Aktivasi akun mahasiswa via QR tiket & login NIM",
     "work.p1.h2": "Presensi QR real-time proyektor & scanner HP",
     "work.p1.h3": "Leaderboard poin keaktifan, kelompok & kuesioner",
@@ -2954,6 +3103,18 @@ const SITE_TRANSLATIONS = {
     "work.modalPrevAria": "Previous project",
     "work.modalNextAria": "Next project",
     "work.modalGithub": "VIEW ON GITHUB",
+    "work.allProjects": "ALL PROJECTS",
+    "projectsPage.title": "All Projects — Zaki Yusron Hasyimmi",
+    "projectsPage.backHome": "HOME",
+    "projectsPage.kicker": "WORK ARCHIVE // 2026",
+    "projectsPage.heading": "ALL PROJECTS.",
+    "projectsPage.subtitle": "Selected web applications, fullstack systems, and interface engineering works.",
+    "projectsPage.countSuffix": "PROJECTS",
+    "projectsPage.filterAria": "Filter project categories",
+    "projectsPage.filterAll": "All",
+    "projectsPage.filterFullstack": "Fullstack",
+    "projectsPage.filterWeb": "Frontend & UI",
+    "projectsPage.githubAria": "Open GitHub repository",
     "work.highlightsTitle": "KEY FEATURES",
     "work.livePreview": "LIVE PREVIEW",
     "work.zoomAria": "Expand preview",
@@ -2970,8 +3131,8 @@ const SITE_TRANSLATIONS = {
     "work.p1.desc": "Integrated portal for registration, QR ticket activation & attendance, activity points, and group management for HIMA Informatics.",
     "work.p1.detail": "Fullstack Laravel 13 and MySQL web application built for HIMA Informatics events—covering participant registration, QR-ticket account activation, QR attendance (projector display & mobile scanner), activity-point leaderboard, team management, and admin questionnaire analytics.",
     "work.p1.shot1": "Login & Event Portal",
-    "work.p1.shot2": "Student Dashboard",
-    "work.p1.shot3": "QR Attendance & Admin",
+    "work.p1.shot2": "Admin Panel & Registrants",
+    "work.p1.shot3": "Student Dashboard & QR",
     "work.p1.h1": "Student activation via QR ticket & NIM login",
     "work.p1.h2": "Real-time projector QR & mobile scanner attendance",
     "work.p1.h3": "Activity-point leaderboard, team setup & surveys",
