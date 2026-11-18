@@ -3067,6 +3067,20 @@ function initPortfolioAutoCarousel() {
 
   if (!viewport || !track) return;
 
+  // Shuffle dynamic project cards while pinning fixed cards (e.g. "Dan Masih Banyak Lagi") at the end
+  const fixedLastCards = Array.from(track.querySelectorAll('.portfolio-card[data-card-fixed="last"]'));
+  const shuffleableCards = Array.from(track.querySelectorAll('.portfolio-card:not([data-card-fixed="last"])'));
+  if (shuffleableCards.length > 1) {
+    for (let i = shuffleableCards.length - 1; i > 0; i -= 1) {
+      const j = Math.floor(Math.random() * (i + 1));
+      const temp = shuffleableCards[i];
+      shuffleableCards[i] = shuffleableCards[j];
+      shuffleableCards[j] = temp;
+    }
+    shuffleableCards.forEach((card) => track.appendChild(card));
+    fixedLastCards.forEach((card) => track.appendChild(card));
+  }
+
   const cards = Array.from(track.querySelectorAll(".portfolio-card"));
   if (!cards.length) return;
 
@@ -3629,6 +3643,9 @@ const SITE_TRANSLATIONS = {
     "work.p20.h1": "Direktori E-Katalog bisnis anggota dengan sistem pengajuan produk & moderasi kurasi admin BPD",
     "work.p20.h2": "Buku informasi anggota dan direktori profil usaha digital untuk jejaring kemitraan pengusaha se-Jabar",
     "work.p20.h3": "Portal registrasi mandiri anggota & kemitraan UMKM terintegrasi panel audit administrasi",
+    "work.moreProjectsTitle": "Dan Masih Banyak Lagi...",
+    "work.moreProjectsAlt": "Dan Masih Banyak Lagi — Seluruh Arsip Proyek",
+    "work.moreProjectsTag": "All Projects",
     "contact.heading": "Hubungi saya",
     "contact.hoursLabel": "Jam tersedia",
     "contact.hoursDays": "Senin \u2013 Jumat",
@@ -3957,6 +3974,9 @@ const SITE_TRANSLATIONS = {
     "work.p20.h1": "Interactive member business e-catalog directory with self-submission and administrative curation",
     "work.p20.h2": "Verified digital member book and company profile directory empowering regional business networking",
     "work.p20.h3": "Self-service member intake and MSME partnership onboarding backed by admin audit workflows",
+    "work.moreProjectsTitle": "And Many More...",
+    "work.moreProjectsAlt": "And Many More — Complete Project Archive",
+    "work.moreProjectsTag": "All Projects",
     "contact.heading": "Contact me",
     "contact.hoursLabel": "Available hours",
     "contact.hoursDays": "Monday \u2013 Friday",
