@@ -3067,20 +3067,6 @@ function initPortfolioAutoCarousel() {
 
   if (!viewport || !track) return;
 
-  // Shuffle dynamic project cards while pinning fixed cards (e.g. "Dan Masih Banyak Lagi") at the end
-  const fixedLastCards = Array.from(track.querySelectorAll('.portfolio-card[data-card-fixed="last"]'));
-  const shuffleableCards = Array.from(track.querySelectorAll('.portfolio-card:not([data-card-fixed="last"])'));
-  if (shuffleableCards.length > 1) {
-    for (let i = shuffleableCards.length - 1; i > 0; i -= 1) {
-      const j = Math.floor(Math.random() * (i + 1));
-      const temp = shuffleableCards[i];
-      shuffleableCards[i] = shuffleableCards[j];
-      shuffleableCards[j] = temp;
-    }
-    shuffleableCards.forEach((card) => track.appendChild(card));
-    fixedLastCards.forEach((card) => track.appendChild(card));
-  }
-
   const cards = Array.from(track.querySelectorAll(".portfolio-card"));
   if (!cards.length) return;
 
@@ -3094,6 +3080,18 @@ function initPortfolioAutoCarousel() {
 
   function getMaxIndex() {
     return Math.max(0, cards.length - getVisibleCount());
+  }
+
+  function getRandomIndex() {
+    const maxIndex = getMaxIndex();
+    if (maxIndex <= 0) return 0;
+    let nextIdx = currentIndex;
+    let attempts = 0;
+    while (nextIdx === currentIndex && attempts < 10) {
+      nextIdx = Math.floor(Math.random() * (maxIndex + 1));
+      attempts += 1;
+    }
+    return nextIdx;
   }
 
   function getDotAriaLabel(index) {
@@ -3155,8 +3153,8 @@ function initPortfolioAutoCarousel() {
     stopAuto();
     if (document.hidden) return;
     timerId = window.setInterval(() => {
-      goTo(currentIndex + 1);
-    }, 3400);
+      goTo(getRandomIndex());
+    }, 3500);
   }
 
   function stopAuto() {

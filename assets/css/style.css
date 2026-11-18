@@ -5233,6 +5233,68 @@ html.is-page-entering.is-page-entering-soft .page-transition-panel {
     scroll-snap-type: y proximity;
   }
 
+  /* 1-Screen Desktop Fit for All Projects Archive */
+  body[data-page="projects"] {
+    overflow: hidden;
+    height: 100vh;
+  }
+
+  body[data-page="projects"] .projects-page-shell {
+    height: calc(100vh - 64px);
+    height: calc(100svh - 64px);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  body[data-page="projects"] .projects-archive-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 0.85rem 0 0.5rem;
+    overflow: hidden;
+    min-height: 0;
+  }
+
+  body[data-page="projects"] .projects-archive-section .work-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  body[data-page="projects"] .projects-archive-topbar {
+    margin-bottom: 0.45rem;
+    padding-bottom: 0.45rem;
+    flex-shrink: 0;
+  }
+
+  body[data-page="projects"] .projects-archive-header {
+    margin-bottom: 0.75rem;
+    flex-shrink: 0;
+  }
+
+  body[data-page="projects"] .projects-archive-grid {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+    padding-bottom: 0.75rem;
+    min-height: 0;
+  }
+
+  body[data-page="projects"] .projects-archive-grid::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  body[data-page="projects"] .projects-archive-grid::-webkit-scrollbar-track {
+    background: rgba(39, 7, 7, 0.05);
+  }
+
+  body[data-page="projects"] .projects-archive-grid::-webkit-scrollbar-thumb {
+    background: var(--dark-red);
+    border-radius: 2px;
+  }
+
   .work-section {
     padding: 1.5rem 0 !important;
   }
